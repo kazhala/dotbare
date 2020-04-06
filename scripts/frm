@@ -16,15 +16,15 @@ do
       list_location="${OPTARG}"
       ;;
     h)
-      echo "Usage: fcr [-h] [-p PATH] ...\n"
-      echo "Untrack the selected files from git bare repo"
-      echo "Note: Although local files will be untracked without issue"
-      echo "make sure to backup the untracked files in any other desktop"
-      echo "because git will actually remove those files, after pulling the new changes"
-      echo "copy the backup back to their original location\n"
-      echo "optional arguments:"
-      echo "  -h\t\tshow this help message and exit"
-      echo '  -p PATH\tspecify the path to list files, by default, files will be listed from $HOME'
+      echo -e "Usage: fcr [-h] [-p PATH] ...\n"
+      echo -e "Untrack the selected files from git bare repo"
+      echo -e "Note: Although local files will be untracked without issue"
+      echo -e "make sure to backup the untracked files in any other desktop"
+      echo -e "because git will actually remove those files, after pulling the new changes"
+      echo -e "copy the backup back to their original location\n"
+      echo -e "optional arguments:"
+      echo -e "  -h\t\tshow this help message and exit"
+      echo -e '  -p PATH\tspecify the path to list files, by default, files will be listed from $HOME'
       exit 0
       ;;
     *)
