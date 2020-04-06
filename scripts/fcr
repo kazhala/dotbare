@@ -1,0 +1,50 @@
+#!/bin/bash
+#
+# Untrack the selected file from the git bare repo
+#
+# @params
+# Globals
+#   ${list_location}: location of where to list files, if empty, will list files from root
+#   ${selected_files}: list of selected file to untrack
+
+list_location=''
+
+while getopts ":p:h" opt
+do
+  case "$opt" in
+    p)
+      list_location="${OPTARG}"
+      ;;
+    h)
+      echo "Usage: fcr [-h] [-p PATH] ...\n"
+      echo "Untrack the selected files from git bare repo"
+      echo "Note: Although local files will be untracked without issue"
+      echo "make sure to backup the untracked files in any other desktop"
+      echo "because git will actually remove those files, after pulling the new changes"
+      echo "copy the backup back to their original location\n"
+      echo "optional arguments:"
+      echo "  -h\t\tshow this help message and exit"
+      echo '  -p PATH\tspecify the path to list files, by default, files will be listed from $HOME'
+      exit 0
+      ;;
+    *)
+      echo "Invalid option: ${OPTARG}" >&2
+      exit 1
+      ;;
+  esac
+done
+
+if [[ -z "${list_location}" ]]; then
+  cd
+else
+  cd "${list_location}"
+fi
+
+selected_files=$(/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME ls-files | \
+  fzf --multi --exit-0 --preview "head -50 {}")
+
+[[ -z "${selected_files}" ]] && exit 0
+
+while IFS= read -r line; do
+  /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME rm --cached "${line}"
+done <<< "${selected_files}"

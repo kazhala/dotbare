@@ -1,0 +1,9 @@
+#!/bin/bash
+selected_stash=$(/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME stash list | \
+  fzf --exit-0 --preview "echo {} | sed 's/://g' | awk '{print \$1}' | \
+  xargs -I __ /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME stash show -p __ --color" | \
+  sed 's/://g' | awk '{print $1}')
+
+[[ -z "$selected_stash" ]] && exit 0
+
+/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME stash apply "$selected_stash"

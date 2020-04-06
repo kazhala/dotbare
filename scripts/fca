@@ -1,0 +1,70 @@
+#!/bin/bash
+#
+# Stage the selected file to git bare repo
+#
+# @params
+# Globals
+#   ${new_file}: new file path to stage
+#   ${new_folder}: new folder to stage
+#   ${stage_file}: changed file to stage
+
+function stage_file() {
+  local file=$1
+  if [[ -z "${file}" ]]
+  then
+    exit 0
+  else
+    /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add "${file}"
+    echo "${file} staged successfully"
+  fi
+}
+
+new_file=''
+new_folder=''
+
+while getopts ":fhd" opt
+do
+  case "$opt" in
+    f)
+      new_file=$(fd -H -d 1 -t f | fzf --multi --exit-0 --preview "head -50 {}")
+      [[ -z "${new_file}" ]] && exit 1
+      break
+      ;;
+    h)
+      echo "Usage: fca [-h] [-f] [-d] ...\n"
+      echo "Stage the selected file to the dotfile gitbare repo"
+      echo "Press escape to stop staging file\n"
+      echo "optional arguments:"
+      echo "  -h\t\tshow this help message and exit"
+      echo "  -f\t\tselect a file in current directory and stage it"
+      echo "  -d\t\tselect a entire folder to stage"
+      exit 0
+      ;;
+    d)
+      # don't allow add directory from home folder to decrease errors
+      [[ "$PWD" == "$HOME" ]] && exit 0
+      new_folder=$(fd -H -d 1 -t d -E .git | fzf --exit-0 --preview "tree -L 1 -C --dirsfirst {}")
+      [[ -z "${new_folder}" ]] && exit 1
+      break
+      ;;
+    *) 
+      echo "Invalid option: ${OPTARG}" >&2
+      exit 1
+      ;;
+  esac
+done
+
+if [[ -n "${new_file}" ]]; then
+  while IFS= read -r line; do
+    stage_file "${line}"
+  done <<< "${new_file}"
+elif [[ -n "${new_folder}" ]]; then
+  stage_file "${new_folder}"
+else
+  selected_files=$(/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME diff --name-only | \
+    fzf --multi --exit-0 --preview "/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME diff --color=always $HOME/{}" | \
+    awk -v home=$HOME '{print home "/" $0}')
+  while IFS= read -r line; do
+    stage_file "${line}"
+  done <<< "${selected_files}"
+fi
