@@ -12,7 +12,7 @@
 mydir="${0%/*}"
 
 # check env variable
-[[ -z "${DOTBARE_DIR}" ]] && DOTBARE_DIR="$Home/.cfg/"
+[[ -z "${DOTBARE_DIR}" ]] && DOTBARE_DIR="$HOME/.cfg/"
 [[ -z "${DOTBARE_TREE}" ]] && DOTBARE_TREE="$HOME"
 
 function usage() {
