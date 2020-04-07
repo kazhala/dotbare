@@ -72,9 +72,11 @@ elif [[ -n "${new_folder}" ]]; then
     stage_file "${line}"
   done <<< "${new_folder}"
 else
-  selected_files=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" diff --name-only | \
-    fzf --multi --exit-0 --preview "/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" diff --color=always $HOME/{}" | \
-    awk -v home=$HOME '{print home "/" $0}')
+  selected_files=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" diff --name-status | \
+    awk '{if ($1 == "D") {print "\033[31m" $1 " " $2} else {print "\033[33m" $1 " " $2}}' | \
+    fzf --ansi --multi --exit-0 --preview "echo {} | awk '{print \$2}' | \
+      xargs -I __ /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" diff --color=always $HOME/__" | \
+    awk -v home=$HOME '{print home "/" $2}')
   while IFS= read -r line; do
     stage_file "${line}"
   done <<< "${selected_files}"
