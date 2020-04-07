@@ -8,13 +8,26 @@
 #   ${new_folder}: new folder to stage
 #   ${stage_file}: changed file to stage
 
+[[ -z "${DOTBARE_DIR}" ]] && DOTBARE_DIR="$HOME/.cfg/"
+[[ -z "${DOTBARE_TREE}" ]] && DOTBARE_TREE="$HOME"
+
+function usage() {
+  echo -e "Usage: dotbare fadd [-h] [-f] [-d] ...\n"
+  echo -e "Stage the selected file to the dotfile gitbare repo"
+  echo -e "Press escape to stop staging file\n"
+  echo -e "optional arguments:"
+  echo -e "  -h\t\tshow this help message and exit"
+  echo -e "  -f\t\tselect a file in current directory and stage it"
+  echo -e "  -d\t\tselect a entire folder to stage"
+}
+
 function stage_file() {
   local file=$1
   if [[ -z "${file}" ]]
   then
     exit 0
   else
-    /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add "${file}"
+    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" add "${file}"
     echo "${file} staged successfully"
   fi
 }
@@ -31,13 +44,7 @@ do
       break
       ;;
     h)
-      echo -e "Usage: fca [-h] [-f] [-d] ...\n"
-      echo -e "Stage the selected file to the dotfile gitbare repo"
-      echo -e "Press escape to stop staging file\n"
-      echo -e "optional arguments:"
-      echo -e "  -h\t\tshow this help message and exit"
-      echo -e "  -f\t\tselect a file in current directory and stage it"
-      echo -e "  -d\t\tselect a entire folder to stage"
+      usage
       exit 0
       ;;
     d)
@@ -49,6 +56,7 @@ do
       ;;
     *) 
       echo "Invalid option: ${OPTARG}" >&2
+      usage
       exit 1
       ;;
   esac
@@ -61,8 +69,8 @@ if [[ -n "${new_file}" ]]; then
 elif [[ -n "${new_folder}" ]]; then
   stage_file "${new_folder}"
 else
-  selected_files=$(/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME diff --name-only | \
-    fzf --multi --exit-0 --preview "/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME diff --color=always $HOME/{}" | \
+  selected_files=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" diff --name-only | \
+    fzf --multi --exit-0 --preview "/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" diff --color=always $HOME/{}" | \
     awk -v home=$HOME '{print home "/" $0}')
   while IFS= read -r line; do
     stage_file "${line}"
