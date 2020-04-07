@@ -21,8 +21,8 @@ function tree_exists() {
 }
 
 function search_file() {
-  search_type="$1"
-  exe_fd="$(fd_exists)"
+  local search_type="$1"
+  local exe_fd="$(fd_exists)"
   if [[ "${search_type}" == "f" ]]; then
     if [[ "${exe_fd}" -eq 0 ]]; then
       fd -H -d 1 -t f | fzf --multi --exit-0 --preview "head -50 {}"
