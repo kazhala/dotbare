@@ -4,15 +4,14 @@
 #
 # @params
 # Globals
+#   ${mydir}: string, current directory of the executing script
 #   ${new_file}: new file path to stage
 #   ${new_folder}: new folder to stage
 #   ${stage_file}: changed file to stage
 
 mydir="${0%/*}"
 source "${mydir}"/../helper/search_file
-
-[[ -z "${DOTBARE_DIR}" ]] && DOTBARE_DIR="$HOME/.cfg/"
-[[ -z "${DOTBARE_TREE}" ]] && DOTBARE_TREE="$HOME"
+source "${mydir}"/../helper/set_variable
 
 function usage() {
   echo -e "Usage: dotbare fadd [-h] [-f] [-d] ...\n"
@@ -74,7 +73,7 @@ elif [[ -n "${new_folder}" ]]; then
 else
   selected_files=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" diff --name-status | \
     awk '{if ($1 == "D") {print "\033[31m" $1 " " $2} else {print "\033[33m" $1 " " $2}}' | \
-    fzf --ansi --multi --exit-0 --preview "echo {} | awk '{print \$2}' | \
+    fzf --multi --preview "echo {} | awk '{print \$2}' | \
       xargs -I __ /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" diff --color=always $HOME/__" | \
     awk -v home=$HOME '{print home "/" $2}')
   while IFS= read -r line; do

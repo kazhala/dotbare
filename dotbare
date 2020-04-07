@@ -4,15 +4,14 @@
 #
 # @params
 # Globals
+#   ${mydir}: string, directory of the executing script, used for sourcing helpers
 #		${action_command}: string, determine which script to call
 # Arguments
 #		command: command to run general git command/fadd/frm/fpop etc
 #   $opt: options flag -h -p etc
 
 mydir="${0%/*}"
-
-[[ -z "${DOTBARE_DIR}" ]] && DOTBARE_DIR="$HOME/.cfg/"
-[[ -z "${DOTBARE_TREE}" ]] && DOTBARE_TREE="$HOME"
+source "${mydir}"/helper/set_variable
 
 function usage() {
   echo "help"
