@@ -42,7 +42,7 @@ while getopts ":fhd" opt
 do
   case "$opt" in
     f)
-      new_file="$(search_file 'f')"
+      new_file=$(search_file 'f')
       [[ -z "${new_file}" ]] && exit 1
       break
       ;;
@@ -51,7 +51,7 @@ do
       exit 0
       ;;
     d)
-      new_folder="$(search_file 'd')"
+      new_folder=$(search_file 'd')
       [[ -z "${new_folder}" ]] && exit 1
       break
       ;;
@@ -68,7 +68,9 @@ if [[ -n "${new_file}" ]]; then
     stage_file "${line}"
   done <<< "${new_file}"
 elif [[ -n "${new_folder}" ]]; then
-  stage_file "${new_folder}"
+  while IFS= read -r line; do
+    stage_file "${line}"
+  done <<< "${new_folder}"
 else
   selected_files=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" diff --name-only | \
     fzf --multi --exit-0 --preview "/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" diff --color=always $HOME/{}" | \
