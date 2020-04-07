@@ -16,7 +16,7 @@ function fd_exists() {
 }
 
 function tree_exists() {
-  tree -version &>/dev/null
+  tree --version &>/dev/null
   echo "$?"
 }
 
@@ -33,7 +33,9 @@ function search_file() {
     exe_tree="$(tree_exists)"
     if [[ "${exe_fd}" -eq 0 && "${exe_tree}" -eq 0 ]]; then
       fd -H -d 1 -t d -E .git | fzf --multi --preview "tree -L 1 -C --dirsfirst {}"
-    elif [[ "${exe_tree}" -eq 0 ]]; then
+    elif [[ "${exe_fd}" -eq 0 && "${exe_tree}" -ne 0 ]]; then
+      fd -H -d 1 -t d -E .git | fzf --multi
+    elif [[ "${exe_fd}" -ne 0 && "${exe_tree}" -eq 0 ]]; then
       find . -maxdepth 1 -type d | awk '{if ($0 != "." && $0 != "./.git"){print $0}}' | sed "s|\./||g" | fzf --multi --preview "tree -L 1 -C --dirsfirst {}"
     else
       find . -maxdepth 1 -type d | awk '{if ($0 != "." && $0 != "./.git"){print $0}}' | sed "s|\./||g" | fzf --multi
