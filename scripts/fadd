@@ -8,6 +8,9 @@
 #   ${new_folder}: new folder to stage
 #   ${stage_file}: changed file to stage
 
+mydir="${0%/*}"
+source "${mydir}"/../helper/search_file
+
 [[ -z "${DOTBARE_DIR}" ]] && DOTBARE_DIR="$HOME/.cfg/"
 [[ -z "${DOTBARE_TREE}" ]] && DOTBARE_TREE="$HOME"
 
@@ -39,7 +42,7 @@ while getopts ":fhd" opt
 do
   case "$opt" in
     f)
-      new_file=$(fd -H -d 1 -t f | fzf --multi --exit-0 --preview "head -50 {}")
+      new_file="$(search_file 'f')"
       [[ -z "${new_file}" ]] && exit 1
       break
       ;;
@@ -48,9 +51,7 @@ do
       exit 0
       ;;
     d)
-      # don't allow add directory from home folder to decrease errors
-      [[ "$PWD" == "$HOME" ]] && exit 0
-      new_folder=$(fd -H -d 1 -t d -E .git | fzf --exit-0 --preview "tree -L 1 -C --dirsfirst {}")
+      new_folder="$(search_file 'd')"
       [[ -z "${new_folder}" ]] && exit 1
       break
       ;;
