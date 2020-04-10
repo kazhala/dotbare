@@ -9,6 +9,8 @@
 #   ${new_folder}: new folder to stage
 #   ${stage_file}: changed file to stage
 
+set -e
+
 mydir="${0%/*}"
 source "${mydir}"/../helper/search_file
 source "${mydir}"/../helper/set_variable
