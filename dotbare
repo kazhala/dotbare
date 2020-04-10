@@ -37,6 +37,10 @@ case "$1" in
     action_command='fpop'
     shift
     ;;
+  freset)
+    action_command='freset'
+    shift
+    ;;
   help)
     usage
     exit 0
