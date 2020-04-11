@@ -7,11 +7,14 @@
 # Globals
 #   ${mydir}: current directory of the script
 #   ${selected_files}: selected file to unstage
+#   ${search_commits}: search commits and reset commits instead of files
+#   #{reset_option}: git reset flag, --mixed | --soft | --hard
 
 set -e
 
 mydir="${0%/*}"
 source "${mydir}"/../helper/set_variable
+source "${mydir}"/../helper/get_confirmation
 
 function usage() {
   echo -e "Usage: dotbare freset [-h] [-c] [-S] [-H] ...\n"
@@ -19,9 +22,9 @@ function usage() {
   echo -e "Or reset the commit to certain point\n"
   echo -e "optional arguments:"
   echo -e "  -h\t\tshow this help message and exit"
-  echo -e "  -c\t\treset commit to certain commit, default --mixed flag, reset to certain commit put all changes into modified states"
-  echo -e "  -S\t\treset commit using --soft flag, reset to certain commit without modify working tree"
-  echo -e "  -H\t\treset commit using --hard flag, reset to certain commit dicard all changes from the working tree"
+  echo -e "  -c\t\treset commit to certain commit, default --mixed flag, reset HEAD to certain commit put all changes into modified states"
+  echo -e "  -S\t\treset commit using --soft flag, reset HEAD to certain commit without modify working tree"
+  echo -e "  -H\t\treset commit using --hard flag, reset HEAD to certain commit dicard all changes from the working tree"
 }
 
 search_commits=""
@@ -53,10 +56,12 @@ done
 
 if [[ -n "${search_commits}" ]]; then
   selected_commites=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" log --oneline --color=always --decorate=short | \
-    fzf --header='select which commit to reset' --preview "echo {} | awk '{print \$1}' | \
+    fzf --no-multi --header='select which commit to reset' --preview "echo {} | awk '{print \$1}' | \
       xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} show --color=always  __" | \
     awk '{print $1}')
   [[ -z "${selected_commites}" ]] && exit 0
+  get_confirmation "Reset HEAD to ${selected_commites} ${reset_option}?"
+  [[ "${confirm}" != 'y' ]] && exit 0
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset "${selected_commites}" "${reset_option}"
 else
   selected_files=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" diff --name-status --cached | \
