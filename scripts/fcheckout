@@ -1,0 +1,66 @@
+#!/bin/bash
+#
+# checkout files/commits using fzf
+#
+# @params
+# Globals
+#   None
+# Arguments
+#   None
+
+set -e
+
+mydir="${0%/*}"
+source "${mydir}"/../helper/set_variable
+source "${mydir}"/../helper/get_confirmation
+
+function usage() {
+  echo -e "Usage: dotbare fcheckout [-h] [-c] [-S] [-H] ...\n"
+  echo -e "Reset/Unstage the selected staged file"
+  echo -e "Or reset the commit to certain point\n"
+  echo -e "optional arguments:"
+  echo -e "  -h\t\tshow this help message and exit"
+}
+
+modified=""
+
+while getopts ":hm" opt
+do
+  case "$opt" in
+    m)
+      modified='true'
+      ;;
+    h)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Invalid option: ${OPTARG}" >&2
+      usage
+      exit 1
+      ;;
+  esac
+done
+
+if [[ -n "${modified}" ]]; then
+  selected_files=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" diff --name-status | \
+    awk '{print "\033[31m" $1 " " $2}' | \
+    fzf --multi --header='select a file to checkout version in HEAD' \
+    --preview "echo {} | awk '{print \$2}' | \
+      xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} diff --color=always ${DOTBARE_TREE}/__" | \
+    awk -v home="${DOTBARE_TREE}" '{print home "/" $2}')
+else
+  selected_files=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" ls-files --full-name --directory "${DOTBARE_TREE}" | \
+    fzf --multi --header='select a file to checkout version in HEAD' --preview "head -50 ${DOTBARE_TREE}/{}" | \
+    awk -v home="${DOTBARE_TREE}" '{print home "/" $0}')
+fi
+[[ -z "${selected_files}" ]] && exit 0
+while IFS= read -r line; do
+  echo "(dryrun) dotbare checkout -- ${line}"
+done <<< "${selected_files}"
+get_confirmation "Confirm?"
+[[ "${confirm}" != 'y' ]] && exit 0
+while IFS= read -r line; do
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout -- "${line}"
+  echo "${line} checkout success"
+done <<< "${selected_files}"
