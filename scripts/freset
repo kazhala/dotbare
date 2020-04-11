@@ -14,11 +14,14 @@ mydir="${0%/*}"
 source "${mydir}"/../helper/set_variable
 
 function usage() {
-  echo -e "Usage: dotbare freset [-h] [-f] [-d] ...\n"
+  echo -e "Usage: dotbare freset [-h] [-c] [-S] [-H] ...\n"
   echo -e "Reset/Unstage the selected staged file"
   echo -e "Or reset the commit to certain point\n"
   echo -e "optional arguments:"
   echo -e "  -h\t\tshow this help message and exit"
+  echo -e "  -c\t\treset commit to certain commit, default --mixed flag, reset to certain commit put all changes into modified states"
+  echo -e "  -S\t\treset commit using --soft flag, reset to certain commit without modify working tree"
+  echo -e "  -H\t\treset commit using --hard flag, reset to certain commit dicard all changes from the working tree"
 }
 
 search_commits=""
@@ -28,7 +31,7 @@ while getopts ":hcSH" opt
 do
   case "$opt" in
     c)
-      search_commits="1"
+      search_commits="true"
       ;;
     S)
       reset_option="--soft"
