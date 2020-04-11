@@ -41,6 +41,10 @@ case "$1" in
     action_command='freset'
     shift
     ;;
+  fcheckout)
+    action_command='fcheckout'
+    shift
+    ;;
   help)
     usage
     exit 0
