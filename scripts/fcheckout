@@ -20,6 +20,7 @@ function usage() {
   echo -e "Or reset the commit to certain point\n"
   echo -e "optional arguments:"
   echo -e "  -h\t\tshow this help message and exit"
+  echo -e "  -m\t\tlist modified files only"
 }
 
 modified=""
