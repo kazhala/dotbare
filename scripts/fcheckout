@@ -10,9 +10,10 @@
 #   ${selected_branch}: selected_branch to switch
 #   ${selected_files}: selected_files to checkout to the version in HEAD
 # Arguments
+#   -h: show help message
 #   -a: search all files instead of just the modified files
 #   -b: search branch and checkout branch
-#   -h: show help message
+#   -c: search commits and checkout commits
 
 set -e
 
@@ -21,12 +22,14 @@ source "${mydir}"/../helper/set_variable.sh
 source "${mydir}"/../helper/get_confirmation.sh
 
 function usage() {
-  echo -e "Usage: dotbare fcheckout [-h] [-c] [-S] [-H] ...\n"
+  echo -e "Usage: dotbare fcheckout [-h] [-a] [-b] [-c] ...\n"
   echo -e "Reset/Unstage the selected staged file"
   echo -e "Or reset the commit to certain point\n"
   echo -e "optional arguments:"
   echo -e "  -h\t\tshow this help message and exit"
-  echo -e "  -m\t\tlist modified files only"
+  echo -e "  -a\t\tsearch all files instead of just modified files"
+  echo -e "  -b\t\tcheckout branch"
+  echo -e "  -c\t\tcheckout single commits"
 }
 
 all_files=""
