@@ -4,9 +4,14 @@
 #
 # @params
 # Globals
-#   None
+#   all_files: search all tracked files instead of just the modified files
+#   branch: checkout branch
+#   selected_branch: selected_branch to switch
+#   selected_files: selected_files to checkout to the version in HEAD
 # Arguments
-#   None
+#   -a: search all files instead of just the modified files
+#   -b: search branch and checkout branch
+#   -h: show help message
 
 set -e
 
@@ -23,14 +28,14 @@ function usage() {
   echo -e "  -m\t\tlist modified files only"
 }
 
-modified=""
+all_files=""
 branch=""
 
-while getopts ":hmb" opt
+while getopts ":hab" opt
 do
   case "$opt" in
-    m)
-      modified='true'
+    a)
+      all_files='true'
       ;;
     b)
       branch='true'
@@ -47,7 +52,7 @@ do
   esac
 done
 
-if [ -n "${branch}" ]; then
+if [[ -n "${branch}" ]]; then
   selected_branch=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" branch -a | \
     awk '{
       if (match($1, "\\*") != 0) {
@@ -57,28 +62,29 @@ if [ -n "${branch}" ]; then
       }
     }' | \
     fzf --no-multi --header='select a branch to checkout' \
-    --preview="/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" log --oneline --graph --color=always --decorate=short {}")
-    [ -z "${selected_branch}" ] && exit 0
+    --preview="/usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} log --oneline --graph --color=always --decorate=short {}")
+    [[ -z "${selected_branch}" ]] && exit 0
     /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout "${selected_branch}"
     exit 0
 fi
 
+if [[ -n "${all_files}" ]]; then
+  selected_files=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" ls-files --full-name --directory "${DOTBARE_TREE}" | \
+    fzf --multi --header='select a file to checkout version in HEAD' --preview "head -50 ${DOTBARE_TREE}/{}" | \
+    awk -v home="${DOTBARE_TREE}" '{print home "/" $0}')
+else
   selected_files=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" diff --name-status | \
     awk '{print "\033[31m" $1 " " $2}' | \
     fzf --multi --header='select a file to checkout version in HEAD' \
     --preview "echo {} | awk '{print \$2}' | \
       xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} diff --color=always ${DOTBARE_TREE}/__" | \
     awk -v home="${DOTBARE_TREE}" '{print home "/" $2}')
-else
-  selected_files=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" ls-files --full-name --directory "${DOTBARE_TREE}" | \
-    fzf --multi --header='select a file to checkout version in HEAD' --preview "head -50 ${DOTBARE_TREE}/{}" | \
-    awk -v home="${DOTBARE_TREE}" '{print home "/" $0}')
 fi
 [[ -z "${selected_files}" ]] && exit 0
 while IFS= read -r line; do
   echo "(dryrun) dotbare checkout -- ${line}"
 done <<< "${selected_files}"
-get_confirmation "Confirm?"
+confirm=$(get_confirmation "Confirm?")
 [[ "${confirm}" != 'y' ]] && exit 0
 while IFS= read -r line; do
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout -- "${line}"
