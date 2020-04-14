@@ -60,7 +60,7 @@ if [[ -n "${search_commits}" ]]; then
       xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} show --color=always  __" | \
     awk '{print $1}')
   [[ -z "${selected_commites}" ]] && exit 0
-  get_confirmation "Reset HEAD to ${selected_commites} ${reset_option}?"
+  confirm=$(get_confirmation "Reset HEAD to ${selected_commites} ${reset_option}?")
   [[ "${confirm}" != 'y' ]] && exit 0
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset "${selected_commites}" "${reset_option}"
 else
