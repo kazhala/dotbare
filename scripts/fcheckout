@@ -24,12 +24,16 @@ function usage() {
 }
 
 modified=""
+branch=""
 
-while getopts ":hm" opt
+while getopts ":hmb" opt
 do
   case "$opt" in
     m)
       modified='true'
+      ;;
+    b)
+      branch='true'
       ;;
     h)
       usage
@@ -43,7 +47,22 @@ do
   esac
 done
 
-if [[ -n "${modified}" ]]; then
+if [ -n "${branch}" ]; then
+  selected_branch=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" branch -a | \
+    awk '{
+      if (match($1, "\\*") != 0) {
+        print "\033[32m" $2 "\033[0m"
+      } else {
+        print $1
+      }
+    }' | \
+    fzf --no-multi --header='select a branch to checkout' \
+    --preview="/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" log --oneline --graph --color=always --decorate=short {}")
+    [ -z "${selected_branch}" ] && exit 0
+    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout "${selected_branch}"
+    exit 0
+fi
+
   selected_files=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" diff --name-status | \
     awk '{print "\033[31m" $1 " " $2}' | \
     fzf --multi --header='select a file to checkout version in HEAD' \
