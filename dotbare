@@ -7,18 +7,21 @@
 #   ${mydir}: string, directory of the executing script, used for sourcing helpers
 #		${action_command}: string, determine which script to call
 # Arguments
-#		command: command to run general git command/fadd/frm/fpop etc
-#   $opt: options flag -h -p etc
+#		action_command: sub commands dotbare should run
+#     General git command: log, status etc
+#     dotbare specific commands: fadd | frm | fpop | freset | fcheckout | help
+#   option flags:
+#     check sub commands for available option flags
 
 mydir="${0%/*}"
-source "${mydir}"/helper/set_variable
+source "${mydir}"/helper/set_variable.sh
 
 function usage() {
   echo "help"
 }
 
 # if no argument passed in, let git display help message
-if [[ -z "$@" ]]; then
+if [[ $# -eq 0 ]]; then
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}"
   exit 0
 fi

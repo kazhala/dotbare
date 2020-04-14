@@ -4,11 +4,11 @@
 #
 # @params
 # Globals
-#		DOTBARE_DIR: string, location of the bare repo
-#   DOTBARE_TREE: string, which folder is the bare repo tracking
-#   DOTBARE_KEY: string, defualt key bindings
-#   FZF_DEFAULT_OPTS: string, update FZF_DEFAULT_OPTS to reflect dotbare changes
-#   DOTBARE_FZF_DEFAULT_OPTS: string, user custom setting for dotbare
+#		${DOTBARE_DIR}: string, location of the bare repo
+#   ${DOTBARE_TREE}: string, which folder is the bare repo tracking
+#   ${DOTBARE_KEY}: string, defualt key bindings
+#   ${FZF_DEFAULT_OPTS}: string, update FZF_DEFAULT_OPTS to reflect dotbare changes
+#   ${DOTBARE_FZF_DEFAULT_OPTS}: string, user custom setting for dotbare
 
 [[ -z "${DOTBARE_DIR}" ]] && DOTBARE_DIR="$HOME/.cfg/"
 [[ -z "${DOTBARE_TREE}" ]] && DOTBARE_TREE="$HOME"

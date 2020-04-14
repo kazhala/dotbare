@@ -1,13 +1,14 @@
 #!/bin/bash
 #
-# checkout files/commits using fzf
+# checkout files/commits/branches using fzf
 #
 # @params
 # Globals
-#   all_files: search all tracked files instead of just the modified files
-#   branch: checkout branch
-#   selected_branch: selected_branch to switch
-#   selected_files: selected_files to checkout to the version in HEAD
+#   ${mydir}: current directory of the script, used for imports
+#   ${all_files}: search all tracked files instead of just the modified files
+#   ${branch}: checkout branch
+#   ${selected_branch}: selected_branch to switch
+#   ${selected_files}: selected_files to checkout to the version in HEAD
 # Arguments
 #   -a: search all files instead of just the modified files
 #   -b: search branch and checkout branch
@@ -16,8 +17,8 @@
 set -e
 
 mydir="${0%/*}"
-source "${mydir}"/../helper/set_variable
-source "${mydir}"/../helper/get_confirmation
+source "${mydir}"/../helper/set_variable.sh
+source "${mydir}"/../helper/get_confirmation.sh
 
 function usage() {
   echo -e "Usage: dotbare fcheckout [-h] [-c] [-S] [-H] ...\n"

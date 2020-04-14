@@ -12,8 +12,8 @@
 set -e
 
 mydir="${0%/*}"
-source "${mydir}"/../helper/search_file
-source "${mydir}"/../helper/set_variable
+source "${mydir}"/../helper/search_file.sh
+source "${mydir}"/../helper/set_variable.sh
 
 function usage() {
   echo -e "Usage: dotbare fadd [-h] [-f] [-d] ...\n"

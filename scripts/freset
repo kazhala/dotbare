@@ -13,8 +13,8 @@
 set -e
 
 mydir="${0%/*}"
-source "${mydir}"/../helper/set_variable
-source "${mydir}"/../helper/get_confirmation
+source "${mydir}"/../helper/set_variable.sh
+source "${mydir}"/../helper/get_confirmation.sh
 
 function usage() {
   echo -e "Usage: dotbare freset [-h] [-c] [-S] [-H] ...\n"

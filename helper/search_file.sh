@@ -1,25 +1,14 @@
 #!/bin/bash
 #
 # search local file or directory taking consideration of optional dependency
-#
-# @params
-# Globals
-#		search_type: string, f or d, search file or directory
-#   exe_fd: number, 0 or 1, check if fd is executable
-#   exe_tree: number, 0 or 1, check if tree is executable
-# Arguments
-#		search_type: string, f or d, search file or directory
 
-function fd_exists() {
-  fd -V &>/dev/null
-  echo "$?"
-}
-
-function tree_exists() {
-  tree --version &>/dev/null
-  echo "$?"
-}
-
+#######################################
+# search local file
+# Arguments:
+#   $1: stirng, f or d, search file or directory
+# Outputs:
+#   A user selected file path
+#######################################
 function search_file() {
   local search_type="$1"
   local exe_fd="$(fd_exists)"
@@ -41,4 +30,14 @@ function search_file() {
       find . -maxdepth 1 -type d | awk '{if ($0 != "." && $0 != "./.git"){print $0}}' | sed "s|\./||g" | fzf --multi
     fi
   fi
+}
+
+function fd_exists() {
+  fd -V &>/dev/null
+  echo "$?"
+}
+
+function tree_exists() {
+  tree --version &>/dev/null
+  echo "$?"
 }
