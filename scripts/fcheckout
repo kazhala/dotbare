@@ -66,26 +66,13 @@ done
 
 if [[ -n "${branch}" ]]; then
   # checkout branch
-  selected_branch=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" branch -a | \
-    awk '{
-      if ($0 ~ /\*.*\(HEAD.*/) {
-        gsub(/\* /, "", $0)
-        print "\033[32m" $0 "\033[0m"
-      } else if (match($1, "\\*") != 0) {
-        print "\033[32m" $2 "\033[0m"
-      } else {
-        gsub(/^[ \t]+/, "", $0)
-        print $0
-      }
-    }' | \
-    fzf --no-multi --header='select a branch to checkout' \
-    --preview="/usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} log --oneline --graph --color=always --decorate=short {}")
+  selected_branch=$(get_branch 'Select a branch to checkout')
   [[ -z "${selected_branch}" ]] && exit 0
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout "${selected_branch}"
   exit 0
 elif [[ -n "${commits}" ]]; then
   # checkout commits
-  selected_commits=$(get_commit)
+  selected_commits=$(get_commit 'Select a commit to checkout')
   [[ -z "${selected_commits}" ]] && exit 0
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout "${selected_commits}"
   exit 0
