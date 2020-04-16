@@ -79,16 +79,9 @@ elif [[ -n "${commits}" ]]; then
 else
   # checkout files (reset file changes back to HEAD)
   if [[ -n "${all_files}" ]]; then
-    selected_files=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" ls-files --full-name --directory "${DOTBARE_TREE}" | \
-      fzf --multi --header='select a file to checkout version in HEAD' --preview "head -50 ${DOTBARE_TREE}/{}" | \
-      awk -v home="${DOTBARE_TREE}" '{print home "/" $0}')
+    selected_files=$(get_git_file 'select a file to checkout version in HEAD')
   else
-    selected_files=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" diff --name-status | \
-      awk '{print "\033[31m" $1 " " $2}' | \
-      fzf --multi --header='select a file to checkout version in HEAD' \
-      --preview "echo {} | awk '{print \$2}' | \
-        xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} diff --color=always ${DOTBARE_TREE}/__" | \
-      awk -v home="${DOTBARE_TREE}" '{print home "/" $2}')
+    selected_files=$(get_modified_file 'select a file to checkout version in HEAD')
   fi
   [[ -z "${selected_files}" ]] && exit 0
   while IFS= read -r line; do
