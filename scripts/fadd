@@ -14,6 +14,7 @@ set -e
 mydir="${0%/*}"
 source "${mydir}"/../helper/search_file.sh
 source "${mydir}"/../helper/set_variable.sh
+source "${mydir}"/../helper/git_query.sh
 
 function usage() {
   echo -e "Usage: dotbare fadd [-h] [-f] [-d] ...\n"
@@ -73,11 +74,7 @@ elif [[ -n "${new_folder}" ]]; then
     stage_file "${line}"
   done <<< "${new_folder}"
 else
-  selected_files=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" diff --name-status | \
-    awk '{print "\033[31m" $1 " " $2}' | \
-    fzf --header='select files to stage' --multi --preview "echo {} | awk '{print \$2}' | \
-      xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} diff --color=always ${DOTBARE_TREE}/__" | \
-    awk -v home="${DOTBARE_TREE}" '{print home "/" $2}')
+  selected_files=$(get_modified_file 'select files to stage')
   while IFS= read -r line; do
     stage_file "${line}"
   done <<< "${selected_files}"
