@@ -93,8 +93,14 @@ function get_modified_file() {
   local no_multi="$2"
   if [[ -z "${no_multi}" ]]; then
     /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
-    diff --name-status \
-      | awk '{print "\033[31m" $1 " " $2}' \
+    status --porcelain\
+      | awk '{
+          if ($0 ~ /^[A-Za-z].*$/) {
+            print "\033[32m" substr($0, 1, 1) "\033[31m" substr($0, 2)
+          } else {
+            print "\033[31m" $0 "\033[0m"
+          }
+        }' \
       | fzf --multi --header="${header}" \
         --preview "echo {} \
           | awk '{print \$2}' \
@@ -103,9 +109,15 @@ function get_modified_file() {
       | awk -v home="${DOTBARE_TREE}" '{print home "/" $2}'
   else
     /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
-    diff --name-status \
-      | awk '{print "\033[31m" $1 " " $2}' \
-      | fzf --no-multi --header="${header}" \
+    status --porcelain\
+      | awk '{
+          if ($0 ~ /^[A-Za-z].*$/) {
+            print "\033[32m" substr($0, 1, 1) "\033[31m" substr($0, 2) "\033[0m"
+          } else {
+            print "\033[31m" $0 "\033[0m"
+          }
+        }' \
+      | fzf --multi --header="${header}" \
         --preview "echo {} \
           | awk '{print \$2}' \
           | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \

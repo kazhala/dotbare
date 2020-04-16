@@ -15,7 +15,7 @@ set -e
 mydir="${0%/*}"
 source "${mydir}"/../helper/set_variable.sh
 source "${mydir}"/../helper/get_confirmation.sh
-source "${mydir}"/../helper/git_data.sh
+source "${mydir}"/../helper/git_query.sh
 
 function usage() {
   echo -e "Usage: dotbare freset [-h] [-c] [-S] [-H] ...\n"
