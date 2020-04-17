@@ -6,11 +6,15 @@
 # @params
 # Globals
 #   ${mydir}: current directory of the script
-#   ${selected_files}: selected file to unstage
 #   ${search_commits}: search commits and reset commits instead of files
 #   #{reset_option}: git reset flag, --mixed | --soft | --hard
+#   ${all_files}: search all files and select a commit to reset
+#   ${selected_files}: selected file to unstage
+#   ${selected_commit}: selected commit to reset
+#   ${selected_branch}: selected branch to reset
 
 set -e
+set -f
 
 mydir="${0%/*}"
 source "${mydir}"/../helper/set_variable.sh
@@ -70,12 +74,14 @@ else
   if [[ -z "${all_files}" ]]; then
     selected_files=$(get_staged_file 'select files to unstage' | tr '\n' ' ')
     [[ -z "${selected_files}" ]] && exit 0
+    # shellcheck disable=SC2086
     /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset HEAD ${selected_files}
   else
     selected_files=$(get_git_file 'select a file to reset' | tr '\n' ' ')
     [[ -z "${selected_files}" ]] && exit 0
     selected_commit=$(get_commit "select the target commit" "${selected_files}")
     [[ -z "${selected_commit}" ]] && exit 0
+    # shellcheck disable=SC2086
     /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset "${selected_commit}" ${selected_files}
   fi
 fi

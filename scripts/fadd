@@ -7,9 +7,10 @@
 #   ${mydir}: string, current directory of the executing script
 #   ${new_file}: new file path to stage
 #   ${new_folder}: new folder to stage
-#   ${stage_file}: changed file to stage
+#   ${selected_files}: changed file to stage
 
 set -e
+set -f
 
 mydir="${0%/*}"
 source "${mydir}"/../helper/search_file.sh
@@ -32,6 +33,7 @@ function stage_file() {
   then
     exit 0
   else
+    # shellcheck disable=SC2086
     /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" add ${file}
   fi
 }
