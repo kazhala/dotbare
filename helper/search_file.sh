@@ -11,7 +11,8 @@
 #######################################
 function search_file() {
   local search_type="$1"
-  local exe_fd="$(fd_exists)"
+  local exe_fd
+  exe_fd="$(fd_exists)"
   if [[ "${search_type}" == "f" ]]; then
     if [[ "${exe_fd}" -eq 0 ]]; then
       fd -H -d 1 -t f | fzf --multi --preview "head -50 {}"
