@@ -109,7 +109,7 @@ function get_modified_file() {
     | fzf --header="${header}" --preview "echo {} \
         | awk '{print \$2}' \
         | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
-          diff --color=always ${DOTBARE_TREE}/__" \
+          diff HEAD --color=always ${DOTBARE_TREE}/__" \
     | awk -v home="${DOTBARE_TREE}" '{print home "/" $2}'
 }
 
