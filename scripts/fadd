@@ -32,8 +32,7 @@ function stage_file() {
   then
     exit 0
   else
-    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" add "${file}"
-    echo "${file} staged successfully"
+    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" add ${file}
   fi
 }
 
@@ -44,7 +43,7 @@ while getopts ":fhd" opt
 do
   case "$opt" in
     f)
-      new_file=$(search_file 'f')
+      new_file=$(search_file 'f' | tr '\n' ' ')
       [[ -z "${new_file}" ]] && exit 1
       break
       ;;
@@ -53,7 +52,7 @@ do
       exit 0
       ;;
     d)
-      new_folder=$(search_file 'd')
+      new_folder=$(search_file 'd' | tr '\n' ' ')
       [[ -z "${new_folder}" ]] && exit 1
       break
       ;;
@@ -66,16 +65,10 @@ do
 done
 
 if [[ -n "${new_file}" ]]; then
-  while IFS= read -r line; do
-    stage_file "${line}"
-  done <<< "${new_file}"
+  stage_file "${new_file}"
 elif [[ -n "${new_folder}" ]]; then
-  while IFS= read -r line; do
-    stage_file "${line}"
-  done <<< "${new_folder}"
+  stage_file "${new_folder}"
 else
-  selected_files=$(get_modified_file 'select files to stage')
-  while IFS= read -r line; do
-    stage_file "${line}"
-  done <<< "${selected_files}"
+  selected_files=$(get_modified_file 'select files to stage' | tr '\n' ' ')
+  stage_file "${selected_files}"
 fi
