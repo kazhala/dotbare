@@ -10,8 +10,8 @@
 #   ${FZF_DEFAULT_OPTS}: string, update FZF_DEFAULT_OPTS to reflect dotbare changes
 #   ${DOTBARE_FZF_DEFAULT_OPTS}: string, user custom setting for dotbare
 
-[[ -z "${DOTBARE_DIR}" ]] && DOTBARE_DIR="$HOME/.cfg/"
-[[ -z "${DOTBARE_TREE}" ]] && DOTBARE_TREE="$HOME"
+DOTBARE_DIR="${DOTBARE_DIR:-$HOME/.cfg/}"
+DOTBARE_TREE="${DOTBARE_TREE:-$HOME}"
 if [[ -z "${DOTBARE_KEY}" ]]; then
   DOTBARE_KEY="
     --bind=alt-a:toggle-all
