@@ -18,7 +18,10 @@ function get_commit() {
     /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
     log --oneline --color=always --decorate=short \
       | fzf --no-multi --header="${header}" \
-        --preview "${preview_str}" \
+        --preview "echo {} \
+          | awk '{print \$1}' \
+          | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
+            show --color=always  __" \
       | awk '{print $1}'
   else
     /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
