@@ -117,8 +117,8 @@ function get_staged_file() {
   diff --name-status --cached \
     | awk '{print "\033[32m" $1 " " $2 "\033[0m"}' \
     | fzf --header='select files to unstage' --multi --preview "echo {} \
-      | awk '{print \$2}' \
-      | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
-        diff --staged --color=always ${DOTBARE_TREE}/__" \
+        | awk '{print \$2}' \
+        | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
+          diff --staged --color=always ${DOTBARE_TREE}/__" \
     | awk -v home="${DOTBARE_TREE}" '{print home "/" $2}'
 }
