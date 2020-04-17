@@ -79,19 +79,15 @@ elif [[ -n "${commits}" ]]; then
 else
   # checkout files (reset file changes back to HEAD)
   if [[ -z "${all_files}" ]]; then
-    selected_files=$(get_modified_file 'select a file to checkout version in HEAD')
+    selected_files=$(get_modified_file 'select a file to checkout version in HEAD' | tr '\n' ' ')
     [[ -z "${selected_files}" ]] && exit 0
-    while IFS= read -r line; do
-      echo "(dryrun) dotbare checkout -- ${line}"
-    done <<< "${selected_files}"
+    echo "(dryrun) dotbare checkout -- ${selected_files}"
     confirm=$(get_confirmation "Confirm?")
     [[ "${confirm}" != 'y' ]] && exit 0
-    while IFS= read -r line; do
-      /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout -- "${line}"
-      echo "${line} checkout success"
-    done <<< "${selected_files}"
+    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout -- ${selected_files}
   else
-    selected_files=$(get_git_file 'select a file to checkout')
+    selected_files=$(get_git_file 'select a file to checkout' | tr '\n' ' ')
+    echo "${selected_files}"
     [[ -z "${selected_files}" ]] && exit 0
     # continue select a commit and then checkout the file back to the selected commit
     selected_commits=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
@@ -102,14 +98,9 @@ else
             diff --color=always __ $selected_files" \
       | awk '{print $1}')
     [[ -z "${selected_commits}" ]] && exit 0
-    while IFS= read -r line; do
-      echo "(dryrun) dotbare checkout ${selected_commits} -- ${line}"
-    done <<< "${selected_files}"
+    echo "(dryrun) dotbare checkout ${selected_commits} -- ${selected_files}"
     confirm=$(get_confirmation "Confirm?")
     [[ "${confirm}" != 'y' ]] && exit 0
-    while IFS= read -r line; do
-      /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout "${selected_commits}" -- "${line}"
-      echo "${line} checkout success"
-    done <<< "${selected_files}"
+    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout "${selected_commits}" ${selected_files}
   fi
 fi
