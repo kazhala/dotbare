@@ -6,20 +6,29 @@
 # let user select a commit interactively
 # Arguments:
 #   $1: the helper message to display in the fzf header
+#   $2: files to show diff against HEAD
 # Outputs:
 #   the selected commit 6 char code
 #   e.g. b60b330
 #######################################
 function get_commit() {
   local header="${1:-select a commit}"
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
-  log --oneline --color=always --decorate=short \
-    | fzf --no-multi --header="${header}" \
-      --preview "echo {} \
-        | awk '{print \$1}' \
-        | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
-          show --color=always  __" \
-    | awk '{print $1}'
+  local files="$2"
+  if [[ -z "${files}" ]]; then
+    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
+    log --oneline --color=always --decorate=short \
+      | fzf --no-multi --header="${header}" \
+        --preview "${preview_str}" \
+      | awk '{print $1}'
+  else
+    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
+    log --oneline --color=always --decorate=short \
+      | fzf --no-multi --header="${header}" --preview "echo {} \
+          | awk '{print \$1}' \
+          | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
+            diff --color=always __ $files" \
+      | awk '{print $1}'
+  fi
 }
 
 #######################################

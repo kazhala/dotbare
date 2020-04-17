@@ -23,6 +23,7 @@ function usage() {
   echo -e "Or reset the HEAD to certain commits by using -c flag\n"
   echo -e "optional arguments:"
   echo -e "  -h\t\tshow this help message and exit"
+  echo -e "  -a\t\tselect files and then select a commit to reset the file back to the selected comit"
   echo -e "  -c\t\treset commit to certain commit, default --mixed flag, reset HEAD to certain commit put all changes into modified states"
   echo -e "  -S\t\treset commit using --soft flag, reset HEAD to certain commit without modify working tree"
   echo -e "  -H\t\treset commit using --hard flag, reset HEAD to certain commit dicard all changes from the working tree"
@@ -30,10 +31,14 @@ function usage() {
 
 search_commits=""
 reset_option="--mixed"
+all_files=""
 
-while getopts ":hcSH" opt
+while getopts ":hacSH" opt
 do
   case "$opt" in
+    a)
+      all_files="true"
+      ;;
     c)
       search_commits="true"
       ;;
@@ -56,16 +61,21 @@ do
 done
 
 if [[ -n "${search_commits}" ]]; then
-  selected_commits=$(get_commit)
-  [[ -z "${selected_commits}" ]] && exit 0
-  confirm=$(get_confirmation "Reset HEAD to ${selected_commits} ${reset_option}?")
+  selected_commit=$(get_commit)
+  [[ -z "${selected_commit}" ]] && exit 0
+  confirm=$(get_confirmation "Reset HEAD to ${selected_commit} ${reset_option}?")
   [[ "${confirm}" != 'y' ]] && exit 0
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset "${selected_commits}" "${reset_option}"
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset "${selected_commit}" "${reset_option}"
 else
-  selected_files=$(get_staged_file 'select files to unstage')
-  [[ -z "${selected_files}" ]] && exit 0
-  while IFS= read -r line; do
-    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset HEAD "${line}" 1>/dev/null
-    echo "${line} unstaged successfully"
-  done <<< "${selected_files}"
+  if [[ -z "${all_files}" ]]; then
+    selected_files=$(get_staged_file 'select files to unstage' | tr '\n' ' ')
+    [[ -z "${selected_files}" ]] && exit 0
+    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset HEAD ${selected_files}
+  else
+    selected_files=$(get_git_file 'select a file to reset' | tr '\n' ' ')
+    [[ -z "${selected_files}" ]] && exit 0
+    selected_commit=$(get_commit "select the target commit" "${selected_files}")
+    [[ -z "${selected_commit}" ]] && exit 0
+    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset "${selected_commit}" ${selected_files}
+  fi
 fi
