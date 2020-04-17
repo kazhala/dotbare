@@ -17,7 +17,7 @@ if [[ -z "${DOTBARE_KEY}" ]]; then
     --bind=alt-a:toggle-all
     --bind=alt-w:jump
     --bind=alt-0:top
-    --bind=alt-o:clear-query
+    --bind=alt-c:clear-query
     --bind=alt-s:toggle-sort
     --bind=alt-t:toggle-preview
   "

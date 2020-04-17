@@ -65,18 +65,15 @@ function get_git_file() {
   local header="${1:-select a file}"
   local no_multi="$2"
   if [[ -z "${no_multi}" ]]; then
-    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
-    ls-files --full-name --directory "${DOTBARE_TREE}" \
-      | fzf --multi --header="${header}" \
-        --preview "head -50 ${DOTBARE_TREE}/{}" \
-      | awk -v home="${DOTBARE_TREE}" '{print home "/" $0}'
+    FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --multi"
   else
-    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
-    ls-files --full-name --directory "${DOTBARE_TREE}" \
-      | fzf --no-multi --header="${header}" \
-        --preview "head -50 ${DOTBARE_TREE}/{}" \
-      | awk -v home="${DOTBARE_TREE}" '{print home "/" $0}'
+    FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --no-multi"
   fi
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
+  ls-files --full-name --directory "${DOTBARE_TREE}" \
+    | fzf --header="${header}" \
+      --preview "head -50 ${DOTBARE_TREE}/{}" \
+    | awk -v home="${DOTBARE_TREE}" '{print home "/" $0}'
 }
 
 #######################################
@@ -91,37 +88,23 @@ function get_git_file() {
 function get_modified_file() {
   local header="${1:-select a modified file}"
   local no_multi="$2"
-  if [[ -z "${no_multi}" ]]; then
-    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
-    status --porcelain\
-      | awk '{
-          if ($0 ~ /^[A-Za-z].*$/) {
-            print "\033[32m" substr($0, 1, 1) "\033[31m" substr($0, 2)
-          } else {
-            print "\033[31m" $0 "\033[0m"
-          }
-        }' \
-      | fzf --multi --header="${header}" \
-        --preview "echo {} \
-          | awk '{print \$2}' \
-          | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
-            diff --color=always ${DOTBARE_TREE}/__" \
-      | awk -v home="${DOTBARE_TREE}" '{print home "/" $2}'
+  if [[ -z "${no_multi}" ]]; then 
+    FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --multi"
   else
-    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
-    status --porcelain\
-      | awk '{
-          if ($0 ~ /^[A-Za-z].*$/) {
-            print "\033[32m" substr($0, 1, 1) "\033[31m" substr($0, 2) "\033[0m"
-          } else {
-            print "\033[31m" $0 "\033[0m"
-          }
-        }' \
-      | fzf --multi --header="${header}" \
-        --preview "echo {} \
-          | awk '{print \$2}' \
-          | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
-            diff --color=always ${DOTBARE_TREE}/__" \
-      | awk -v home="${DOTBARE_TREE}" '{print home "/" $2}'
+    FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --no-multi"
   fi
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
+  status --porcelain\
+    | awk '{
+        if ($0 ~ /^[A-Za-z].*$/) {
+          print "\033[32m" substr($0, 1, 1) "\033[31m" substr($0, 2)
+        } else {
+          print "\033[31m" $0 "\033[0m"
+        }
+      }' \
+    | fzf --header="${header}" --preview "echo {} \
+        | awk '{print \$2}' \
+        | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
+          diff --color=always ${DOTBARE_TREE}/__" \
+    | awk -v home="${DOTBARE_TREE}" '{print home "/" $2}'
 }
