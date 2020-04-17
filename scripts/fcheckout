@@ -24,19 +24,18 @@ source "${mydir}"/../helper/git_query.sh
 
 function usage() {
   echo -e "Usage: dotbare fcheckout [-h] [-a] [-b] [-c] ...\n"
-  echo -e "Reset/Unstage the selected staged file"
-  echo -e "Or reset the commit to certain point\n"
+  echo -e "Checkout files/commits/branch using fzf"
+  echo -e "By default: checkout files back to HEAD (Reset changes back to HEAD)\n"
   echo -e "optional arguments:"
   echo -e "  -h\t\tshow this help message and exit"
-  echo -e "  -a\t\tsearch all files instead of just modified files"
+  echo -e "  -a\t\tsearch all files and select a commit to checkout for selected files"
   echo -e "  -b\t\tcheckout branch"
-  echo -e "  -c\t\tcheckout single commits"
+  echo -e "  -c\t\tcheckout commit"
 }
 
 all_files=""
 branch=""
 commits=""
-commit_file=""
 
 while getopts ":habcC" opt
 do
@@ -51,11 +50,6 @@ do
       ;;
     c)
       commits='true'
-      break
-      ;;
-    C)
-      commit_file='true'
-      all_files='true'
       break
       ;;
     h)
@@ -84,13 +78,9 @@ elif [[ -n "${commits}" ]]; then
   exit 0
 else
   # checkout files (reset file changes back to HEAD)
-  if [[ -n "${all_files}" ]]; then
-    selected_files=$(get_git_file 'select a file to checkout version in HEAD')
-  else
+  if [[ -z "${all_files}" ]]; then
     selected_files=$(get_modified_file 'select a file to checkout version in HEAD')
-  fi
-  [[ -z "${selected_files}" ]] && exit 0
-  if [[ -z "${commit_file}" ]]; then
+    [[ -z "${selected_files}" ]] && exit 0
     while IFS= read -r line; do
       echo "(dryrun) dotbare checkout -- ${line}"
     done <<< "${selected_files}"
@@ -101,6 +91,8 @@ else
       echo "${line} checkout success"
     done <<< "${selected_files}"
   else
+    selected_files=$(get_git_file 'select a file to checkout')
+    [[ -z "${selected_files}" ]] && exit 0
     # continue select a commit and then checkout the file back to the selected commit
     selected_commits=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
     log --oneline --color=always --decorate=short \
