@@ -86,8 +86,10 @@ function get_modified_file() {
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
   status --porcelain\
     | awk '{
-        if ($0 ~ /^[A-Za-z].*$/) {
-          print "\033[32m" substr($0, 1, 1) "\033[31m" substr($0, 2)
+        if ($0 ~ /^[A-Za-z][A-Za-z].*$/) {
+          print "\033[32m" substr($0, 1, 1) "\033[31m" substr($0, 2) "\033[0m"
+        } else if ($0 ~ /^[A-Za-z][ \t].*$/) {
+          print "\033[32m" $0 "\033[0m"
         } else {
           print "\033[31m" $0 "\033[0m"
         }
