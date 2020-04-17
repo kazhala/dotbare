@@ -31,3 +31,19 @@ FZF_DEFAULT_OPTS="
   $DOTBARE_FZF_DEFAULT_OPTS
   $DOTBARE_KEY
 "
+
+#######################################
+# determine to set multi selection or not
+# Globals:
+#   ${FZF_DEFAULT_OPTS}: fzf options
+# Arguments:
+#   $1: if exists, disable multi, set single
+#######################################
+function set_fzf_multi() {
+  local no_multi="$1"
+  if [[ -z "${no_multi}" ]]; then
+    FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --multi"
+  else
+    FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --no-multi"
+  fi
+}

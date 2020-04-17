@@ -63,12 +63,7 @@ function get_branch() {
 #######################################
 function get_git_file() {
   local header="${1:-select a file}"
-  local no_multi="$2"
-  if [[ -z "${no_multi}" ]]; then
-    FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --multi"
-  else
-    FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --no-multi"
-  fi
+  set_fzf_multi "$2"
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
   ls-files --full-name --directory "${DOTBARE_TREE}" \
     | fzf --header="${header}" \
@@ -87,12 +82,7 @@ function get_git_file() {
 #######################################
 function get_modified_file() {
   local header="${1:-select a modified file}"
-  local no_multi="$2"
-  if [[ -z "${no_multi}" ]]; then 
-    FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --multi"
-  else
-    FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --no-multi"
-  fi
+  set_fzf_multi "$2"
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
   status --porcelain\
     | awk '{
@@ -106,5 +96,27 @@ function get_modified_file() {
         | awk '{print \$2}' \
         | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
           diff --color=always ${DOTBARE_TREE}/__" \
+    | awk -v home="${DOTBARE_TREE}" '{print home "/" $2}'
+}
+
+#######################################
+# let user select a staged file interactively
+# Arguments:
+#   $1: the helper message to display in the fzf header
+#   $2: if exists, don't do multi selection, do single
+# Outputs:
+#   the selected file path
+#   e.g.$HOME/.config/nvim/init.vim
+#######################################
+function get_staged_file() {
+  local header="${1:-select a staged file}"
+  set_fzf_multi "$2"
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
+  diff --name-status --cached \
+    | awk '{print "\033[32m" $1 " " $2 "\033[0m"}' \
+    | fzf --header='select files to unstage' --multi --preview "echo {} \
+      | awk '{print \$2}' \
+      | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
+        diff --staged --color=always ${DOTBARE_TREE}/__" \
     | awk -v home="${DOTBARE_TREE}" '{print home "/" $2}'
 }

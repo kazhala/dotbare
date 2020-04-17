@@ -62,10 +62,7 @@ if [[ -n "${search_commits}" ]]; then
   [[ "${confirm}" != 'y' ]] && exit 0
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset "${selected_commits}" "${reset_option}"
 else
-  selected_files=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" diff --name-status --cached | \
-    awk '{print "\033[32m" $1 " " $2}' | fzf --header='select files to unstage' --multi --preview "echo {} | awk '{print \$2}' | \
-        xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} diff --staged --color=always ${DOTBARE_TREE}/__" | \
-      awk -v home="${DOTBARE_TREE}" '{print home "/" $2}')
+  selected_files=$(get_staged_file 'select files to unstage')
   [[ -z "${selected_files}" ]] && exit 0
   while IFS= read -r line; do
     /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset HEAD "${line}" 1>/dev/null
