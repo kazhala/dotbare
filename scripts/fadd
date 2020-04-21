@@ -71,6 +71,6 @@ if [[ -n "${new_file}" ]]; then
 elif [[ -n "${new_folder}" ]]; then
   stage_file "${new_folder}"
 else
-  selected_files=$(get_modified_file 'select files to stage' | tr '\n' ' ')
+  selected_files=$(get_modified_file 'select files to stage' "unstaged" | tr '\n' ' ')
   stage_file "${selected_files}"
 fi

@@ -72,7 +72,7 @@ if [[ -n "${search_commits}" ]]; then
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset "${selected_commit}" "${reset_option}"
 else
   if [[ -z "${all_files}" ]]; then
-    selected_files=$(get_staged_file 'select files to unstage' | tr '\n' ' ')
+    selected_files=$(get_modified_file 'select files to unstage' 'staged' | tr '\n' ' ')
     [[ -z "${selected_files}" ]] && exit 0
     # shellcheck disable=SC2086
     /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset HEAD ${selected_files}

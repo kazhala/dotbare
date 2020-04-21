@@ -87,23 +87,33 @@ function get_git_file() {
 # let user select a modified file interactively
 # Arguments:
 #   $1: the helper message to display in the fzf header
-#   $2: if exists, don't do multi selection, do single
+#   $2: display mode of modified files.
+#     default: true
+#     all: display all modified, include staged and unstaged
+#     staged: display only staged files
+#     unstaged: display only unstaged files
+#   $3: if exists, don't do multi selection, do single
 # Outputs:
 #   the selected file path
 #   e.g.$HOME/.config/nvim/init.vim
 #######################################
 function get_modified_file() {
   local header="${1:-select a modified file}"
-  set_fzf_multi "$2"
+  local display_mode="${2:-all}"
+  set_fzf_multi "$3"
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
-  status --porcelain\
-    | awk '{
+  status --porcelain \
+    | awk -v display_mode="${display_mode}" '{
         if ($0 ~ /^[A-Za-z][A-Za-z].*$/) {
           print "\033[32m" substr($0, 1, 1) "\033[31m" substr($0, 2) "\033[0m"
         } else if ($0 ~ /^[A-Za-z][ \t].*$/) {
-          print "\033[32m" $0 "\033[0m"
+          if (display_mode == "all" || display_mode == "staged") {
+            print "\033[32m" $0 "\033[0m"
+          }
         } else {
-          print "\033[31m" $0 "\033[0m"
+          if (display_mode == "all" || display_mode == "unstaged") {
+            print "\033[31m" $0 "\033[0m"
+          }
         }
       }' \
     | fzf --header="${header}" --preview "echo {} \
