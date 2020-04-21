@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # interactive git status menu
-# allow editing staging ustaging actions
+# allow staging ustaging actions
 #
 # @params
 # Globals
@@ -25,6 +25,17 @@ function usage() {
 }
 
 while true; do
-  selected_files=$(get_modified_file)
+  selected_files=$(get_modified_file | tr '\n' ' ')
   [[ -z "${selected_files}" ]] && break
+  set +e
+  # shellcheck disable=SC2086
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" diff-index --cached --quiet HEAD ${selected_files}
+  if [[ "$?" -eq 0 ]]; then
+    # shellcheck disable=SC2086
+    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" add ${selected_files}
+  else
+    # shellcheck disable=SC2086
+    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset --quiet HEAD ${selected_files}
+  fi
+  set -e
 done
