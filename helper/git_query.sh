@@ -119,28 +119,6 @@ function get_modified_file() {
     | fzf --header="${header}" --preview "echo {} \
         | awk '{print \$2}' \
         | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
-          diff HEAD --color=always ${DOTBARE_TREE}/__" \
-    | awk -v home="${DOTBARE_TREE}" '{print home "/" $2}'
-}
-
-#######################################
-# let user select a staged file interactively
-# Arguments:
-#   $1: the helper message to display in the fzf header
-#   $2: if exists, don't do multi selection, do single
-# Outputs:
-#   the selected file path
-#   e.g.$HOME/.config/nvim/init.vim
-#######################################
-function get_staged_file() {
-  local header="${1:-select a staged file}"
-  set_fzf_multi "$2"
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
-  diff --name-status --cached \
-    | awk '{print "\033[32m" $1 " " $2 "\033[0m"}' \
-    | fzf --header='select files to unstage' --multi --preview "echo {} \
-        | awk '{print \$2}' \
-        | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
-          diff --staged --color=always ${DOTBARE_TREE}/__" \
+          diff --color=always ${DOTBARE_TREE}/__" \
     | awk -v home="${DOTBARE_TREE}" '{print home "/" $2}'
 }
