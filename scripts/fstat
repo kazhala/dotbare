@@ -25,17 +25,23 @@ function usage() {
 }
 
 while true; do
-  selected_files=$(get_modified_file | tr '\n' ' ')
+  selected_files=$(get_modified_file "select a file" "all" "raw")
   [[ -z "${selected_files}" ]] && break
-  set +e
-  # shellcheck disable=SC2086
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" diff-index --cached --quiet HEAD ${selected_files}
-  if [[ "$?" -eq 0 ]]; then
-    # shellcheck disable=SC2086
-    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" add ${selected_files}
-  else
+  stage_file=$(echo "${selected_files}" | awk '{
+    if ($0 ~ /^[A-Za-z][A-Za-z].*$/) {
+      print "stage"
+    } else if ($0 ~ /^[ \t].*$/) {
+      print "stage"
+    }
+  }')
+  selected_files=$(echo "${selected_files}" | awk -v home="${DOTBARE_TREE}" '{
+    print home "/" $2
+  }')
+  if [[ -z "${stage_file}" ]]; then
     # shellcheck disable=SC2086
     /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset --quiet HEAD ${selected_files}
+  else
+    # shellcheck disable=SC2086
+    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" add ${selected_files}
   fi
-  set -e
 done

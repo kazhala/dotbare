@@ -92,6 +92,10 @@ function get_git_file() {
 #     all: display all modified, include staged and unstaged
 #     staged: display only staged files
 #     unstaged: display only unstaged files
+#   $3: output_format
+#     default: name
+#     name: formatted name of the file
+#     raw: raw file name with status
 #   $3: if exists, don't do multi selection, do single
 # Outputs:
 #   the selected file path
@@ -100,6 +104,7 @@ function get_git_file() {
 function get_modified_file() {
   local header="${1:-select a modified file}"
   local display_mode="${2:-all}"
+  local output_format="${3:-name}"
   set_fzf_multi "$3"
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
   status --porcelain \
@@ -120,5 +125,11 @@ function get_modified_file() {
         | awk '{print \$2}' \
         | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
           diff HEAD --color=always ${DOTBARE_TREE}/__" \
-    | awk -v home="${DOTBARE_TREE}" '{print home "/" $2}'
+    | awk -v home="${DOTBARE_TREE}" -v format="${output_format}" '{
+        if (format == "name") {
+          print home "/" $2
+        } else {
+          print $0
+        }
+      }'
 }
