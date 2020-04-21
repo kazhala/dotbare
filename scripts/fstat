@@ -1,0 +1,30 @@
+#!/bin/bash
+#
+# interactive git status menu
+# allow editing staging ustaging actions
+#
+# @params
+# Globals
+#   None
+# Arguments
+#   None
+
+set -e
+set -f
+
+mydir="${0%/*}"
+source "${mydir}"/../helper/set_variable.sh
+source "${mydir}"/../helper/git_query.sh
+
+function usage() {
+  echo -e "Usage: dotbare fstat [-h] ...\n"
+  echo -e "Display interactive git status menu"
+  echo -e "Stage, unstage, edit file interactively\n"
+  echo -e "optional arguments:"
+  echo -e "  -h\t\tshow this help message and exit"
+}
+
+while true; do
+  selected_files=$(get_modified_file)
+  [[ -z "${selected_files}" ]] && break
+done

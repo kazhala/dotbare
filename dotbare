@@ -48,6 +48,10 @@ case "$1" in
     action_command='fcheckout'
     shift
     ;;
+  fstat)
+    action_command='fstat'
+    shift
+    ;;
   help)
     usage
     exit 0
