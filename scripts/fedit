@@ -56,5 +56,6 @@ elif [[ -n "${modified}" ]]; then
   echo "modified"
 else
   selected_files=$(get_git_file "Select tracked files to edit")
-  echo "${selected_files}"
+  [[ -z "${selected_files}" ]] && exit 0
+  command "${EDITOR}" ${selected_files}
 fi

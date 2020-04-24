@@ -12,6 +12,7 @@
 
 DOTBARE_DIR="${DOTBARE_DIR:-$HOME/.cfg/}"
 DOTBARE_TREE="${DOTBARE_TREE:-$HOME}"
+EDITOR="${EDITOR:-vim}"
 if [[ -z "${DOTBARE_KEY}" ]]; then
   DOTBARE_KEY="
     --bind=alt-a:toggle-all
