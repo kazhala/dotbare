@@ -105,7 +105,7 @@ function get_modified_file() {
   local header="${1:-select a modified file}"
   local display_mode="${2:-all}"
   local output_format="${3:-name}"
-  set_fzf_multi "$3"
+  set_fzf_multi "$4"
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
   status --porcelain \
     | awk -v display_mode="${display_mode}" '{
