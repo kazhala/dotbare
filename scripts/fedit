@@ -52,10 +52,12 @@ done
 
 if [[ -n "${commit}" ]]; then
   echo "commit"
-elif [[ -n "${modified}" ]]; then
-  echo "modified"
 else
-  selected_files=$(get_git_file "Select tracked files to edit")
+  if [[ -n "${modified}" ]]; then
+    selected_files=$(get_modified_file "Select tracked files to edit")
+  else
+    selected_files=$(get_git_file "Select tracked files to edit")
+  fi
   [[ -z "${selected_files}" ]] && exit 0
   command "${EDITOR}" ${selected_files}
 fi
