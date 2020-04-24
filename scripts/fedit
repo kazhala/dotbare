@@ -23,12 +23,14 @@ function usage() {
   echo -e "  -h\t\tshow this help message and exit"
   echo -e "  -m\t\tonly display modified file"
   echo -e "  -c\t\tedit commit message instead"
+  echo -e "  -b\t\tedit name of branch"
 }
 
 modified=''
 commit=''
+branch=''
 
-while getopts ":hmc" opt; do
+while getopts ":hmcb" opt; do
   case "$opt" in
     m)
       modified='true'
@@ -36,6 +38,10 @@ while getopts ":hmc" opt; do
       ;;
     c)
       commit='true'
+      break
+      ;;
+    b)
+      branch='true'
       break
       ;;
     h)
@@ -51,13 +57,16 @@ while getopts ":hmc" opt; do
 done
 
 if [[ -n "${commit}" ]]; then
-  echo "commit"
+  selected_commit=$(get_commit "Select a commit to rename")
+  [[ -z "${selected_commit}" ]] && exit 1
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" rebase -i "${selected_commit}"~
 else
   if [[ -n "${modified}" ]]; then
     selected_files=$(get_modified_file "Select tracked files to edit")
   else
     selected_files=$(get_git_file "Select tracked files to edit")
   fi
-  [[ -z "${selected_files}" ]] && exit 0
+  [[ -z "${selected_files}" ]] && exit 1
+  # shellcheck disable=SC2086
   command "${EDITOR}" ${selected_files}
 fi
