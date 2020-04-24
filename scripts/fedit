@@ -4,9 +4,15 @@
 #
 # @params
 # Globals
-#   None
+#   ${mydir}: current directory of the script
+#   ${modified}: select modified file only
+#   ${commit}: rename commit
+#   ${selected_commit}: selected commit to edit
+#   ${selected_files}: selected file to edit
 # Arguments
-#   None
+#   -m: display modified file only
+#   -c: edit commit using interactive rebase
+#   -h: show helpe message and exit
 
 set -e
 set -f
@@ -22,7 +28,7 @@ function usage() {
   echo -e "optional arguments:"
   echo -e "  -h\t\tshow this help message and exit"
   echo -e "  -m\t\tonly display modified file"
-  echo -e "  -c\t\tedit commit message instead"
+  echo -e "  -c\t\tedit commit using interactive rebase instead"
 }
 
 modified=''

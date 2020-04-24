@@ -7,7 +7,11 @@
 #   ${mydir}: string, current directory of the executing script
 #   ${new_file}: new file path to stage
 #   ${new_folder}: new folder to stage
-#   ${selected_files}: changed file to stage
+#   ${selected_files}: modified file to stage
+# Arguments
+#   -h: show help message
+#   -f: select a file in PWD to stage
+#   -d: select a directory in PWD to stage
 
 set -e
 set -f
@@ -27,6 +31,11 @@ function usage() {
   echo -e "  -d\t\tselect a entire folder to stage"
 }
 
+#######################################
+# stage file
+# Arguments:
+#   $1: files to stage
+#######################################
 function stage_file() {
   local file=$1
   if [[ -z "${file}" ]]

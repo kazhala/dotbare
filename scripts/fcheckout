@@ -1,22 +1,26 @@
 #!/bin/bash
 #
-# checkout files/commits/branches using fzf
+# checkout files/commit/branches using fzf
 #
 # @params
 # Globals
 #   ${mydir}: current directory of the script, used for imports
 #   ${all_files}: search all tracked files instead of just the modified files
+#     and then select a specific commit to checkout against 
 #   ${branch}: checkout branch
+#   ${commit}: checkout commit
 #   ${selected_branch}: selected_branch to switch
 #   ${selected_files}: selected_files to checkout to the version in HEAD
 #   ${selected_commit}: selected commit to checkout
+#   ${confirm}: confirm status of the user
 # Arguments
 #   -h: show help message
 #   -a: search all files instead of just the modified files
 #   -b: search branch and checkout branch
-#   -c: search commits and checkout commits
+#   -c: search commit and checkout commit
 
 set -e
+set -f
 
 mydir="${0%/*}"
 source "${mydir}"/../helper/set_variable.sh
@@ -25,7 +29,7 @@ source "${mydir}"/../helper/git_query.sh
 
 function usage() {
   echo -e "Usage: dotbare fcheckout [-h] [-a] [-b] [-c] ...\n"
-  echo -e "Checkout files/commits/branch using fzf"
+  echo -e "Checkout files/commit/branch using fzf"
   echo -e "By default: checkout files back to HEAD (Reset changes back to HEAD)\n"
   echo -e "optional arguments:"
   echo -e "  -h\t\tshow this help message and exit"
@@ -36,9 +40,9 @@ function usage() {
 
 all_files=""
 branch=""
-commits=""
+commit=""
 
-while getopts ":habcC" opt
+while getopts ":habc" opt
 do
   case "$opt" in
     a)
@@ -50,7 +54,7 @@ do
       break
       ;;
     c)
-      commits='true'
+      commit='true'
       break
       ;;
     h)
@@ -71,8 +75,8 @@ if [[ -n "${branch}" ]]; then
   [[ -z "${selected_branch}" ]] && exit 0
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout "${selected_branch}"
   exit 0
-elif [[ -n "${commits}" ]]; then
-  # checkout commits
+elif [[ -n "${commit}" ]]; then
+  # checkout commit
   selected_commit=$(get_commit 'Select a commit to checkout')
   [[ -z "${selected_commit}" ]] && exit 0
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout "${selected_commit}"

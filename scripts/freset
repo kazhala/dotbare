@@ -6,12 +6,18 @@
 # @params
 # Globals
 #   ${mydir}: current directory of the script
-#   ${search_commits}: search commits and reset commits instead of files
+#   ${reset_commit}: search commits and reset selected commit instead of files
 #   ${reset_option}: git reset flag, --mixed | --soft | --hard
 #   ${all_files}: search all files and select a commit to reset
 #   ${selected_files}: selected file to unstage
 #   ${selected_commit}: selected commit to reset
-#   ${selected_branch}: selected branch to reset
+#   ${confirm}: confirmation status of the user
+# Arguments
+#   -h: show help message and quit
+#   -a: select files and select a commit to reset the fiel back to selected commit
+#   -c: reset commit
+#   -S: use --soft flag
+#   -H: use --hard flag
 
 set -e
 set -f
@@ -33,7 +39,7 @@ function usage() {
   echo -e "  -H\t\treset commit using --hard flag, reset HEAD to certain commit dicard all changes from the working tree"
 }
 
-search_commits=""
+reset_commit=""
 reset_option="--mixed"
 all_files=""
 
@@ -44,7 +50,7 @@ do
       all_files="true"
       ;;
     c)
-      search_commits="true"
+      reset_commit="true"
       ;;
     S)
       reset_option="--soft"
@@ -64,7 +70,7 @@ do
   esac
 done
 
-if [[ -n "${search_commits}" ]]; then
+if [[ -n "${reset_commit}" ]]; then
   selected_commit=$(get_commit)
   [[ -z "${selected_commit}" ]] && exit 0
   confirm=$(get_confirmation "Reset HEAD to ${selected_commit} ${reset_option}?")

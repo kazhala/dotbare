@@ -5,9 +5,9 @@
 # @params
 # Globals
 #   ${mydir}: string, directory of the executing script, used for sourcing helpers
-#		${action_command}: string, determine which script to call
+#   ${action_command}: string, determine which script to call
 # Arguments
-#		action_command: sub commands dotbare should run
+#   action_command: sub commands dotbare should run
 #     General git command: log, status etc
 #     dotbare specific commands: fadd | frm | fpop | freset | fcheckout | help
 #   option flags:

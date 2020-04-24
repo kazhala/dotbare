@@ -9,6 +9,7 @@
 #   ${DOTBARE_KEY}: string, defualt key bindings
 #   ${FZF_DEFAULT_OPTS}: string, update FZF_DEFAULT_OPTS to reflect dotbare changes
 #   ${DOTBARE_FZF_DEFAULT_OPTS}: string, user custom setting for dotbare
+#   ${EDITOR}: default editor to use
 
 DOTBARE_DIR="${DOTBARE_DIR:-$HOME/.cfg/}"
 DOTBARE_TREE="${DOTBARE_TREE:-$HOME}"
