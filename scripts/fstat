@@ -5,9 +5,9 @@
 #
 # @params
 # Globals
-#   None
-# Arguments
-#   None
+#   ${mydir}: current directory of where the script is running
+#   ${selected_files}: selected file to stage or unstage
+#   ${stage_file}: determine if current operation should be staging file or unstage
 
 set -e
 set -f
@@ -27,6 +27,7 @@ function usage() {
 while true; do
   selected_files=$(get_modified_file "select a file" "all" "raw")
   [[ -z "${selected_files}" ]] && break
+  # check if current operation should stage file or unstage file
   stage_file=$(echo "${selected_files}" | awk '{
     if ($0 ~ /^[A-Za-z][A-Za-z].*$/) {
       print "stage"
