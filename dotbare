@@ -52,6 +52,10 @@ case "$1" in
     action_command='fstat'
     shift
     ;;
+  fedit)
+    action_command='fedit'
+    shift
+    ;;
   help)
     usage
     exit 0

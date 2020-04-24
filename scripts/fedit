@@ -1,0 +1,60 @@
+#!/bin/bash
+#
+# interactive menu to select file/commit to edit
+#
+# @params
+# Globals
+#   None
+# Arguments
+#   None
+
+set -e
+set -f
+
+mydir="${0%/*}"
+source "${mydir}"/../helper/set_variable.sh
+source "${mydir}"/../helper/git_query.sh
+
+function usage() {
+  echo -e "Usage: dotbare fedit [-h] ...\n"
+  echo -e "List all tracked dotfiles and edit"
+  echo -e "also support commit message edit\n"
+  echo -e "optional arguments:"
+  echo -e "  -h\t\tshow this help message and exit"
+  echo -e "  -m\t\tonly display modified file"
+  echo -e "  -c\t\tedit commit message instead"
+}
+
+modified=''
+commit=''
+
+while getopts ":hmc" opt; do
+  case "$opt" in
+    m)
+      modified='true'
+      break
+      ;;
+    c)
+      commit='true'
+      break
+      ;;
+    h)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Invalid option: ${OPTARG}" >&2
+      usage
+      exit 1
+      ;;
+  esac
+done
+
+if [[ -n "${commit}" ]]; then
+  echo "commit"
+elif [[ -n "${modified}" ]]; then
+  echo "modified"
+else
+  selected_files=$(get_git_file "Select tracked files to edit")
+  echo "${selected_files}"
+fi

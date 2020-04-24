@@ -7,7 +7,7 @@
 # Globals
 #   ${mydir}: current directory of the script
 #   ${search_commits}: search commits and reset commits instead of files
-#   #{reset_option}: git reset flag, --mixed | --soft | --hard
+#   ${reset_option}: git reset flag, --mixed | --soft | --hard
 #   ${all_files}: search all files and select a commit to reset
 #   ${selected_files}: selected file to unstage
 #   ${selected_commit}: selected commit to reset
