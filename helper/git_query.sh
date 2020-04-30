@@ -96,7 +96,7 @@ function get_git_file() {
 #     default: name
 #     name: formatted name of the file
 #     raw: raw file name with status
-#   $3: if exists, don't do multi selection, do single
+#   $4: if exists, don't do multi selection, do single
 # Outputs:
 #   the selected file path
 #   e.g.$HOME/.config/nvim/init.vim
@@ -131,5 +131,30 @@ function get_modified_file() {
         } else {
           print $0
         }
+      }'
+}
+
+#######################################
+# let user select a stash interactively
+# Arguments:
+#   $1: the helpe message to display in header
+# Outputs:
+#   the selected stash identifier
+#   e.g. stash@{0}
+#######################################
+function get_stash() {
+  local header="${1:-select a stash}"
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
+  stash list \
+    | fzf --no-multi --header="${header}" --preview "echo {} \
+        | awk '{
+            gsub(/:/, \"\", \$1)
+            print \$1
+          }' \
+        | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
+          show -p __ --color=always" \
+    | awk '{
+        gsub(/:/, "", $1)
+        print $1
       }'
 }
