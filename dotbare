@@ -36,8 +36,8 @@ case "$1" in
     action_command='frm'
     shift
     ;;
-  fpop)
-    action_command='fpop'
+  fstash)
+    action_command='fstash'
     shift
     ;;
   freset)
