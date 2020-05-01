@@ -27,19 +27,26 @@ function usage() {
   echo -e "optional arguments:"
   echo -e "  -h\tshow this help message and exit"
   echo -e "  -f\tselect modified files through fzf and stash them"
+  echo -e "  -d\tdelete the selected stash from stash list"
+  echo -e "  -p\tuse pop instead of apply when retrieving stash"
 }
 
 stash_file=""
 delete_stash=""
+stash_command="apply"
 
-while getopts ":hdf" opt; do
+while getopts ":hdfp" opt; do
   case "$opt" in
+    p)
+      stash_command="pop"
+      break
+      ;;
     f)
-      stash_file='true'
+      stash_file="true"
       break
       ;;
     d)
-      delete_stash='true'
+      delete_stash="true"
       break
       ;;
     h)
@@ -57,6 +64,7 @@ done
 if [[ -n "${stash_file}" ]]; then
   selected_file=$(get_modified_file "select files to add to a stash")
   [[ -z "${selected_file}" ]] && exit 1
+  # shellcheck disable=SC2086
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" stash -- ${selected_file}
 elif [[ -n "${delete_stash}" ]]; then
   selected_stash=$(get_stash "select stash to delete")
@@ -72,5 +80,5 @@ elif [[ -n "${delete_stash}" ]]; then
 else
   selected_stash=$(get_stash "select stash to apply" "true")
   [[ -z "${selected_stash}" ]] && exit 1
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" stash apply "${selected_stash}"
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" stash "${stash_command}" "${selected_stash}"
 fi
