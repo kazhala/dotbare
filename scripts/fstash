@@ -34,9 +34,20 @@ while getopts ":hf" opt; do
       usage
       exit 0
       ;;
+    *)
+      echo "Invalid option: ${OPTARG}" >&2
+      usage
+      exit 1
+      ;;
   esac
 done
 
-selected_stash=$(get_stash)
-[[ -z "${selected_stash}" ]] && exit 1
-/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" stash apply ${selected_stash}
+if [[ -n "${stash_file}" ]]; then
+  selected_files=$(get_modified_file "select files to add to a stash")
+  [[ -z "${selected_files}" ]] && exit 1
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" stash -- ${selected_files}
+else
+  selected_stash=$(get_stash "select stash to apply")
+  [[ -z "${selected_stash}" ]] && exit 1
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" stash apply "${selected_stash}"
+fi
