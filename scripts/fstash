@@ -38,4 +38,5 @@ while getopts ":hf" opt; do
 done
 
 selected_stash=$(get_stash)
-echo "${selected_stash}"
+[[ -z "${selected_stash}" ]] && exit 1
+/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" stash apply ${selected_stash}
