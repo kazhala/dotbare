@@ -15,8 +15,9 @@
 #######################################
 function get_confirmation() {
   local confirm
+  local message="${1:-Confirm?}"
   while [ "${confirm}" != 'y' ]  && [ "${confirm}" != 'n' ]; do
-    read -r -p "$1(y/n): " confirm
+    read -r -p "${message}(y/n): " confirm
   done
   echo "${confirm}"
 }

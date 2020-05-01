@@ -30,11 +30,17 @@ function usage() {
 }
 
 stash_file=""
+delete_stash=""
 
-while getopts ":hf" opt; do
+while getopts ":hdf" opt; do
   case "$opt" in
     f)
       stash_file='true'
+      break
+      ;;
+    d)
+      delete_stash='true'
+      break
       ;;
     h)
       usage
@@ -49,11 +55,22 @@ while getopts ":hf" opt; do
 done
 
 if [[ -n "${stash_file}" ]]; then
-  selected_files=$(get_modified_file "select files to add to a stash")
-  [[ -z "${selected_files}" ]] && exit 1
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" stash -- ${selected_files}
+  selected_file=$(get_modified_file "select files to add to a stash")
+  [[ -z "${selected_file}" ]] && exit 1
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" stash -- ${selected_file}
+elif [[ -n "${delete_stash}" ]]; then
+  selected_stash=$(get_stash "select stash to delete")
+  [[ -z "${selected_stash}" ]] && exit 1
+  while IFS= read -r line; do
+    echo "(dryrun) Drop ${line}"
+  done <<< "${selected_stash}"
+  confirm=$(get_confirmation)
+  [[ "${confirm}" != 'y' ]] && exit 1
+  while IFS= read -r line; do
+    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" stash drop "${line}"
+  done <<< "${selected_stash}"
 else
-  selected_stash=$(get_stash "select stash to apply")
+  selected_stash=$(get_stash "select stash to apply" "true")
   [[ -z "${selected_stash}" ]] && exit 1
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" stash apply "${selected_stash}"
 fi
