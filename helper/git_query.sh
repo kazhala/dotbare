@@ -138,15 +138,17 @@ function get_modified_file() {
 # let user select a stash interactively
 # Arguments:
 #   $1: the helpe message to display in header
+#   $2: if exists, don't do multi select, only allow single selection
 # Outputs:
 #   the selected stash identifier
 #   e.g. stash@{0}
 #######################################
 function get_stash() {
   local header="${1:-select a stash}"
+  set_fzf_multi "$2"
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
   stash list \
-    | fzf --no-multi --header="${header}" --preview "echo {} \
+    | fzf --header="${header}" --preview "echo {} \
         | awk '{
             gsub(/:/, \"\", \$1)
             print \$1
