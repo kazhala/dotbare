@@ -76,8 +76,42 @@ done
 
 while True; do
   selected_commit=$(get_commit)
-  [[ -z "${selected_commit}" ]] && break
+  [[ -z "${selected_commit}" ]] && exit 1
   selected_action=$(draw_menu "${selected_action}")
-  [[ -z "${selected_action}" ]] && continue
-  [[ "${selected_action}" == 'exit' ]] && break
+  [[ -n "${selected_action}" ]] && break
 done
+
+if [[ "${selected_action}" != 'exit' ]]; then
+  if [[ "${selected_action}" == "reset" ]]; then
+    echo "(dryrun) reset HEAD to ${selected_commit}"
+  else
+    echo "(dryrun) ${selected_action} ${selected_commit}"
+  fi
+  confirm=$(get_confirmation)
+  [[ "${confirm}" != 'y' ]] && exit 1
+fi
+
+case "${selected_action}" in
+  revert)
+    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
+    revert "${selected_commit}"
+    ;;
+  reset)
+    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
+    reset "${selected_commit}"
+    ;;
+  edit)
+    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
+    rebase -i "${selected_commit}"~
+    ;;
+  checkout)
+    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
+    checkout "${selected_commit}"
+    ;;
+  exit)
+    exit 0
+    ;;
+  *)
+    exit 1
+    ;;
+esac
