@@ -24,6 +24,24 @@ function usage() {
   echo -e "  -h\t\tshow this help message and exit"
 }
 
+#######################################
+# draw action menu for selected commit
+# Arguments:
+#   $1: selected action, if selected, skip menu, return action
+# Outputs:
+#   ${selected_action}: user selected action
+#######################################
+function draw_menu() {
+  local selected_action="$1"
+  if [[ -n "$selected_action" ]]; then
+    echo "${selected_action}"
+  else
+    menu="revert\nreset\nedit\ncheckout\nexit"
+    selected_action=$(echo -e "${menu}" | fzf --no-multi)
+    echo "${selected_action}"
+  fi
+}
+
 selected_action=""
 
 while getopts ":hr" opt; do
@@ -54,4 +72,12 @@ while getopts ":hr" opt; do
       exit 1
       ;;
   esac
+done
+
+while True; do
+  selected_commit=$(get_commit)
+  [[ -z "${selected_commit}" ]] && break
+  selected_action=$(draw_menu "${selected_action}")
+  [[ -z "${selected_action}" ]] && continue
+  [[ "${selected_action}" == 'exit' ]] && break
 done
