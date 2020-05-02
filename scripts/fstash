@@ -9,7 +9,10 @@
 #   ${selected_file}: selected files to stash
 #   ${selected_stash}: selected stash to apply
 # Arguments
-#   None
+#   -h: show help message
+#   -f: select individual files and stash
+#   -d: delete selected stash
+#   -p: use pop instead of apply on the selected stash
 
 set -e
 set -f
