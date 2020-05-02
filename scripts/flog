@@ -1,0 +1,57 @@
+#!/bin/bash
+#
+# git log interactive viewer
+#
+# @params
+# Globals
+#   None
+# Arguments
+#   None
+
+set -e
+set -f
+
+mydir="${0%/*}"
+source "${mydir}"/../helper/set_variable.sh
+source "${mydir}"/../helper/git_query.sh
+source "${mydir}"/../helper/get_confirmation.sh
+
+function usage() {
+  echo -e "Usage: dotbare flog [-h] [-f] [-d] ...\n"
+  echo -e "Interactive log viewer with action menu"
+  echo -e "Action menu contains command including revert|reset|edit|checkout"
+  echo -e "optional arguments:"
+  echo -e "  -h\t\tshow this help message and exit"
+}
+
+selected_action=""
+
+while getopts ":hr" opt; do
+  case "$opt" in
+    r)
+      selected_action="revert"
+      break
+      ;;
+    R)
+      selected_action="reset"
+      break
+      ;;
+    e)
+      selected_action="edit"
+      break
+      ;;
+    c)
+      selected_action="checkout"
+      break
+      ;;
+    h)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Invalid option: ${OPTARG}" >&2
+      usage
+      exit 1
+      ;;
+  esac
+done

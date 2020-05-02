@@ -56,6 +56,10 @@ case "$1" in
     action_command='fedit'
     shift
     ;;
+  flog)
+    action_command="flog"
+    shift
+    ;;
   help)
     usage
     exit 0
