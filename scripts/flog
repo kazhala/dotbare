@@ -4,9 +4,16 @@
 #
 # @params
 # Globals
-#   None
+#   ${mydir}: current dir of the script
+#   ${selected_action}: action to take on the selected commit
+#   ${selected_commit}: user selected commit
+#   ${confirm}: confirm status of user
 # Arguments
-#   None
+#   -h: display help message
+#   -r: revert the selected commit
+#   -R: reset HEAD back to the selected commit
+#   -e: edit commmit (interactive rebase)
+#   -c: checkout selected commmit
 
 set -e
 set -f
@@ -21,30 +28,46 @@ function usage() {
   echo -e "Interactive log viewer with action menu"
   echo -e "Action menu contains command including revert|reset|edit|checkout"
   echo -e "optional arguments:"
-  echo -e "  -h\t\tshow this help message and exit"
+  echo -e "  -h\tshow this help message and exit"
+  echo -e "  -r\trevert the selected commit"
+  echo -e "  -R\treset HEAD back to selected commit"
+  echo -e "  -e\tedit selected commit through interactive rebase"
+  echo -e "  -c\tcheckout selected commit"
 }
 
 #######################################
 # draw action menu for selected commit
 # Arguments:
-#   $1: selected action, if selected, skip menu, return action
+#   $1: selected commit hash, used to display commit message in fzf header
+#   $2: selected action, if selected, skip menu, return action
 # Outputs:
 #   ${selected_action}: user selected action
 #######################################
 function draw_menu() {
-  local selected_action="$1"
+  local selected_commit="$1"
+  local selected_action="$2"
   if [[ -n "$selected_action" ]]; then
     echo "${selected_action}"
   else
-    menu="revert\nreset\nedit\ncheckout\nexit"
-    selected_action=$(echo -e "${menu}" | fzf --no-multi)
+    menu="revert: revert the selected commit\n"
+    menu="${menu}reset: reset HEAD to the selected commit using --mixed flag\n"
+    menu="${menu}edit: edit selected commit through interactive rebase\n"
+    menu="${menu}checkout: checkout the selected commit\n"
+    menu="${menu}exit: quit flog"
+    selected_action=$(echo -e "${menu}" \
+      | fzf --no-multi \
+      | awk '{
+        gsub(/:/, "", $1)
+        print $1
+      }'
+    )
     echo "${selected_action}"
   fi
 }
 
 selected_action=""
 
-while getopts ":hr" opt; do
+while getopts ":hrRec" opt; do
   case "$opt" in
     r)
       selected_action="revert"
@@ -77,7 +100,7 @@ done
 while True; do
   selected_commit=$(get_commit)
   [[ -z "${selected_commit}" ]] && exit 1
-  selected_action=$(draw_menu "${selected_action}")
+  selected_action=$(draw_menu "${selected_commit}" "${selected_action}")
   [[ -n "${selected_action}" ]] && break
 done
 
