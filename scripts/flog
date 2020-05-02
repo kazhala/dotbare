@@ -46,6 +46,7 @@ function usage() {
 function draw_menu() {
   local selected_commit="$1"
   local selected_action="$2"
+  local menu header message
   if [[ -n "$selected_action" ]]; then
     echo "${selected_action}"
   else
@@ -53,13 +54,18 @@ function draw_menu() {
     menu="${menu}reset: reset HEAD to the selected commit using --mixed flag\n"
     menu="${menu}edit: edit selected commit through interactive rebase\n"
     menu="${menu}checkout: checkout the selected commit\n"
-    menu="${menu}exit: quit flog"
+    menu="${menu}exit: quit dotbare flog"
+    message=$(
+      /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
+      log --format=%B -n 1 "${selected_commit}"
+    )
+    header="commit ${selected_commit}: ${message}"
     selected_action=$(echo -e "${menu}" \
-      | fzf --no-multi \
+      | fzf --no-multi --header="${header}" \
       | awk '{
-        gsub(/:/, "", $1)
-        print $1
-      }'
+          gsub(/:/, "", $1)
+          print $1
+        }'
     )
     echo "${selected_action}"
   fi
