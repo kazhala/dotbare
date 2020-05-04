@@ -32,8 +32,8 @@ case "$1" in
     action_command='fadd'
     shift
     ;;
-  frm)
-    action_command='frm'
+  funtrack)
+    action_command='funtrack'
     shift
     ;;
   fstash)

@@ -1,0 +1,51 @@
+#!/bin/bash
+#
+# untrack selected files
+#
+# @params
+# Globals
+#   None
+# Arguments
+#   None
+
+set -e
+set -f
+
+mydir="${0%/*}"
+source "${mydir}"/../helper/set_variable.sh
+source "${mydir}"/../helper/git_query.sh
+source "${mydir}"/../helper/get_confirmation.sh
+
+function usage() {
+  echo -e "Usage: dotbare funtrack [-h] [-f] [-d] ...\n"
+  echo -e "Untrack selected files from git\n"
+  echo -e "Note: by default, the untrack will remove the file from index while"
+  echo -e "keeping the file in your current system (git rm --cached filename)"
+  echo -e "however, when your other computer pull down the changes, the file will be removed"
+  echo -e "make sure to run dotbare fbackup before pulling down the changes, alternativly"
+  echo -e "use the -s flag (git update-index --assume-unchanged [path])\n"
+  echo -e "optional arguments:"
+  echo -e "  -h\t\tshow this help message and exit"
+}
+
+while getopts ":p:h" opt
+do
+  case "$opt" in
+    h)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Invalid option: ${OPTARG}" >&2
+      usage
+      exit 1
+      ;;
+  esac
+done
+
+selected_files=$(get_git_file "select files to untrack" | tr "\n" " ")
+[[ -z "${selected_files}" ]] && exit 1
+
+confirm=$(get_confirmation "Untrack the selected files?")
+[[ "${confirm}" != 'y' ]] && exit 1 
+/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" rm --cached ${selected_files}
