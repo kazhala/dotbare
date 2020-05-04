@@ -4,15 +4,18 @@
 #
 # @params
 # Globals
-#		${DOTBARE_DIR}: string, location of the bare repo
-#   ${DOTBARE_TREE}: string, which folder is the bare repo tracking
-#   ${DOTBARE_KEY}: string, defualt key bindings
-#   ${FZF_DEFAULT_OPTS}: string, update FZF_DEFAULT_OPTS to reflect dotbare changes
-#   ${DOTBARE_FZF_DEFAULT_OPTS}: string, user custom setting for dotbare
+#		${DOTBARE_DIR}: location of the bare repo
+#   ${DOTBARE_TREE}: which folder is the bare repo tracking
+#   ${DOTBARE_BACKUP}: backup directory for all tracked files
+#   ${DOTBARE_KEY}: defualt key bindings
+#   ${FZF_DEFAULT_OPTS}: update FZF_DEFAULT_OPTS to reflect dotbare changes
+#   ${DOTBARE_FZF_DEFAULT_OPTS}: user custom setting for dotbare
 #   ${EDITOR}: default editor to use
 
 DOTBARE_DIR="${DOTBARE_DIR:-$HOME/.cfg/}"
 DOTBARE_TREE="${DOTBARE_TREE:-$HOME}"
+DOTBARE_BACKUP="${DOTBARE_BACKUP:-${XDG_DATA_HOME:-$HOME/.local/share}/dotbare}"
+
 EDITOR="${EDITOR:-vim}"
 if [[ -z "${DOTBARE_KEY}" ]]; then
   DOTBARE_KEY="
