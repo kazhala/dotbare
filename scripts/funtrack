@@ -4,9 +4,15 @@
 #
 # @params
 # Globals
-#   None
+#   ${mydir}: current dir of the script
+#   ${update_index}: use update index operation to temp untrack files
+#   ${re_track}: retrack selected files
+#   ${confirm}: use confirm status
+#   ${selected_files}: user selected_files for operation
 # Arguments
-#   None
+#   -h: display help message and exit
+#   -s: temporarily untrack files
+#   -S: resume track of temp untracked files
 
 set -e
 set -f
@@ -25,7 +31,10 @@ function usage() {
   echo -e "make sure to run dotbare fbackup before pulling down the changes, alternativly"
   echo -e "use the -s flag (git update-index --assume-unchanged [path])\n"
   echo -e "optional arguments:"
-  echo -e "  -h\t\tshow this help message and exit"
+  echo -e "  -h\tshow this help message and exit"
+  echo -e "  -s\ttemporarily ignore changes of selected files"
+  echo -e "    \tuse -S flag to resume tracking changes of selected_files"
+  echo -e "  -S\tresume tracking changes of selected files"
 }
 
 update_index=""
