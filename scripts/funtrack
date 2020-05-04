@@ -46,6 +46,11 @@ done
 selected_files=$(get_git_file "select files to untrack" | tr "\n" " ")
 [[ -z "${selected_files}" ]] && exit 1
 
+echo "(dryrun) dotbare rm --cached ${selected_files}"
 confirm=$(get_confirmation "Untrack the selected files?")
 [[ "${confirm}" != 'y' ]] && exit 1 
 /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" rm --cached ${selected_files}
+echo "Selected files are being untracked by git, make sure to run dotbare fbackup"
+echo "on your other systems. When other system pull down this change, selected files"
+echo "will be removed, this is the default behavior of git rm --cached, more information"
+echo "refer to dotbare funtrack -h or README"
