@@ -28,9 +28,18 @@ function usage() {
   echo -e "  -h\t\tshow this help message and exit"
 }
 
-while getopts ":p:h" opt
+update_index=""
+re_track=""
+
+while getopts ":hsS" opt
 do
   case "$opt" in
+    s)
+      update_index="true"
+      ;;
+    S)
+      re_track="true"
+      ;;
     h)
       usage
       exit 0
@@ -46,11 +55,38 @@ done
 selected_files=$(get_git_file "select files to untrack" | tr "\n" " ")
 [[ -z "${selected_files}" ]] && exit 1
 
-echo "(dryrun) dotbare rm --cached ${selected_files}"
-confirm=$(get_confirmation "Untrack the selected files?")
-[[ "${confirm}" != 'y' ]] && exit 1 
-/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" rm --cached ${selected_files}
-echo "Selected files are being untracked by git, make sure to run dotbare fbackup"
-echo "on your other systems. When other system pull down this change, selected files"
-echo "will be removed, this is the default behavior of git rm --cached, more information"
-echo "refer to dotbare funtrack -h or README"
+
+if [[ -n "${update_index}" ]]; then
+  echo "(dryrun) dotbare update-index --assume-unchanged ${selected_files}"
+  confirm=$(get_confirmation "Files will be temporarily stop being tracked for changes, continue?")
+  [[ "${confirm}" != 'y' ]] && exit 1
+  # shellcheck disable=SC2086
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" update-index --assume-unchanged ${selected_files}
+  echo -e " "
+  echo "Selected files are temporarily untracked by git, use -S to continue tracking changes."
+  echo "dotbare funtrack -s is not the recommanded way to untrack files, although it won't delete"
+  echo "the files on other machines, please refer to git update-index official"
+  echo "documentation for more information"
+elif [[ -n "${re_track}" ]]; then
+  echo "(dryrun) dotbare update-index --no-assume-unchanged ${selected_files}"
+  confirm=$(get_confirmation "Files will resume being tracked by git, continue?")
+  [[ "${confirm}" != 'y' ]] && exit 1
+  # shellcheck disable=SC2086
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" update-index --no-assume-unchanged ${selected_files}
+  echo " "
+  echo "Selected files are being resumed for track by git."
+  echo "dotbare funtrack -s not the recommanded way to untrack files, although it won't delete"
+  echo "the files on other machines, please refer to git update-index official"
+  echo "documentation for more information"
+else
+  echo "(dryrun) dotbare rm --cached ${selected_files}"
+  confirm=$(get_confirmation "Untrack the selected files?")
+  [[ "${confirm}" != 'y' ]] && exit 1 
+  # shellcheck disable=SC2086
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" rm --cached ${selected_files}
+  echo -e " "
+  echo "Selected files are being untracked by git, make sure to run dotbare fbackup"
+  echo "on your other systems. When other system pull down this change, selected files"
+  echo "will be removed, this is the default behavior of git rm --cached, more information"
+  echo "refer to dotbare funtrack -h or README"
+fi
