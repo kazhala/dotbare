@@ -60,6 +60,10 @@ case "$1" in
     action_command="flog"
     shift
     ;;
+  fbackup)
+    action_command="fbackup"
+    shift
+    ;;
   help)
     usage
     exit 0

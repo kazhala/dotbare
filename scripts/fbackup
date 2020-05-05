@@ -1,0 +1,28 @@
+#!/bin/bash
+#
+# backup all tracked files
+#
+# @params
+# Globals
+#   None
+# Arguments
+#   None
+
+set -e
+set -f
+
+mydir="${0%/*}"
+source "${mydir}"/../helper/set_variable.sh
+source "${mydir}"/../helper/git_query.sh
+
+function usage() {
+  echo -e "Usage: dotbare fadd [-h] [-f] [-d] ...\n"
+  echo -e "Stage the selected file to the dotfile gitbare repo"
+  echo -e "Press escape to stop staging file\n"
+  echo -e "optional arguments:"
+  echo -e "  -h\t\tshow this help message and exit"
+  echo -e "  -f\t\tselect a file in current directory and stage it"
+  echo -e "  -d\t\tselect a entire folder to stage"
+}
+
+[[ ! -d "${DOTBARE_BACKUP}" ]] && mkdir -p "${DOTBARE_BACKUP}"
