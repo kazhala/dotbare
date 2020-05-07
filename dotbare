@@ -22,7 +22,9 @@ function usage() {
 
 # if no argument passed in, let git display help message
 if [[ $# -eq 0 ]]; then
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}"
+  ls "${mydir}"/scripts \
+    | fzf --no-multi --header='Available commands' --preview="dotbare {} -h" \
+    | xargs -I __ dotbare __ -h
   exit 0
 fi
 
