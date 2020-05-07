@@ -8,6 +8,8 @@
 #   ${mydir}: current directory of where the script is running
 #   ${selected_files}: selected file to stage or unstage
 #   ${stage_file}: determine if current operation should be staging file or unstage
+# Arguments
+#   -h: show help message and exit
 
 set -e
 set -f
@@ -23,6 +25,20 @@ function usage() {
   echo -e "optional arguments:"
   echo -e "  -h\t\tshow this help message and exit"
 }
+
+while getopts ":h" opt; do
+  case "$opt" in
+    h)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Invalid option: ${OPTARG}" >&2
+      usage
+      exit 1
+      ;;
+  esac
+done
 
 while true; do
   selected_files=$(get_modified_file "select a file" "all" "raw")
