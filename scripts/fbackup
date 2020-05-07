@@ -22,13 +22,24 @@ function usage() {
   echo -e "  -h\t\tshow this help message and exit"
 }
 
+#######################################
+# backup passed in files while preserving directory info
+# Arguments:
+#   $1: files to backup, seperate by \n
+#######################################
+function dotbare_backup() {
+  local selected_files="$1"
+  while IFS= read -r line; do
+    dir_name=$(dirname "${line}")
+    [[ ! -d "${DOTBARE_BACKUP}/${dir_name}" ]] && mkdir -p "${DOTBARE_BACKUP}/${dir_name}"
+    cp -v "${line}" "${DOTBARE_BACKUP}/${line}"
+  done <<< "${selected_files}"
+}
+
 [[ ! -d "${DOTBARE_BACKUP}" ]] && mkdir -p "${DOTBARE_BACKUP}"
 
 cd "${DOTBARE_TREE}"
 all_files=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
   ls-files --full-name --directory "${DOTBARE_TREE}")
-while IFS= read -r line; do
-  dir_name=$(dirname "${line}")
-  [[ ! -d "${DOTBARE_BACKUP}/${dir_name}" ]] && mkdir -p "${DOTBARE_BACKUP}/${dir_name}"
-  cp -v "${line}" "${DOTBARE_BACKUP}/${line}"
-done <<< "${all_files}"
+
+dotbare_backup "${all_files}"
