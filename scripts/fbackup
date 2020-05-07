@@ -17,9 +17,10 @@ source "${mydir}"/../helper/git_query.sh
 
 function usage() {
   echo -e "Usage: dotbare fbackup [-h] ...\n"
-  echo -e "Backup all tracked files to ${DOTBARE_BACKUP}\n"
+  echo -e "Backup files to ${DOTBARE_BACKUP}"
+  echo -e "This is useful when untracking files or migrating on new machines\n"
   echo -e "optional arguments:"
-  echo -e "  -h\t\tshow this help message and exit"
+  echo -e "  -h\tshow this help message and exit"
 }
 
 #######################################
@@ -36,10 +37,31 @@ function dotbare_backup() {
   done <<< "${selected_files}"
 }
 
-[[ ! -d "${DOTBARE_BACKUP}" ]] && mkdir -p "${DOTBARE_BACKUP}"
+individual_file=""
+while getopts ":hs" opt; do
+  case "$opt" in
+    s)
+      individual_file='true'
+      ;;
+    h)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Invalid option: ${OPTARG}" >&2
+      usage
+      exit 0
+      ;;
+  esac
+done
 
 cd "${DOTBARE_TREE}"
-all_files=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
-  ls-files --full-name --directory "${DOTBARE_TREE}")
 
-dotbare_backup "${all_files}"
+if [[ -n "${individual_file}" ]]; then
+  selected_files=$(get_git_file "select files to backup" "raw")
+else
+  selected_files=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
+    ls-files --full-name --directory "${DOTBARE_TREE}")
+fi
+
+dotbare_backup "${selected_files}"

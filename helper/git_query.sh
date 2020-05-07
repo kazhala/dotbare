@@ -68,19 +68,27 @@ function get_branch() {
 # let user select a dotbare tracked file interactively
 # Arguments:
 #   $1: the helper message to display in the fzf header
-#   $2: if exist, don't do multi selection, do single
+#   $2: print option, values (full|raw)
+#   $3: if exist, don't do multi selection, do single
 # Outputs:
 #   the selected file path
 #   e.g.$HOME/.config/nvim/init.vim
 #######################################
 function get_git_file() {
   local header="${1:-select tracked file}"
-  set_fzf_multi "$2"
+  local print_opt="${2:-full}"
+  set_fzf_multi "$3"
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
   ls-files --full-name --directory "${DOTBARE_TREE}" \
     | fzf --header="${header}" \
       --preview "head -50 ${DOTBARE_TREE}/{}" \
-    | awk -v home="${DOTBARE_TREE}" '{print home "/" $0}'
+    | awk -v home="${DOTBARE_TREE}" -v print_opt="${print_opt}" '{
+        if (print_opt == "full") {
+          print home "/" $0
+        } else {
+          print $0
+        }
+      }'
 }
 
 #######################################
