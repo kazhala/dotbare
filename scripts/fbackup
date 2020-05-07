@@ -35,13 +35,19 @@ function dotbare_backup() {
     [[ ! -d "${DOTBARE_BACKUP}/${dir_name}" ]] && mkdir -p "${DOTBARE_BACKUP}/${dir_name}"
     cp -v "${line}" "${DOTBARE_BACKUP}/${line}"
   done <<< "${selected_files}"
+  exit 0
 }
 
 individual_file=""
-while getopts ":hs" opt; do
+while getopts ":hsp:" opt; do
   case "$opt" in
     s)
       individual_file='true'
+      break
+      ;;
+    p)
+      selected_files="${OPTARG}"
+      break
       ;;
     h)
       usage
@@ -55,8 +61,10 @@ while getopts ":hs" opt; do
   esac
 done
 
-cd "${DOTBARE_TREE}"
 
+[[ -n "${selected_files}" ]] && dotbare_backup "${selected_files}"
+
+cd "${DOTBARE_TREE}"
 if [[ -n "${individual_file}" ]]; then
   selected_files=$(get_git_file "select files to backup" "raw")
 else
