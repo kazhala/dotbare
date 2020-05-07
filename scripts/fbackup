@@ -4,9 +4,13 @@
 #
 # @params
 # Globals
-#   None
+#   ${mydir}: current dir of the script
+#   ${individual_file}: allow selection of files to backup
+#   ${selected_files}: selected files to backup
 # Arguments
-#   None
+#   -h: show help message and exit
+#   -s: select individual files through fzf and backup
+#   -p: pass in path and backup
 
 set -e
 set -f
@@ -20,7 +24,9 @@ function usage() {
   echo -e "Backup files to ${DOTBARE_BACKUP}"
   echo -e "This is useful when untracking files or migrating on new machines\n"
   echo -e "optional arguments:"
-  echo -e "  -h\tshow this help message and exit"
+  echo -e "  -h\t\tshow this help message and exit"
+  echo -e "  -s\t\tselect individual file through fzf and backup"
+  echo -e "  -p PATH\tsepcify path to backup"
 }
 
 #######################################
