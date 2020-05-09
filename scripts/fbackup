@@ -7,10 +7,12 @@
 #   ${mydir}: current dir of the script
 #   ${individual_file}: allow selection of files to backup
 #   ${selected_files}: selected files to backup
+#   ${action_command}: actions to run, cp|mv
 # Arguments
 #   -h: show help message and exit
 #   -s: select individual files through fzf and backup
 #   -p: pass in path and backup
+#   -m: use mv to backup instead of cp
 
 set -e
 set -f
@@ -33,27 +35,31 @@ function usage() {
 # backup passed in files while preserving directory info
 # Arguments:
 #   $1: files to backup, seperate by \n
+#   $2: action command (cp|mv)
 #######################################
 function dotbare_backup() {
   local selected_files="$1"
+  local action_command="${2:-cp}"
   while IFS= read -r line; do
     dir_name=$(dirname "${line}")
     [[ ! -d "${DOTBARE_BACKUP}/${dir_name}" ]] && mkdir -p "${DOTBARE_BACKUP}/${dir_name}"
-    cp -v "${line}" "${DOTBARE_BACKUP}/${line}"
+    command "${action_command}" -v "${line}" "${DOTBARE_BACKUP}/${line}"
   done <<< "${selected_files}"
   exit 0
 }
 
 individual_file=""
-while getopts ":hsp:" opt; do
+action_command='cp'
+while getopts ":hsp:m" opt; do
   case "$opt" in
     s)
       individual_file='true'
-      break
       ;;
     p)
       selected_files="${OPTARG}"
-      break
+      ;;
+    m)
+      action_command="mv"
       ;;
     h)
       usage
@@ -68,7 +74,7 @@ while getopts ":hsp:" opt; do
 done
 
 
-[[ -n "${selected_files}" ]] && dotbare_backup "${selected_files}"
+[[ -n "${selected_files}" ]] && dotbare_backup "${selected_files}" "${action_command}"
 
 cd "${DOTBARE_TREE}"
 if [[ -n "${individual_file}" ]]; then
@@ -78,4 +84,4 @@ else
     ls-files --full-name --directory "${DOTBARE_TREE}")
 fi
 
-dotbare_backup "${selected_files}"
+dotbare_backup "${selected_files}" "${action_command}"
