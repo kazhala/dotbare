@@ -1,0 +1,54 @@
+#!/bin/bash
+#
+# init the git bare repo
+#
+# @params
+# Globals
+#   ${mydir}: current dir of the script
+#   ${confirm}: confirm status of the user
+# Arguments
+#   -h: show help message and exit
+
+set -e
+set -f
+
+mydir="${0%/*}"
+source "${mydir}"/../helper/set_variable.sh
+source "${mydir}"/../helper/get_confirmation.sh
+
+function usage() {
+  echo -e "Usage: dotbare finit [-h] ...\n"
+  echo -e "Init the git bare repository if doesn't exist"
+  echo -e 'The bare repository will be initialised under ${DOTBARE_DIR}, default to $HOME/.cfg if not set'
+  echo -e 'It will track ${DOTBARE_TREE}, default to $HOME if not set\n'
+  echo -e "optional arguments:"
+  echo -e "  -h\t\tshow this help message and exit"
+}
+
+while getopts ":h" opt; do
+  case "$opt" in
+    h)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Invalid option: ${OPTARG}" >&2
+      usage
+      exit 1
+      ;;
+  esac
+done
+
+echo "modify DOTBARE_DIR and DOTBARE_TREE to customize location, more information run dotbare finit -h"
+echo "git bare repository will be initialised at ${DOTBARE_DIR}"
+echo "git bare repository will be tracking ${DOTBARE_TREE}"
+confirm=$(get_confirmation)
+[[ "${confirm}" != 'y' ]] && exit 1
+
+if [[ -d "${DOTBARE_DIR}" ]]; then
+  echo "${DOTBARE_DIR} already exist"
+else
+  git init --bare "${DOTBARE_DIR}"
+  /usr/bin/git --git-dir "${DOTBARE_DIR}" --work-tree "${DOTBARE_TREE}" \
+    config --local status.showUntrackedFiles no
+fi

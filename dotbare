@@ -87,6 +87,10 @@ case "$1" in
     action_command="fbackup"
     shift
     ;;
+  finit)
+    action_command='finit'
+    shift
+    ;;
   help)
     usage
     exit 0
