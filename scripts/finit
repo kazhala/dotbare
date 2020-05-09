@@ -64,7 +64,14 @@ if [[ -z "${remote_url}" ]]; then
   fi
 else
   cd "${DOTBARE_TREE}"
-  basename "${DOTBARE_DIR}" >> .gitignore
+  if [[ -f ".gitignore" ]]; then
+    pattern=$(basename "${DOTBARE_DIR}")
+    pattern="^${pattern}$"
+    exists=$(awk -v pattern="${pattern}" '{ if ($0 ~ pattern) { print $0; } }' .gitignore)
+    [[ -z "${exists}" ]] && basename "${DOTBARE_DIR}" >> .gitignore
+  else
+    basename "${DOTBARE_DIR}" >> .gitignore
+  fi
   git clone --bare "${remote_url}" "${DOTBARE_DIR}"
   if ! /usr/bin/git --git-dir "${DOTBARE_DIR}" --work-tree "${DOTBARE_TREE}" checkout 2> /dev/null; then
     echo "File checkout failed"
