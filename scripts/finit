@@ -64,6 +64,24 @@ if [[ -z "${remote_url}" ]]; then
   fi
 else
   cd "${DOTBARE_TREE}"
-  echo "${DOTBARE_DIR}" >> .gitignore
+  basename "${DOTBARE_DIR}" >> .gitignore
   git clone --bare "${remote_url}" "${DOTBARE_DIR}"
+  if ! /usr/bin/git --git-dir "${DOTBARE_DIR}" --work-tree "${DOTBARE_TREE}" checkout 2> /dev/null; then
+    echo "File checkout failed"
+    echo "Backing up pre-existing dotfiles ..."
+    /usr/bin/git --git-dir "${DOTBARE_DIR}" --work-tree "${DOTBARE_TREE}" checkout 2>&1 \
+      | awk '{
+          if ($0 ~ /[\t].*/) {
+            gsub(/^[\t]/, "", $0)
+            print $0
+          }
+        }' \
+      | xargs -I __ "${mydir}"/fbackup -p __ -m
+    echo "dotfiles backup succeeded, checkout continue"
+    /usr/bin/git --git-dir "${DOTBARE_DIR}" --work-tree "${DOTBARE_TREE}" checkout
+    /usr/bin/git --git-dir "${DOTBARE_DIR}" --work-tree "${DOTBARE_TREE}" \
+      config --local status.showUntrackedFiles no
+  fi
+  echo "File checkout succeeded"
+  echo "Migration completed"
 fi
