@@ -19,7 +19,9 @@ source "${mydir}"/../helper/get_confirmation.sh
 function usage() {
   echo -e "Usage: dotbare finit [-h] ...\n"
   echo -e "Init the git bare repository if doesn't exist"
+  # shellcheck disable=SC2016
   echo -e 'The bare repository will be initialised under ${DOTBARE_DIR}, default to $HOME/.cfg if not set'
+  # shellcheck disable=SC2016
   echo -e 'It will track ${DOTBARE_TREE}, default to $HOME if not set\n'
   echo -e "optional arguments:"
   echo -e "  -h\t\tshow this help message and exit"
