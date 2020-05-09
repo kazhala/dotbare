@@ -30,7 +30,7 @@ function usage() {
 }
 
 remote_url=""
-while getopts ":hu" opt; do
+while getopts ":hu:" opt; do
   case "$opt" in
     u)
       remote_url="${OPTARG}"
