@@ -8,6 +8,7 @@
 #   ${confirm}: confirm status of the user
 # Arguments
 #   -h: show help message and exit
+#   -u: specify remote dotfiles url to init
 
 set -e
 set -f
@@ -25,10 +26,16 @@ function usage() {
   echo -e 'It will track ${DOTBARE_TREE}, default to $HOME if not set\n'
   echo -e "optional arguments:"
   echo -e "  -h\t\tshow this help message and exit"
+  echo -e "  -u URL\tmigrate existing dotfiles from the git URL to current system"
 }
 
-while getopts ":h" opt; do
+remote_url=""
+while getopts ":hu" opt; do
   case "$opt" in
+    u)
+      remote_url="${OPTARG}"
+      break
+      ;;
     h)
       usage
       exit 0
@@ -41,16 +48,22 @@ while getopts ":h" opt; do
   esac
 done
 
-echo "modify DOTBARE_DIR and DOTBARE_TREE to customize location, more information run dotbare finit -h"
-echo "git bare repository will be initialised at ${DOTBARE_DIR}"
-echo "git bare repository will be tracking ${DOTBARE_TREE}"
-confirm=$(get_confirmation)
-[[ "${confirm}" != 'y' ]] && exit 1
+if [[ -z "${remote_url}" ]]; then
+  echo "modify DOTBARE_DIR and DOTBARE_TREE to customize location, more information run dotbare finit -h"
+  echo "git bare repository will be initialised at ${DOTBARE_DIR}"
+  echo "git bare repository will be tracking ${DOTBARE_TREE}"
+  confirm=$(get_confirmation)
+  [[ "${confirm}" != 'y' ]] && exit 1
 
-if [[ -d "${DOTBARE_DIR}" ]]; then
-  echo "${DOTBARE_DIR} already exist"
+  if [[ -d "${DOTBARE_DIR}" ]]; then
+    echo "${DOTBARE_DIR} already exist"
+  else
+    git init --bare "${DOTBARE_DIR}"
+    /usr/bin/git --git-dir "${DOTBARE_DIR}" --work-tree "${DOTBARE_TREE}" \
+      config --local status.showUntrackedFiles no
+  fi
 else
-  git init --bare "${DOTBARE_DIR}"
-  /usr/bin/git --git-dir "${DOTBARE_DIR}" --work-tree "${DOTBARE_TREE}" \
-    config --local status.showUntrackedFiles no
+  cd "${DOTBARE_TREE}"
+  echo "${DOTBARE_DIR}" >> .gitignore
+  git clone --bare "${remote_url}" "${DOTBARE_DIR}"
 fi
