@@ -49,6 +49,11 @@ if [[ $# -eq 0 ]]; then
   exit 0
 fi
 
+[[ "$@" == 'add --all' ]] && \
+  echo 'If you intend to stage all modified file, run dotbare add -u' && \
+  echo "dotbare disabled add --all option as this will stage every single file in ${DOTBARE_TREE}" && \
+  exit 1
+
 action_command=''
 case "$1" in
   fadd)
