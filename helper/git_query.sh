@@ -60,8 +60,16 @@ function get_branch() {
         }
       }' \
     | fzf --no-multi --header="${header}" \
-      --preview="/usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
-      log --oneline --graph --color=always --decorate=short {}"
+        --preview="echo {} \
+      | awk '{
+          if (\$0 ~ /.*HEAD.*/) {
+            print \"HEAD\"
+          } else {
+            print \$0
+          }
+        }' \
+      | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
+          log --oneline --graph --color=always --decorate=short __"
 }
 
 #######################################
