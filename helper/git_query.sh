@@ -16,20 +16,20 @@ function get_commit() {
   local files="$2"
   if [[ -z "${files}" ]]; then
     /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
-    log --oneline --color=always --decorate=short \
+      log --oneline --color=always --decorate=short \
       | fzf --no-multi --header="${header}" \
-        --preview "echo {} \
+          --preview "echo {} \
           | awk '{print \$1}' \
           | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
-            show --color=always  __" \
+              show --color=always  __" \
       | awk '{print $1}'
   else
     /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
-    log --oneline --color=always --decorate=short \
+      log --oneline --color=always --decorate=short \
       | fzf --no-multi --header="${header}" --preview "echo {} \
           | awk '{print \$1}' \
           | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
-            diff --color=always __ $files" \
+              diff --color=always __ $files" \
       | awk '{print $1}'
   fi
 }
@@ -87,9 +87,9 @@ function get_git_file() {
   local print_opt="${2:-full}"
   set_fzf_multi "$3"
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
-  ls-files --full-name --directory "${DOTBARE_TREE}" \
+    ls-files --full-name --directory "${DOTBARE_TREE}" \
     | fzf --header="${header}" \
-      --preview "head -50 ${DOTBARE_TREE}/{}" \
+        --preview "head -50 ${DOTBARE_TREE}/{}" \
     | awk -v home="${DOTBARE_TREE}" -v print_opt="${print_opt}" '{
         if (print_opt == "full") {
           print home "/" $0
@@ -123,7 +123,7 @@ function get_modified_file() {
   local output_format="${3:-name}"
   set_fzf_multi "$4"
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
-  status --porcelain \
+    status --porcelain \
     | awk -v display_mode="${display_mode}" '{
         if ($0 ~ /^[A-Za-z][A-Za-z].*$/) {
           print "\033[32m" substr($0, 1, 1) "\033[31m" substr($0, 2) "\033[0m"
@@ -140,7 +140,7 @@ function get_modified_file() {
     | fzf --header="${header}" --preview "echo {} \
         | awk '{print \$2}' \
         | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
-          diff HEAD --color=always ${DOTBARE_TREE}/__" \
+            diff HEAD --color=always ${DOTBARE_TREE}/__" \
     | awk -v home="${DOTBARE_TREE}" -v format="${output_format}" '{
         if (format == "name") {
           print home "/" $2
@@ -163,14 +163,14 @@ function get_stash() {
   local header="${1:-select a stash}"
   set_fzf_multi "$2"
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
-  stash list \
+    stash list \
     | fzf --header="${header}" --preview "echo {} \
         | awk '{
             gsub(/:/, \"\", \$1)
             print \$1
           }' \
         | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
-          show -p __ --color=always" \
+            show -p __ --color=always" \
     | awk '{
         gsub(/:/, "", $1)
         print $1

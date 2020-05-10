@@ -32,11 +32,11 @@ function usage() {
   echo -e "Reset/Unstage the selected staged file"
   echo -e "Or reset the HEAD to certain commits by using -c flag\n"
   echo -e "optional arguments:"
-  echo -e "  -h\t\tshow this help message and exit"
-  echo -e "  -a\t\tselect files and then select a commit to reset the file back to the selected comit"
-  echo -e "  -c\t\treset commit to certain commit, default --mixed flag, reset HEAD to certain commit put all changes into modified states"
-  echo -e "  -S\t\treset commit using --soft flag, reset HEAD to certain commit without modify working tree"
-  echo -e "  -H\t\treset commit using --hard flag, reset HEAD to certain commit dicard all changes from the working tree"
+  echo -e "  -h\tshow this help message and exit"
+  echo -e "  -a\tselect files and then select a commit to reset the file back to the selected comit"
+  echo -e "  -c\treset commit to certain commit, default --mixed flag, reset HEAD to certain commit put all changes into modified states"
+  echo -e "  -S\treset commit using --soft flag, reset HEAD to certain commit without modify working tree"
+  echo -e "  -H\treset commit using --hard flag, reset HEAD to certain commit dicard all changes from the working tree"
 }
 
 reset_commit=""

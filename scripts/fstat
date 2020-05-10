@@ -23,7 +23,7 @@ function usage() {
   echo -e "Display interactive git status menu"
   echo -e "Stage, unstage, interactively\n"
   echo -e "optional arguments:"
-  echo -e "  -h\t\tshow this help message and exit"
+  echo -e "  -h\tshow this help message and exit"
 }
 
 while getopts ":h" opt; do

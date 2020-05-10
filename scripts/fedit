@@ -26,9 +26,9 @@ function usage() {
   echo -e "List all tracked dotfiles and edit"
   echo -e "also support commit message edit\n"
   echo -e "optional arguments:"
-  echo -e "  -h\t\tshow this help message and exit"
-  echo -e "  -m\t\tonly display modified file"
-  echo -e "  -c\t\tedit commit using interactive rebase instead"
+  echo -e "  -h\tshow this help message and exit"
+  echo -e "  -m\tonly display modified file"
+  echo -e "  -c\tedit commit using interactive rebase instead"
 }
 
 modified=''
