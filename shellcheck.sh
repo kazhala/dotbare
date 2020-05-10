@@ -18,5 +18,6 @@ done < <(
   )
 
 shellcheck -e SC1090 "${scripts[@]}"
+shellcheck "${scripts[@]}"
 
 exit $?
