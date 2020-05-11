@@ -4,6 +4,7 @@ phases:
   install:
     commands:
       - echo Installing shellcheck ...
+      - apt-get update -y
       - apt-get install shellcheck -y
   build:
     commands:
