@@ -4,9 +4,10 @@ phases:
   install:
     commands:
       - echo Installing shellcheck ...
-      - yum update -y
+      - yum-config-manager --enable epel
       - yum install ShellCheck -y
   build:
     commands:
       - echo Checking script compliance
       - ./shellcheck.sh
+      - echo $?
