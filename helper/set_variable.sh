@@ -22,11 +22,12 @@ if [[ -z "${DOTBARE_KEY}" ]]; then
     --bind=alt-a:toggle-all
     --bind=alt-w:jump
     --bind=alt-0:top
-    --bind=alt-c:clear-query
     --bind=alt-s:toggle-sort
     --bind=alt-t:toggle-preview
   "
 fi
+
+[[ -z "${FZF_DEFAULT_OPTS}" ]] && export FZF_DEFAULT_OPTS='--cycle'
 
 FZF_DEFAULT_OPTS="
   $FZF_DEFAULT_OPTS
