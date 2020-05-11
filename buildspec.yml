@@ -4,7 +4,7 @@ phases:
   install:
     commands:
       - echo Installing shellcheck ...
-      - yum install ShellCheck -y
+      - apt-get install shellcheck -y
   build:
     commands:
       - echo Checking script compliance
