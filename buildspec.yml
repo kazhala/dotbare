@@ -4,7 +4,7 @@ phases:
   install:
     commands:
       - echo Installing shellcheck ...
-      - amazon-linux-extras install epel -y
+      - yum install epel -y
       - yum install ShellCheck -y
   build:
     commands:
