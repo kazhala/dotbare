@@ -1,7 +1,7 @@
 # dotbare
 
-![](https://github.com/kazhala/dotbare/workflows/DockerBuild/badge.svg)
-![](https://travis-ci.com/kazhala/dotbare.svg?branch=master)
-![](https://codebuild.ap-southeast-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiQVZraHNtSFpDSjFETVBOcndEY1k0UVNEcWpYUmx1TFArMXRxQ0VLWitGQkhKOEZOOCtQSEZvdXFlQ2htcUlTMzdIeVNEWW81cFhndVJTeE1QWUFEQTQwPSIsIml2UGFyYW1ldGVyU3BlYyI6Ik1XQUc2VDYvY0JOTmUwYTMiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
+[![Build Status](https://travis-ci.com/kazhala/dotbare.svg?branch=master&label=travis%20build)](https://travis-ci.com/kazhala/dotbare)
+![DockerBuild](https://github.com/kazhala/dotbare/workflows/DockerBuild/badge.svg)
+![AWSCodeBuild](https://codebuild.ap-southeast-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiQVZraHNtSFpDSjFETVBOcndEY1k0UVNEcWpYUmx1TFArMXRxQ0VLWitGQkhKOEZOOCtQSEZvdXFlQ2htcUlTMzdIeVNEWW81cFhndVJTeE1QWUFEQTQwPSIsIml2UGFyYW1ldGVyU3BlYyI6Ik1XQUc2VDYvY0JOTmUwYTMiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
 
 WIP
