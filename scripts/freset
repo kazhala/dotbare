@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # unstage the selected staged file
 # or reset the commit to certain point

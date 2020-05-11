@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # interactive git status menu
 # allow staging ustaging actions

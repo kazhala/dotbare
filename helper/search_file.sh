@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # search local file or directory taking consideration of optional dependency
 

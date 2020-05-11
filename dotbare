@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Main entry script for dotbare, used to route command to appropriate scripts
 #
