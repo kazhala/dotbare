@@ -1,0 +1,12 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Installing shellcheck ...
+      - amazon-linux-extras install epel -y
+      - yum install ShellCheck -y
+  build:
+    commands:
+      - echo Checking script compliance
+      - ./shellcheck.sh
