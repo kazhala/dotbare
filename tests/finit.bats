@@ -30,7 +30,7 @@ migration() {
 
 @test "finit help" {
   run help
-  [ "${status}" -eq 0 ]
+  [ "${status}" -eq 1 ]
   [ "${lines[0]}" = "Usage: dotbare finit [-h] [-u URL] ..." ]
 }
 

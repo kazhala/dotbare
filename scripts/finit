@@ -93,4 +93,5 @@ else
   fi
   echo "File checkout succeeded"
   echo "Migration completed"
+  exit 0
 fi

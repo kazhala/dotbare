@@ -7,7 +7,7 @@ migrate() {
 }
 
 @test "set up test environment" {
-  [[ -d "${DOTBARE_DIR}" ]] && skip
+  [ -d "${DOTBARE_DIR}" ] && skip
   migrate
   [ "${status}" -eq 0 ]
 }

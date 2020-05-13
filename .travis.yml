@@ -19,5 +19,5 @@ script:
       bats tests/
     elif [[ "$${TRAVIS_OS_NAME:-}" == 'linux' ]]; then
       docker run -it -v "${PWD}:/code" bats/bats:latest tests/fsetup.bats
-      docker run -it -v "${PWD}:/code" bats/bats:latest tests
+      docker run -it -v "${PWD}:/code" bats/bats:latest tests/
     fi
