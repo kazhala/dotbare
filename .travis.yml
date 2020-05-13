@@ -1,7 +1,8 @@
 language: bash
 os: linux
-before_script: npm install -g bats
+service:
+  - docker
 script:
   - ./shellcheck.sh
-  - dotbare finit -u https://github.com/kazhala/dotfiles.git
-  - bats tests
+  - docker image build -t kazhala/dotbare:test -f tests/Dockerfile .
+  - docker container run -it --rm --name dotbare kazhala/dotbare:test
