@@ -4,5 +4,7 @@ service:
   - docker
 script:
   - ./shellcheck.sh
-  - docker image build -t kazhala/dotbare:test -f tests/Dockerfile .
-  - docker container run -it --rm --name dotbare kazhala/dotbare:test
+  - docker image build --build-arg MIGRATE=url -t kazhala/dotbare:testurl -f tests/Dockerfile .
+  - docker container run -it --rm --name dotbare kazhala/dotbare:testurl
+  - docker image build --build-arg MIGRATE=bare -t kazhala/dotbare:testbare -f tests/Dockerfile .
+  - docker container run -it --rm --name dotbare kazhala/dotbare:testbare

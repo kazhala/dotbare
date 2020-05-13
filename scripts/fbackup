@@ -76,11 +76,6 @@ done
 
 [[ -n "${selected_files}" ]] && dotbare_backup "${selected_files}" "${action_command}"
 
-[[ ! -d "${DOTBARE_DIR}" ]] \
-  && echo "Could not locate your DOTBARE_DIR" \
-  && echo "Run dotbare finit or dotbare finit -u URL to initialise dotbare" \
-  && exit 1
-
 cd "${DOTBARE_TREE}"
 if [[ -n "${individual_file}" ]]; then
   selected_files=$(get_git_file "select files to backup" "raw")
@@ -89,4 +84,5 @@ else
     ls-files --full-name --directory "${DOTBARE_TREE}")
 fi
 
+[[ -z "${selected_files}" ]] && exit 0
 dotbare_backup "${selected_files}" "${action_command}"
