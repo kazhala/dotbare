@@ -2,4 +2,10 @@ language: bash
 os:
   - linux
   - osx
+service:
+  - docker
+before_script: |
+  if [[ "${TRAVIS_OS_NAME:-}" == 'osx' ]]; then
+    brew install shellcheck
+  fi
 script: ./shellcheck.sh
