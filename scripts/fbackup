@@ -22,7 +22,7 @@ source "${mydir}"/../helper/set_variable.sh
 source "${mydir}"/../helper/git_query.sh
 
 function usage() {
-  echo -e "Usage: dotbare fbackup [-h] ...\n"
+  echo -e "Usage: dotbare fbackup [-h] [-s] [-p PATH] ...\n"
   echo -e "Backup files to ${DOTBARE_BACKUP}"
   echo -e "This is useful when untracking files or migrating on new machines\n"
   echo -e "optional arguments:"

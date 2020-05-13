@@ -24,7 +24,7 @@ source "${mydir}"/../helper/git_query.sh
 source "${mydir}"/../helper/get_confirmation.sh
 
 function usage() {
-  echo -e "Usage: dotbare flog [-h] [-f] [-d] ...\n"
+  echo -e "Usage: dotbare flog [-h] [-r] [-R] [-e] [-c] ...\n"
   echo -e "Interactive log viewer with action menu"
   echo -e "Action menu contains command including revert|reset|edit|checkout"
   echo -e "optional arguments:"

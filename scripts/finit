@@ -18,7 +18,7 @@ source "${mydir}"/../helper/set_variable.sh
 source "${mydir}"/../helper/get_confirmation.sh
 
 function usage() {
-  echo -e "Usage: dotbare finit [-h] [-u] ...\n"
+  echo -e "Usage: dotbare finit [-h] [-u URL] ...\n"
   echo -e "Init the git bare repository if doesn't exist"
   # shellcheck disable=SC2016
   echo -e 'The bare repository will be initialised under ${DOTBARE_DIR}, default to $HOME/.cfg if not set'

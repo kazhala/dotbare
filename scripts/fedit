@@ -22,7 +22,7 @@ source "${mydir}"/../helper/set_variable.sh
 source "${mydir}"/../helper/git_query.sh
 
 function usage() {
-  echo -e "Usage: dotbare fedit [-h] ...\n"
+  echo -e "Usage: dotbare fedit [-h] [-m] [-c] ...\n"
   echo -e "List all tracked dotfiles and edit"
   echo -e "also support commit message edit\n"
   echo -e "optional arguments:"

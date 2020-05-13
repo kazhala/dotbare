@@ -16,7 +16,7 @@ no_file_selected() {
 @test "fedit help" {
   run help
   [ "${status}" -eq 0 ]
-  [ "${lines[0]}" = "Usage: dotbare fedit [-h] ..." ]
+  [ "${lines[0]}" = "Usage: dotbare fedit [-h] [-m] [-c] ..." ]
 }
 
 @test "fedit invalid option" {

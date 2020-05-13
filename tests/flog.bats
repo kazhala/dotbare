@@ -11,7 +11,7 @@ invalid_option() {
 @test "flog help" {
   run help
   [ "${status}" -eq 0 ]
-  [ "${lines[0]}" = "Usage: dotbare flog [-h] [-f] [-d] ..." ]
+  [ "${lines[0]}" = "Usage: dotbare flog [-h] [-r] [-R] [-e] [-c] ..." ]
 }
 
 @test "flog invalid option" {

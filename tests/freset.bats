@@ -11,7 +11,7 @@ invalid_option() {
 @test "freset help" {
   run help
   [ "${status}" -eq 0 ]
-  [ "${lines[0]}" = "Usage: dotbare freset [-h] [-c] [-S] [-H] ..." ]
+  [ "${lines[0]}" = "Usage: dotbare freset [-h] [-a] [-c] [-S] [-H] ..." ]
 }
 
 @test "freset invalid option" {
