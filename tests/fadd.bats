@@ -19,7 +19,7 @@ no_file_selected() {
   [ "${lines[0]}" = "Usage: dotbare fadd [-h] [-f] [-d] ..." ]
 }
 
-@test "fadd nofile stage" {
+@test "fadd invalid option" {
   run invalid_option
   [ "${status}" -eq 1 ]
   [ "${lines[0]}" = "Invalid option: p" ]
