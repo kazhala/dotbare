@@ -1,2 +1,5 @@
 language: bash
+os:
+  - linux
+  - osx
 script: ./shellcheck.sh
