@@ -23,7 +23,7 @@ source "${mydir}"/../helper/git_query.sh
 source "${mydir}"/../helper/get_confirmation.sh
 
 function usage() {
-  echo -e "Usage: dotbare funtrack [-h] [-f] [-d] ...\n"
+  echo -e "Usage: dotbare funtrack [-h] [-s] [-S] ...\n"
   echo -e "Untrack selected files from git\n"
   echo -e "Note: by default, the untrack will remove the file from index while"
   echo -e "keeping the file in your current system (git rm --cached filename)"
