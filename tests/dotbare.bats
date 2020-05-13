@@ -13,7 +13,7 @@ routing() {
 }
 
 normal_git() {
-  "${BATS_TEST_DIRNAME}"/../dotbare status
+  "${BATS_TEST_DIRNAME}"/../dotbare add -h
 }
 
 invalid_command() {
@@ -40,7 +40,7 @@ invalid_command() {
 
 @test "main git command" {
   run normal_git
-  [ "${status}" -eq 0 ]
+  [ "${status}" -eq 129 ]
 }
 
 @test "main invliad command" {

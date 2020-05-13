@@ -2,6 +2,7 @@
 
 setup() {
   export DOTBARE_BACKUP="$HOME/.local/share/dotbare_test"
+  export DOTBARE_DIR="${HOME}/.cfg/"
 }
 
 teardown() {
@@ -38,8 +39,13 @@ individual_backup() {
 }
 
 @test "fbackup backup all files" {
-  run backup
-  [ "${status}" -eq 0 ]
+  if [ ! -d "${DOTBARE_DIR}" ]; then
+    run backup
+    [ "${status}" -eq 1 ]
+  else
+    run backup
+    [ "${status}" -eq 0 ]
+  fi
 }
 
 @test "fbackup backup individual file" {
