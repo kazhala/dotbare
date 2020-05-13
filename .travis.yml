@@ -7,5 +7,17 @@ service:
 before_script: |
   if [[ "${TRAVIS_OS_NAME:-}" == 'osx' ]]; then
     brew install shellcheck
+    brew install bats-core
+  elif [[ "${TRAVIS_OS_NAME:-}" == 'linux' ]]; then
+    docker pull bats/bats:latest
   fi
-script: ./shellcheck.sh
+script:
+  - ./shellcheck.sh
+  - |
+    if [[ "${TRAVIS_OS_NAME:-}" == 'osx' ]]; then
+      bats tests/fsetup.bats
+      bats tests/
+    elif [[ "$${TRAVIS_OS_NAME:-}" == 'linux' ]]; then
+      docker run -it -v "${PWD}:/code" bats/bats:latest tests/fsetup.bats
+      docker run -it -v "${PWD}:/code" bats/bats:latest tests
+    fi
