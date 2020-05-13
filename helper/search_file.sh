@@ -33,6 +33,13 @@ function search_file() {
   fi
 }
 
+#######################################
+# chekc if fd and tree are available
+# the reason to check output in unconventional way is
+# because the status code is reused multiple times
+# Outputs:
+#   status: 1 or 0
+#######################################
 function fd_exists() {
   fd -V &>/dev/null
   echo "$?"

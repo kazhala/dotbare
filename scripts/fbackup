@@ -68,7 +68,7 @@ while getopts ":hsp:m" opt; do
     *)
       echo "Invalid option: ${OPTARG}" >&2
       usage
-      exit 0
+      exit 1
       ;;
   esac
 done
