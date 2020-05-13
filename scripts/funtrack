@@ -17,7 +17,7 @@
 set -e
 set -f
 
-mydir="${0%/*}"
+mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "${mydir}"/../helper/set_variable.sh
 source "${mydir}"/../helper/git_query.sh
 source "${mydir}"/../helper/get_confirmation.sh

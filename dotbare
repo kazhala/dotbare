@@ -13,7 +13,7 @@
 #   option flags:
 #     check sub commands for available option flags
 
-mydir="${0%/*}"
+mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "${mydir}"/helper/set_variable.sh
 
 function usage() {
