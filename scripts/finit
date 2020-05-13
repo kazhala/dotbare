@@ -64,6 +64,7 @@ if [[ -z "${remote_url}" ]]; then
       config --local status.showUntrackedFiles no
   fi
 else
+  [[ ! -d "${DOTBARE_TREE}" ]] && mkdir -p "${DOTBARE_TREE}"
   cd "${DOTBARE_TREE}"
   if [[ -f ".gitignore" ]]; then
     pattern=$(basename "${DOTBARE_DIR}")

@@ -8,6 +8,10 @@ setup() {
 
 teardown() {
   unset confirm
+  if [[ "${DOTBARE_DIR}" == "$HOME/.local/share/dotbare_test/.cfg" ]] \
+    && [[ "${DOTBARE_TREE}" == "$HOME/.local/share/dotbare_test" ]]; then
+    rm -rf "${DOTBARE_TREE}"
+  fi
 }
 
 help() {
@@ -37,6 +41,7 @@ migration() {
 }
 
 @test "migration" {
+  [[ -d "${DOTBARE_DIR}" ]] && rm -rf "${DOTBARE_DIR}"
   run migration
   [ "${status}" -eq 0 ]
 }
