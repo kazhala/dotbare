@@ -12,6 +12,8 @@ teardown() {
     && [[ "${DOTBARE_TREE}" == "$HOME/.local/share/dotbare_test" ]]; then
     rm -rf "${DOTBARE_TREE}"
   fi
+  unset DOTBARE_DIR
+  unset DOTBARE_TREE
 }
 
 help() {
