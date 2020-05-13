@@ -18,7 +18,7 @@ source "${mydir}"/../helper/set_variable.sh
 source "${mydir}"/../helper/get_confirmation.sh
 
 function usage() {
-  echo -e "Usage: dotbare finit [-h] ...\n"
+  echo -e "Usage: dotbare finit [-h] [-u] ...\n"
   echo -e "Init the git bare repository if doesn't exist"
   # shellcheck disable=SC2016
   echo -e 'The bare repository will be initialised under ${DOTBARE_DIR}, default to $HOME/.cfg if not set'
@@ -52,11 +52,12 @@ if [[ -z "${remote_url}" ]]; then
   echo "modify DOTBARE_DIR and DOTBARE_TREE to customize location, more information run dotbare finit -h"
   echo "git bare repository will be initialised at ${DOTBARE_DIR}"
   echo "git bare repository will be tracking ${DOTBARE_TREE}"
-  confirm=$(get_confirmation)
+  [[ -z "${confirm}" ]] && confirm=$(get_confirmation)
   [[ "${confirm}" != 'y' ]] && exit 1
 
   if [[ -d "${DOTBARE_DIR}" ]]; then
     echo "${DOTBARE_DIR} already exist"
+    exit 1
   else
     git init --bare "${DOTBARE_DIR}"
     /usr/bin/git --git-dir "${DOTBARE_DIR}" --work-tree "${DOTBARE_TREE}" \
