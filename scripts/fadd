@@ -40,7 +40,7 @@ function stage_file() {
   local file=$1
   if [[ -z "${file}" ]]
   then
-    exit 0
+    exit 1
   else
     # shellcheck disable=SC2086
     /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" add ${file}
