@@ -26,9 +26,9 @@ function search_file() {
     elif [[ "${exe_fd}" -eq 0 && "${exe_tree}" -ne 0 ]]; then
       fd -H -d 1 -t d -E .git | fzf --multi
     elif [[ "${exe_fd}" -ne 0 && "${exe_tree}" -eq 0 ]]; then
-      find . -maxdepth 1 -type d | awk '{if ($0 != "." && $0 != "./.git"){print $0}}' | sed "s|\./||g" | fzf --multi --preview "tree -L 1 -C --dirsfirst {}"
+      find . -maxdepth 1 -type d | awk '{if ($0 != "." && $0 != "./.git"){gsub(/^\.\//, "", $0);print $0}}' | fzf --multi --preview "tree -L 1 -C --dirsfirst {}"
     else
-      find . -maxdepth 1 -type d | awk '{if ($0 != "." && $0 != "./.git"){print $0}}' | sed "s|\./||g" | fzf --multi
+      find . -maxdepth 1 -type d | awk '{if ($0 != "." && $0 != "./.git"){gsub(/^\.\//, "", $0);print $0}}' | fzf --multi
     fi
   fi
 }
