@@ -1,11 +1,9 @@
 language: bash
-os:
-  - linux
-  - osx
+os: linux
 service:
   - docker
 before_script: docker pull bats/bats:latest
 script:
   - ./shellcheck.sh
-  - ./dotbare finit -u https://github.com/kazhala/dotfiles.git
-  - docker run -it -v "${PWD}:/code" bats/bats:latest tests/
+  - dotbare finit -u https://github.com/kazhala/dotfiles.git
+  - docker run -it -v "${PWD}:/code" bats/bats:latest tests
