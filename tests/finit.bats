@@ -34,7 +34,7 @@ migration() {
   [ "${lines[0]}" = "Usage: dotbare finit [-h] [-u] ..." ]
 }
 
-@test "init dotbare" {
+@test "finit init dotbare" {
   run init
   [ "${status}" -eq 0 ]
   run init
@@ -42,7 +42,7 @@ migration() {
   [ "${lines[3]}" = "${DOTBARE_DIR} already exist" ]
 }
 
-@test "migration" {
+@test "finit migration" {
   [[ -d "${DOTBARE_DIR}" ]] && rm -rf "${DOTBARE_DIR}"
   run migration
   [ "${status}" -eq 0 ]

@@ -37,12 +37,12 @@ individual_backup() {
   [ "${lines[0]}" = 'Invalid option: f' ]
 }
 
-@test "backup all files" {
+@test "fbackup backup all files" {
   run backup
   [ "${status}" -eq 0 ]
 }
 
-@test "backup individual file" {
+@test "fbackup backup individual file" {
   run individual_backup
   [ "${status}" -eq 0 ]
 }

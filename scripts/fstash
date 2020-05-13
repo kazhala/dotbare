@@ -23,7 +23,7 @@ source "${mydir}"/../helper/get_confirmation.sh
 source "${mydir}"/../helper/git_query.sh
 
 function usage() {
-  echo -e "Usage: dotbare fstash [-h] [-a] [-b] [-c] ...\n"
+  echo -e "Usage: dotbare fstash [-h] [-f] [-d] [-p] ...\n"
   echo -e "save/apply stash using fzf"
   echo -e "By default, running fstash will apply the selected stash"
   echo -e "To stash only some files, add -f flag\n"

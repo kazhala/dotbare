@@ -25,7 +25,7 @@ no_file_selected() {
   [ "${lines[0]}" = "Invalid option: p" ]
 }
 
-@test "fadd no file selected" {
+@test "fedit no file selected" {
   run no_file_selected
   [ "${status}" -eq 1 ]
 }
