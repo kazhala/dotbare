@@ -14,7 +14,7 @@ phases:
   pre_build:
     commands:
       - echo Login to dockerhub
-      - docker login –u $LOGIN_USERNAME –p $LOGIN_PASSWORD
+      - 'echo $LOGIN_PASSWORD | docker login --username $LOGIN_USERNAME --password-stdin'
   build:
     commands:
       - echo Checking script compliance
