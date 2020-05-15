@@ -27,6 +27,10 @@ individual_backup() {
   bash "${BATS_TEST_DIRNAME}"/../dotbare fbackup -p fadd.bats
 }
 
+check_empty() {
+  git log
+}
+
 @test "fbackup help" {
   run help
   [ "${status}" -eq 0 ]
@@ -39,16 +43,18 @@ individual_backup() {
 }
 
 @test "fbackup backup all files" {
-  if [ ! -d "${DOTBARE_DIR}" ]; then
-    run backup
-    [ "${status}" -eq 1 ]
-  else
+  run check_empty
+  if [ "${status}" -eq 0 ]; then
     run backup
     [ "${status}" -eq 0 ]
+    [ -f "${DOTBARE_BACKUP}"/.bashrc ]
+  else
+    skip
   fi
 }
 
 @test "fbackup backup individual file" {
   run individual_backup
   [ "${status}" -eq 0 ]
+  [ -f "${DOTBARE_BACKUP}"/fadd.bats ]
 }

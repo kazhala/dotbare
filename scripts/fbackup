@@ -84,5 +84,5 @@ else
     ls-files --full-name --directory "${DOTBARE_TREE}")
 fi
 
-[[ -z "${selected_files}" ]] && exit 0
+[[ -z "${selected_files}" ]] && exit 1
 dotbare_backup "${selected_files}" "${action_command}"
