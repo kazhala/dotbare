@@ -23,10 +23,16 @@ jobs:
       - run: npm install -g bats
       - run: ./dotbare finit -u https://github.com/kazhala/dotfiles.git
       - run: bats tests
+      - run: rm -rf "$HOME"/.cfg
+      - run: export confirm='y' && ./dotbare finit
+      - run: bats tests
   macos:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - run: brew install bats
+      - run: ./dotbare finit -u https://github.com/kazhala/dotfiles.git
+      - run: bats tests
+      - run: rm -rf "$HOME"/.cfg
       - run: export confirm='y' && ./dotbare finit
       - run: bats tests
