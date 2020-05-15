@@ -35,12 +35,13 @@ function usage() {
   echo -e "  -s\ttemporarily ignore changes of selected files"
   echo -e "    \tuse -S flag to resume tracking changes of selected_files"
   echo -e "  -S\tresume tracking changes of selected files"
+  echo -e "  -y\tconfirm action by default and skip confirmation"
 }
 
 update_index=""
 re_track=""
 
-while getopts ":hsS" opt
+while getopts ":hsSy" opt
 do
   case "$opt" in
     s)
@@ -48,6 +49,9 @@ do
       ;;
     S)
       re_track="true"
+      ;;
+    y)
+      confirm='y'
       ;;
     h)
       usage
@@ -67,7 +71,7 @@ selected_files=$(get_git_file "select files to untrack" | tr "\n" " ")
 
 if [[ -n "${update_index}" ]]; then
   echo "(dryrun) dotbare update-index --assume-unchanged ${selected_files}"
-  confirm=$(get_confirmation "Files will be temporarily stop being tracked for changes, continue?")
+  [[ -z "${confirm}" ]] && confirm=$(get_confirmation "Files will be temporarily stop being tracked for changes, continue?")
   [[ "${confirm}" != 'y' ]] && exit 1
   # shellcheck disable=SC2086
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" update-index --assume-unchanged ${selected_files}
@@ -78,7 +82,7 @@ if [[ -n "${update_index}" ]]; then
   echo "documentation for more information"
 elif [[ -n "${re_track}" ]]; then
   echo "(dryrun) dotbare update-index --no-assume-unchanged ${selected_files}"
-  confirm=$(get_confirmation "Files will resume being tracked by git, continue?")
+  [[ -z "${confirm}" ]] && confirm=$(get_confirmation "Files will resume being tracked by git, continue?")
   [[ "${confirm}" != 'y' ]] && exit 1
   # shellcheck disable=SC2086
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" update-index --no-assume-unchanged ${selected_files}
@@ -89,7 +93,7 @@ elif [[ -n "${re_track}" ]]; then
   echo "documentation for more information"
 else
   echo "(dryrun) dotbare rm --cached ${selected_files}"
-  confirm=$(get_confirmation "Untrack the selected files?")
+  [[ -z "${confirm}" ]] && confirm=$(get_confirmation "Untrack the selected files?")
   [[ "${confirm}" != 'y' ]] && exit 1 
   # shellcheck disable=SC2086
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" rm --cached ${selected_files}

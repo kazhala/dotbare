@@ -37,13 +37,14 @@ function usage() {
   echo -e "  -c\treset commit to certain commit, default --mixed flag, reset HEAD to certain commit put all changes into modified states"
   echo -e "  -S\treset commit using --soft flag, reset HEAD to certain commit without modify working tree"
   echo -e "  -H\treset commit using --hard flag, reset HEAD to certain commit dicard all changes from the working tree"
+  echo -e "  -y\tconfirm action by default and skip confirmation"
 }
 
 reset_commit=""
 reset_option="--mixed"
 all_files=""
 
-while getopts ":hacSH" opt
+while getopts ":hacSHy" opt
 do
   case "$opt" in
     a)
@@ -57,6 +58,9 @@ do
       ;;
     H)
       reset_option="--hard"
+      ;;
+    y)
+      confirm='y'
       ;;
     h)
       usage
@@ -73,8 +77,8 @@ done
 if [[ -n "${reset_commit}" ]]; then
   selected_commit=$(get_commit)
   [[ -z "${selected_commit}" ]] && exit 0
-  confirm=$(get_confirmation "Reset HEAD to ${selected_commit} ${reset_option}?")
-  [[ "${confirm}" != 'y' ]] && exit 0
+  [[ -z "${confirm}" ]] && confirm=$(get_confirmation "Reset HEAD to ${selected_commit} ${reset_option}?")
+  [[ "${confirm}" != 'y' ]] && exit 1
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset "${selected_commit}" "${reset_option}"
 else
   if [[ -z "${all_files}" ]]; then

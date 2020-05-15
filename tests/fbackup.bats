@@ -49,7 +49,8 @@ check_empty() {
     [ "${status}" -eq 0 ]
     [ -f "${DOTBARE_BACKUP}"/.bashrc ]
   else
-    skip
+    run backup
+    [ "${status}" -eq 1 ]
   fi
 }
 

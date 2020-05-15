@@ -33,6 +33,7 @@ function usage() {
   echo -e "  -R\treset HEAD back to selected commit"
   echo -e "  -e\tedit selected commit through interactive rebase"
   echo -e "  -c\tcheckout selected commit"
+  echo -e "  -y\tconfirm action by default and skip confirmation"
 }
 
 #######################################
@@ -73,23 +74,22 @@ function draw_menu() {
 
 selected_action=""
 
-while getopts ":hrRec" opt; do
+while getopts ":hrRecy" opt; do
   case "$opt" in
     r)
       selected_action="revert"
-      break
       ;;
     R)
       selected_action="reset"
-      break
       ;;
     e)
       selected_action="edit"
-      break
       ;;
     c)
       selected_action="checkout"
-      break
+      ;;
+    y)
+      confirm='y'
       ;;
     h)
       usage
@@ -116,7 +116,7 @@ if [[ "${selected_action}" != 'exit' ]]; then
   else
     echo "(dryrun) ${selected_action} ${selected_commit}"
   fi
-  confirm=$(get_confirmation)
+  [[ -z "${confirm}" ]] && confirm=$(get_confirmation)
   [[ "${confirm}" != 'y' ]] && exit 1
 fi
 

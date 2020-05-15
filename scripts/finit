@@ -27,14 +27,17 @@ function usage() {
   echo -e "optional arguments:"
   echo -e "  -h\t\tshow this help message and exit"
   echo -e "  -u URL\tmigrate existing dotfiles from the git URL to current system"
+  echo -e "  -y\t\tconfirm action by default and skip confirmation"
 }
 
 remote_url=""
-while getopts ":hu:" opt; do
+while getopts ":hu:y" opt; do
   case "$opt" in
     u)
       remote_url="${OPTARG}"
-      break
+      ;;
+    y)
+      confirm='y'
       ;;
     h)
       usage
