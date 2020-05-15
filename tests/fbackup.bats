@@ -6,7 +6,7 @@ setup() {
 }
 
 teardown() {
-  rm -r "$DOTBARE_BACKUP"
+  [ -d "${DOTBARE_BACKUP}" ] && rm -r "$DOTBARE_BACKUP"
   unset DOTBARE_BACKUP
 }
 
@@ -28,7 +28,7 @@ individual_backup() {
 }
 
 check_empty() {
-  git log
+  bash "${BATS_TEST_DIRNAME}"/../dotbare log
 }
 
 @test "fbackup help" {

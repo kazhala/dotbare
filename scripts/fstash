@@ -5,7 +5,7 @@
 # @params
 # Globals
 #   ${mydir}: current dir of the script, source purpose
-#   ${stash_file}: select modified files and stash
+#   ${stash_command}: stash command, pop, apply or file/delete to stash file or delete stash
 #   ${selected_file}: selected files to stash
 #   ${selected_stash}: selected stash to apply
 # Arguments
@@ -34,23 +34,21 @@ function usage() {
   echo -e "  -p\tuse pop instead of apply when retrieving stash"
 }
 
-stash_file=""
-delete_stash=""
 stash_command="apply"
 
-while getopts ":hdfp" opt; do
+while getopts ":hdfpy" opt; do
   case "$opt" in
     p)
       stash_command="pop"
-      break
       ;;
     f)
-      stash_file="true"
-      break
+      stash_command="file"
       ;;
     d)
-      delete_stash="true"
-      break
+      stash_command="delete"
+      ;;
+    y)
+      confirm='y'
       ;;
     h)
       usage
@@ -64,18 +62,18 @@ while getopts ":hdfp" opt; do
   esac
 done
 
-if [[ -n "${stash_file}" ]]; then
+if [[ "${stash_command}" == "file" ]]; then
   selected_file=$(get_modified_file "select files to add to a stash")
   [[ -z "${selected_file}" ]] && exit 1
   # shellcheck disable=SC2086
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" stash -- ${selected_file}
-elif [[ -n "${delete_stash}" ]]; then
+elif [[ "${stash_command}" == "delete" ]]; then
   selected_stash=$(get_stash "select stash to delete")
   [[ -z "${selected_stash}" ]] && exit 1
   while IFS= read -r line; do
     echo "(dryrun) Drop ${line}"
   done <<< "${selected_stash}"
-  confirm=$(get_confirmation)
+  [[ -z "${confirm}" ]] && confirm=$(get_confirmation)
   [[ "${confirm}" != 'y' ]] && exit 1
   while IFS= read -r line; do
     /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" stash drop "${line}"
