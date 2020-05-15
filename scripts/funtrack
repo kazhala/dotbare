@@ -5,8 +5,7 @@
 # @params
 # Globals
 #   ${mydir}: current dir of the script
-#   ${update_index}: use update index operation to temp untrack files
-#   ${re_track}: retrack selected files
+#   ${track_type}: what method to use for untrack, untrack, update, retrack
 #   ${confirm}: use confirm status
 #   ${selected_files}: user selected_files for operation
 # Arguments
@@ -38,17 +37,16 @@ function usage() {
   echo -e "  -y\tconfirm action by default and skip confirmation"
 }
 
-update_index=""
-re_track=""
+track_type="untrack"
 
 while getopts ":hsSy" opt
 do
   case "$opt" in
     s)
-      update_index="true"
+      track_type="update"
       ;;
     S)
-      re_track="true"
+      track_type="retrack"
       ;;
     y)
       confirm='y'
@@ -69,7 +67,7 @@ selected_files=$(get_git_file "select files to untrack" | tr "\n" " ")
 [[ -z "${selected_files}" ]] && exit 1
 
 
-if [[ -n "${update_index}" ]]; then
+if [[ "${track_type}" == "update" ]]; then
   echo "(dryrun) dotbare update-index --assume-unchanged ${selected_files}"
   [[ -z "${confirm}" ]] && confirm=$(get_confirmation "Files will be temporarily stop being tracked for changes, continue?")
   [[ "${confirm}" != 'y' ]] && exit 1
@@ -80,7 +78,7 @@ if [[ -n "${update_index}" ]]; then
   echo "dotbare funtrack -s is not the recommanded way to untrack files, although it won't delete"
   echo "the files on other machines, please refer to git update-index official"
   echo "documentation for more information"
-elif [[ -n "${re_track}" ]]; then
+elif [[ "${track_type}" == "retrack" ]]; then
   echo "(dryrun) dotbare update-index --no-assume-unchanged ${selected_files}"
   [[ -z "${confirm}" ]] && confirm=$(get_confirmation "Files will resume being tracked by git, continue?")
   [[ "${confirm}" != 'y' ]] && exit 1
