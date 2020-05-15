@@ -16,7 +16,7 @@ jobs:
         node-version: [10]
     steps:
       - uses: actions/checkout@v2
-      - run: apt-get install shellcheck -y
+      - run: sudo apt-get install shellcheck -y
       - run: ./shellcheck.sh
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
