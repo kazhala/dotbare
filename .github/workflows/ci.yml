@@ -9,10 +9,11 @@ defaults:
 
 jobs:
   ubuntu:
-    runs-on: [ubuntu-latest, ubuntu-16.04]
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [10.x]
+        os: [ubuntu-16.04, ubuntu-18.04]
+        node-version: [10]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
