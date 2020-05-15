@@ -24,7 +24,7 @@ jobs:
       - run: ./dotbare finit -u https://github.com/kazhala/dotfiles.git
       - run: bats tests
       - run: rm -rf "$HOME"/.cfg
-      - run: export confirm='y' && ./dotbare finit
+      - run: ./dotbare finit -y
       - run: bats tests
   macos:
     runs-on: macos-latest
@@ -34,5 +34,5 @@ jobs:
       - run: ./dotbare finit -u https://github.com/kazhala/dotfiles.git
       - run: bats tests
       - run: rm -rf "$HOME"/.cfg
-      - run: export confirm='y' && ./dotbare finit
+      - run: ./dotbare finit -y
       - run: bats tests
