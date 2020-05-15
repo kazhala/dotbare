@@ -5,7 +5,7 @@
 # @params
 # Globals
 #   ${mydir}: current dir of the script
-#   ${individual_file}: allow selection of files to backup
+#   ${backup_type}: types of backup, individual or all
 #   ${selected_files}: selected files to backup
 #   ${action_command}: actions to run, cp|mv
 # Arguments
@@ -48,12 +48,12 @@ function dotbare_backup() {
   exit 0
 }
 
-individual_file=""
+backup_type="all"
 action_command='cp'
 while getopts ":hsp:m" opt; do
   case "$opt" in
     s)
-      individual_file='true'
+      backup_type='individual'
       ;;
     p)
       selected_files="${OPTARG}"
@@ -77,7 +77,7 @@ done
 [[ -n "${selected_files}" ]] && dotbare_backup "${selected_files}" "${action_command}"
 
 cd "${DOTBARE_TREE}"
-if [[ -n "${individual_file}" ]]; then
+if [[ "${backup_type}" == 'individual' ]]; then
   selected_files=$(get_git_file "select files to backup" "raw")
 else
   selected_files=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
