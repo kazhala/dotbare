@@ -1,0 +1,24 @@
+name: ci
+
+on: [push, pull_request]
+
+defaults:
+  run:
+    shell: bash
+    working-directory: .
+
+jobs:
+  ubuntu:
+    runs-on: [ubuntu-latest, ubuntu-16.04]
+    strategy:
+      matrix:
+        node-version: [10.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install -g bats
+      - run: ./dotbare finit -u https://github.com/kazhala/dotfiles.git
+      - run: bats tests
