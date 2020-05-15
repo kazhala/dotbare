@@ -5,8 +5,7 @@
 # @params
 # Globals
 #   ${mydir}: current directory of the script
-#   ${modified}: select modified file only
-#   ${commit}: rename commit
+#   ${edit_type}: which type to edit, all files, modified files, commit
 #   ${selected_commit}: selected commit to edit
 #   ${selected_files}: selected file to edit
 # Arguments
@@ -31,18 +30,15 @@ function usage() {
   echo -e "  -c\tedit commit using interactive rebase instead"
 }
 
-modified=''
-commit=''
+edit_type='all'
 
 while getopts ":hmc" opt; do
   case "$opt" in
     m)
-      modified='true'
-      break
+      edit_type='modified'
       ;;
     c)
-      commit='true'
-      break
+      edit_type='commit'
       ;;
     h)
       usage
@@ -56,12 +52,12 @@ while getopts ":hmc" opt; do
   esac
 done
 
-if [[ -n "${commit}" ]]; then
+if [[ "${edit_type}" == "commit" ]]; then
   selected_commit=$(get_commit "Select a commit to rename")
   [[ -z "${selected_commit}" ]] && exit 1
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" rebase -i "${selected_commit}"~
 else
-  if [[ -n "${modified}" ]]; then
+  if [[ "${edit_type}" == "modified" ]]; then
     selected_files=$(get_modified_file "Select tracked files to edit")
   else
     selected_files=$(get_git_file "Select tracked files to edit")
