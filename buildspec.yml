@@ -1,11 +1,20 @@
 version: 0.2
 
+env:
+  parameter-store:
+    LOGIN_PASSWORD: /dotbare/dockerpassword
+    LOGIN_USERNAME: /dotbare/dockerusername
+
 phases:
   install:
     commands:
       - echo Installing shellcheck ...
       - apt-get update -y
       - apt-get install shellcheck -y
+  pre_build:
+    commands:
+      - echo Login to dockerhub
+      - docker login –u $LOGIN_USERNAME –p $LOGIN_PASSWORD
   build:
     commands:
       - echo Checking script compliance
@@ -18,3 +27,9 @@ phases:
       - docker image build --build-arg MIGRATE=bare -t kazhala/dotbare:testbare -f tests/Dockerfile .
       - echo Running bats unittest ...
       - docker container run -i --rm --name dotbare kazhala/dotbare:testbare
+      - echo Building docker image ...
+      - docker image build -t kazhala/dotbare:latest .
+  post_build:
+    commands:
+      - echo Deploying docker image ...
+      - docker image push kazhala/dotbare:latest
