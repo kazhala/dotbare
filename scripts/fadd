@@ -5,9 +5,8 @@
 # @params
 # Globals
 #   ${mydir}: string, current directory of the executing script
-#   ${new_file}: new file path to stage
-#   ${new_folder}: new folder to stage
-#   ${selected_files}: modified file to stage
+#   ${stage_type}: modified, new file, or directory to stage
+#   ${selected_files}: user selected files to stage
 # Arguments
 #   -h: show help message
 #   -f: select a file in PWD to stage
@@ -38,8 +37,7 @@ function usage() {
 #######################################
 function stage_file() {
   local file=$1
-  if [[ -z "${file}" ]]
-  then
+  if [[ -z "${file}" ]]; then
     exit 1
   else
     # shellcheck disable=SC2086
@@ -47,25 +45,20 @@ function stage_file() {
   fi
 }
 
-new_file=''
-new_folder=''
+stage_type="modified"
 
 while getopts ":fhd" opt
 do
   case "$opt" in
     f)
-      new_file=$(search_file 'f' | tr '\n' ' ')
-      [[ -z "${new_file}" ]] && exit 1
-      break
+      stage_type="file"
+      ;;
+    d)
+      stage_type="dir"
       ;;
     h)
       usage
       exit 0
-      ;;
-    d)
-      new_folder=$(search_file 'd' | tr '\n' ' ')
-      [[ -z "${new_folder}" ]] && exit 1
-      break
       ;;
     *) 
       echo "Invalid option: ${OPTARG}" >&2
@@ -75,11 +68,11 @@ do
   esac
 done
 
-if [[ -n "${new_file}" ]]; then
-  stage_file "${new_file}"
-elif [[ -n "${new_folder}" ]]; then
-  stage_file "${new_folder}"
+if [[ "${stage_type}" == "file" ]]; then
+  selected_files=$(search_file 'f' | tr '\n' ' ')
+elif [[ "${stage_type}" == "dir" ]]; then
+  selected_files=$(search_file 'd' | tr '\n' ' ')
 else
   selected_files=$(get_modified_file 'select files to stage' "unstaged" | tr '\n' ' ')
-  stage_file "${selected_files}"
 fi
+stage_file "${selected_files}"
