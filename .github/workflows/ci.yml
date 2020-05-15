@@ -28,5 +28,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: brew install bats
-      - run: export confirm='y' && ./dotbare finit -y
+      - run: export confirm='y' && ./dotbare finit
       - run: bats tests
