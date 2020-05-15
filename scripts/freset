@@ -6,9 +6,8 @@
 # @params
 # Globals
 #   ${mydir}: current directory of the script
-#   ${reset_commit}: search commits and reset selected commit instead of files
+#   ${reset_type}: reset type, modified files, all files or commit
 #   ${reset_option}: git reset flag, --mixed | --soft | --hard
-#   ${all_files}: search all files and select a commit to reset
 #   ${selected_files}: selected file to unstage
 #   ${selected_commit}: selected commit to reset
 #   ${confirm}: confirmation status of the user
@@ -18,6 +17,7 @@
 #   -c: reset commit
 #   -S: use --soft flag
 #   -H: use --hard flag
+#   -y: confirm action by default and skip confirmation
 
 set -e
 set -f
@@ -40,18 +40,17 @@ function usage() {
   echo -e "  -y\tconfirm action by default and skip confirmation"
 }
 
-reset_commit=""
 reset_option="--mixed"
-all_files=""
+reset_type="modified"
 
 while getopts ":hacSHy" opt
 do
   case "$opt" in
     a)
-      all_files="true"
+      reset_type="allfiles"
       ;;
     c)
-      reset_commit="true"
+      reset_type="commit"
       ;;
     S)
       reset_option="--soft"
@@ -74,14 +73,14 @@ do
   esac
 done
 
-if [[ -n "${reset_commit}" ]]; then
+if [[ "${reset_type}" == "commit" ]]; then
   selected_commit=$(get_commit)
   [[ -z "${selected_commit}" ]] && exit 0
   [[ -z "${confirm}" ]] && confirm=$(get_confirmation "Reset HEAD to ${selected_commit} ${reset_option}?")
   [[ "${confirm}" != 'y' ]] && exit 1
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset "${selected_commit}" "${reset_option}"
 else
-  if [[ -z "${all_files}" ]]; then
+  if [[ "${reset_type}" == "modified" ]]; then
     selected_files=$(get_modified_file 'select files to unstage' 'staged' | tr '\n' ' ')
     [[ -z "${selected_files}" ]] && exit 0
     # shellcheck disable=SC2086
