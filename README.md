@@ -47,16 +47,13 @@ command without having user to do any extra work.
 
 ### Install
 
-1. Clone the repository
-   > Note: change ~/.dotbare to the location of your preference
+1. Clone the repository (change ~/.dotbare to the location of your preference)
 
 ```sh
 git clone https://github.com/kazhala/dotbare.git ~/.dotbare
 ```
 
-2. Add dotbare to your PATH (below is only an example, put PATH into your appropriate shellrc file)
-
-   > Note: change the \$HOME/.dotbare to your install location
+2. Add dotbare to your PATH (below is only an example, put PATH into your appropriate shellrc file, `$HOME/.zshrc` etc)
 
 ```sh
 echo "PATH=$PATH:$HOME/.dotbare" >> "$HOME"/.bashrc
@@ -68,7 +65,6 @@ echo "PATH=$PATH:$HOME/.dotbare" >> "$HOME"/.bashrc
   - [fzf](https://github.com/junegunn/fzf)
   - bash(You don't need to run bash, but dotbare does require you have bash in your system)
 - Optional dependency
-  - [fd](https://github.com/sharkdp/fd) (Faster local file search, if you have `fd`, dotbare bare will use fd instead of `find` when finding local files)
   - [tree](https://linux.die.net/man/1/tree) (Will provide a directory tree view when finding directory)
     ```sh
     # if you are on macos
@@ -190,6 +186,13 @@ dotbare help
 dotbare --help
 ```
 
+### fedit
+
+List all tracked dotfiles and edit the selected file through \$EDITOR, it also support
+edit commits through interactive rebase.
+
+![fedit](https://user-images.githubusercontent.com/43941510/82144921-edc15280-988a-11ea-81c6-7fc1a845afd5.gif)
+
 ### fadd
 
 Stage modified files, stage new file or directory interactivly through fzf.
@@ -202,21 +205,14 @@ By default `dotbare fadd` will list modified files and stage them on selection.
 Reset/unstage file, reset HEAD back to certain commits and reset certain file back to certain
 commits. Demo only shows unstaging files, detailed usage checkout `dotbare freset -h`.
 
-![freset demo](https://user-images.githubusercontent.com/43941510/82143633-9d48f580-9888-11ea-8336-0defdd7da4c4.gif)
+![freset demo](https://user-images.githubusercontent.com/43941510/82147148-295f1b00-9891-11ea-9765-e5befd30cfd9.gif)
 
 ### fcheckout
 
 Checkout files/commit/branch interactivly, default behavior is to checkout files back
 to HEAD (Reset file changes back to HEAD).
 
-![fcheckout demo](https://user-images.githubusercontent.com/43941510/82143769-835be280-9889-11ea-9c9c-8bfce98cc479.gif)
-
-### fedit
-
-List all tracked dotfiles and edit the selected file through \$EDITOR, it also support
-edit commits through interactive rebase.
-
-![fedit](https://user-images.githubusercontent.com/43941510/82144921-edc15280-988a-11ea-81c6-7fc1a845afd5.gif)
+![fcheckout demo](https://user-images.githubusercontent.com/43941510/82147244-d043b700-9891-11ea-8778-9fb9df6b441d.gif)
 
 ## Background
 
