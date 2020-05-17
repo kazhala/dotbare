@@ -20,8 +20,11 @@ Core characteristics:
 - Minimal dependency
 - 1 step migration
 - Zero learning curve
+- Manage dotfiles in any directory
 
 You could find out how git bare repository could be used for managing dotfiles [here](https://www.atlassian.com/git/tutorials/dotfiles).
+
+![Demo](../assets/demo.gif?raw=true)
 
 ## Why
 
@@ -158,6 +161,24 @@ dotbare finit -u [URL]
 ```
 
 ## Usage
+
+> dotbare doesn't have a man page yet, will come later, for help, type dotbare [COMMANDS] -h
+
+### Checkout all available scripts and their help manual
+
+```sh
+# run dotbare without any arguments
+dotbare
+# or checkout help for dotbare
+dotbare -h
+dotbare help
+# for normal git help
+dotbare --help
+```
+
+### dotbare fadd
+
+interactivly stage and view changes for modified files
 
 ## Background
 
