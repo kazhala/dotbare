@@ -24,7 +24,7 @@ Core characteristics:
 
 You could find out how git bare repository could be used for managing dotfiles [here](https://www.atlassian.com/git/tutorials/dotfiles).
 
-![Demo](../assets/demo.gif?raw=true)
+![Demo](../assets/demo.png)
 
 ## Why
 
