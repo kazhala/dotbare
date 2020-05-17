@@ -103,7 +103,7 @@ while getopts ":hrRecy" opt; do
   esac
 done
 
-while True; do
+while :; do
   selected_commit=$(get_commit)
   [[ -z "${selected_commit}" ]] && exit 1
   selected_action=$(draw_menu "${selected_commit}" "${selected_action}")
