@@ -18,13 +18,13 @@ Core characteristics:
 - Easy setup/remove
 - Customization
 - Minimal dependency
-- 1 step migration
+- Easy migration
 - Zero learning curve
 - Manage dotfiles in any directory
 
 You could find out how git bare repository could be used for managing dotfiles [here](https://www.atlassian.com/git/tutorials/dotfiles).
 
-![Demo](../assets/demo.png)
+![Demo](https://user-images.githubusercontent.com/43941510/82142379-4a1e7500-987f-11ea-8d35-8588a413efd3.png)
 
 ## Why
 
@@ -77,11 +77,11 @@ echo "PATH=$PATH:$HOME/.dotbare" >> "$HOME"/.bashrc
 
 ### Setup
 
-> Treat dotbare as normal `git` commands
-
-> For interactive commands, check out [usage](#usage)
+> Treat dotbare as normal `git` commands. For interactive commands, check out [usage](#usage)
 
 1. init git bare repository
+   > Note: by default, `dotbare finit` will set up a bare repo in \$HOME/.cfg, to customize
+   > location and various other settings, checkout [customization](#customization)
 
 ```sh
 dotbare finit
@@ -160,9 +160,23 @@ of your home folder (reference what I mean in my [repo](https://github.com/kazha
 dotbare finit -u [URL]
 ```
 
-## Usage
+#### Test it in docker
 
-> dotbare doesn't have a man page yet, will come later, for help, type dotbare [COMMANDS] -h
+If you know docker, I stronly suggest you give dotbare a try in docker, especially
+when it comes to first time migration.
+
+```sh
+docker pull kazhala/dotbare:latest
+docker container run -it --rm --name dotbare kazhala/dotbare:latest
+```
+
+![migration demo](https://user-images.githubusercontent.com/43941510/82143024-201b8180-9884-11ea-9aee-388414bbcf19.gif)
+
+## Customization
+
+## Commands
+
+> dotbare doesn't have a man page yet, will come later, for help, type dotbare [COMMAND] -h
 
 ### Checkout all available scripts and their help manual
 
@@ -176,9 +190,33 @@ dotbare help
 dotbare --help
 ```
 
-### dotbare fadd
+### fadd
 
-interactivly stage and view changes for modified files
+Stage modified files, stage new file or directory interactivly through fzf.
+By default `dotbare fadd` will list modified files and stage them on selection.
+
+![fadd demo](https://user-images.githubusercontent.com/43941510/82143265-f5cac380-9885-11ea-9c0a-27d3fcc1866a.gif)
+
+### freset
+
+Reset/unstage file, reset HEAD back to certain commits and reset certain file back to certain
+commits. Demo only shows unstaging files, detailed usage checkout `dotbare freset -h`.
+
+![freset demo](https://user-images.githubusercontent.com/43941510/82143633-9d48f580-9888-11ea-8336-0defdd7da4c4.gif)
+
+### fcheckout
+
+Checkout files/commit/branch interactivly, default behavior is to checkout files back
+to HEAD (Reset file changes back to HEAD).
+
+![fcheckout demo](https://user-images.githubusercontent.com/43941510/82143769-835be280-9889-11ea-9c9c-8bfce98cc479.gif)
+
+### fedit
+
+List all tracked dotfiles and edit the selected file through \$EDITOR, it also support
+edit commits through interactive rebase.
+
+![fedit](https://user-images.githubusercontent.com/43941510/82144921-edc15280-988a-11ea-81c6-7fc1a845afd5.gif)
 
 ## Background
 
