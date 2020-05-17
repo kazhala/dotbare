@@ -40,7 +40,7 @@ while getopts ":h" opt; do
   esac
 done
 
-while true; do
+while :; do
   selected_files=$(get_modified_file "select a file" "all" "raw")
   [[ -z "${selected_files}" ]] && break
   # check if current operation should stage file or unstage file
