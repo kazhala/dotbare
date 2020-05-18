@@ -170,6 +170,85 @@ docker container run -it --rm --name dotbare kazhala/dotbare:latest
 
 ## Customization
 
+dotbare could be customized through modification of env variables.
+
+Note: customization of fzf is not covered here, you should checkout their [wiki](https://github.com/junegunn/fzf/wiki).
+
+### DOTBARE_DIR
+
+This is the location of the bare repository, dotbare will look for this directory
+and query git information or it will create this directory when initializing dotbare.
+Change this to location or rename the directory to your liking.
+
+```sh
+# Default
+DOTBARE_DIR="$HOME/.cfg"
+```
+
+### DOTBARE_TREE
+
+This is the working tree for the git bare repository, meaning this is where the version
+control will take place, I don't recommand changing this one unless **ALL** of your config
+file is in something like \$XDG_CONFIG_HOME.
+
+```sh
+# Default
+DOTBARE_TREE="$HOME"
+```
+
+### DOTBARE_BACKUP
+
+This variable is used to determine where to store the backup of your files. It is used
+mainly by `dotbare fbackup` which will back up all of your tracked dotfiles into this location.
+It is also used by `dotbare finit -u [URL]`, when there is checkout conflict, dotbare will
+automatically backup conflicted files to this location. You probably shouldn't change this
+location.
+
+```sh
+# Default
+# 2. If XDG_DATA_HOME exist, use XDG_DATA_HOME/dotbare
+# 3. otherwise, use $HOME/.local/share/dotbare
+DOTBARE_BACKUP="${XDG_DATA_HOME:-$HOME/.local/share}/dotbare"
+```
+
+### EDITOR
+
+This is probably already set in your ENV. dotbare uses this variable to determine
+which editor to use when running `dotbare fedit`.
+
+```sh
+# Default
+EDITOR="vim"
+```
+
+### DOTBARE_KEY
+
+This variable set default keybinds for fzf in dotbare. You could checkout a list of keybinds
+to set [here](https://github.com/junegunn/fzf/blob/97a725fbd0e54cbc07e4d72661ea2bd2bb7c01c1/man/man1/fzf.1#L648).
+
+```sh
+# Default
+DOTBARE_KEY="
+  --bind=alt-a:toggle-all       # toggle all selection
+  --bind=alt-j:jump             # label jump mode, sort of like easymotion
+  --bind=alt-0:top              # set cursor back to top
+  --bind=alt-s:toggle-sort      # toggle sorting
+  --bind=alt-t:toggle-preview   # toggle preview
+"
+```
+
+### DOTBARE_FZF_DEFAULT_OPTS
+
+Customize fzf settings for dotbare. This is useful when you want a different
+fzf behavior from your normal system fzf settings.
+
+```sh
+# Default is unset
+# More settings checkout fzf man page and their wiki
+# You could also take a look at my fzf config
+# https://github.com/kazhala/dotfiles/blob/5507a2dea4f4a420e6d65a423abaa247521f89a8/.zshrc#L56
+```
+
 ## Commands
 
 > dotbare doesn't have a man page yet, will come later, for help, type dotbare [COMMAND] -h
