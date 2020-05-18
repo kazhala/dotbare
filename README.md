@@ -3,6 +3,7 @@
 [![Build Status](https://img.shields.io/travis/com/kazhala/dotbare/master?label=Travis&logo=Travis)](https://travis-ci.com/kazhala/dotbare)
 ![CI Status](https://github.com/kazhala/dotbare/workflows/CI/badge.svg)
 ![AWSCodeBuild](https://codebuild.ap-southeast-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiYWVnOEdGbWxuMmpJdVF2S3RTOFdUeGhEZDZvVkZ1cnBtZGJjd0RuOFdxUWxGeG1zR2YycFcydFJZT25VV3NkZnNsRWJ4ZVNsZ0VxZnpOY3RFUGdMV0RNPSIsIml2UGFyYW1ldGVyU3BlYyI6IlNDNjNHTlkyS2ZmbE5lZGIiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
+![Platform](https://img.shields.io/badge/platform-macos%20%7C%20linux-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 ## Introduction
@@ -292,6 +293,27 @@ Checkout files/commit/branch interactivly, default behavior is to checkout files
 to HEAD (Reset file changes back to HEAD).
 
 ![fcheckout demo](https://user-images.githubusercontent.com/43941510/82147244-d043b700-9891-11ea-8778-9fb9df6b441d.gif)
+
+### flog
+
+Interactive log viewer that will prompt you with a menu after selecting a commit. Allows
+edit, reset, revert and checkout the selected commits.
+
+![flog demo](https://user-images.githubusercontent.com/43941510/82210660-d057bb80-9952-11ea-81fb-564cf8d4b143.gif)
+
+### fstash
+
+View and manage your stash interactivly. Pass `-p` flag for `pop`, otherwise by default,
+`stash apply` is used under the hood. Pass `-d` flag for deleting a stash.
+
+![fstash demo](https://user-images.githubusercontent.com/43941510/82211351-119c9b00-9954-11ea-9579-66cd83b9ca8a.gif)
+
+### fbackup
+
+Backup all of the tracked dotfiles to DOTBARE_BACKUP directory. This is used also by
+`dotbare finit -u [URL]` for backing up conflicted checkout files.
+
+![fbackup demo](https://user-images.githubusercontent.com/43941510/82210006-9a660780-9951-11ea-8343-a6a8ca55138c.gif)
 
 ## Background
 
