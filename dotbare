@@ -9,7 +9,7 @@
 # Arguments
 #   action_command: sub commands dotbare should run
 #     General git command: log, status etc
-#     dotbare specific commands: fadd | frm | fpop | freset | fcheckout | help
+#     dotbare specific commands: fadd | frm | fpop | freset | fcheckout | help etc
 #   option flags:
 #     check sub commands for available option flags
 
@@ -28,15 +28,17 @@ function usage() {
   echo -e "  -h\t\tshow this help message and exit"
   echo -e "Available commands:"
   echo -e "  Any git commands, treat dotbare as git"
-  echo -e "  fadd:      \tstage modified file interactively"
-  echo -e "  funtrack:  \tuntrack file interactively"
-  echo -e "  fstash:    \tmanage stash interactively"
-  echo -e "  fcheckout: \tcheckout branch/files/commits interactively"
-  echo -e "  fstat:     \tstage/unstage interactively"
-  echo -e "  fedit:     \tselect files/commits and edit interactively"
-  echo -e "  flog:      \tmanage commits interactively"
-  echo -e "  fbackup:   \tperform backup for tracked dotfiles"
-  echo -e "  help:      \tshow this help message and exit"
+  echo -e "  fadd      \t\tstage modified file interactively"
+  echo -e "  funtrack  \t\tuntrack file interactively"
+  echo -e "  fstash    \t\tmanage stash interactively"
+  echo -e "  fcheckout \t\tcheckout branch/files/commits interactively"
+  echo -e "  fstat     \t\tstage/unstage interactively"
+  echo -e "  fedit     \t\tselect files/commits and edit interactively"
+  echo -e "  flog      \t\tmanage commits interactively"
+  echo -e "  fbackup   \t\tperform backup for tracked dotfiles"
+  echo -e "  fupgrade  \t\tupdate dotbare to the latest version"
+  echo -e "  finit     \t\tinitialise/migrate dotbare"
+  echo -e "  help      \t\tshow this help message and exit"
 }
 
 # if no argument, display all possible actions
