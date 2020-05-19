@@ -54,23 +54,23 @@ with minimal set up required.
 
 1. Clone the repository (change ~/.dotbare to the location of your preference)
 
-```sh
-git clone https://github.com/kazhala/dotbare.git ~/.dotbare
-```
+   ```sh
+   git clone https://github.com/kazhala/dotbare.git ~/.dotbare
+   ```
 
 2. Add dotbare to your PATH (below is only an example, put PATH into your appropriate shellrc file, `$HOME/.zshrc` etc)
 
-```sh
-# echo "PATH=$PATH:$HOME/.dotbare" >> "$HOME"/.bashrc
-# echo "PATH=$PATH:$HOME/.dotbare" >> "$HOME"/.zshrc
-PATH=$PATH:$HOME/.dotbare
-```
+   ```sh
+   # echo "export PATH=$PATH:$HOME/.dotbare" >> "$HOME"/.bashrc
+   # echo "export PATH=$PATH:$HOME/.dotbare" >> "$HOME"/.zshrc
+   export PATH=$PATH:$HOME/.dotbare
+   ```
 
 3. Or you could create a alias which point to dotbare executable
 
-```sh
-alias dotbare="$HOME/.dotbare/dotbare"
-```
+   ```sh
+   alias dotbare="$HOME/.dotbare/dotbare"
+   ```
 
 ### Dependencies
 
@@ -78,7 +78,9 @@ alias dotbare="$HOME/.dotbare/dotbare"
   - [fzf](https://github.com/junegunn/fzf)
   - bash(You don't need to run bash, but dotbare does require you have bash in your system)
 - Optional dependency
+
   - [tree](https://linux.die.net/man/1/tree) (Will provide a directory tree view when finding directory)
+
     ```sh
     # if you are on macos
     brew install tree
@@ -87,34 +89,36 @@ alias dotbare="$HOME/.dotbare/dotbare"
 ### Setup
 
 1. init git bare repository
-   > Note: by default, `dotbare finit` will set up a bare repo in \$HOME/.cfg, to customize
-   > location and various other settings, checkout [customization](#customization)
 
-```sh
-dotbare finit
-```
+   Note: by default, `dotbare finit` will set up a bare repo in \$HOME/.cfg, to customize
+   location and various other settings, checkout [customization](#customization)
+
+   ```sh
+   dotbare finit
+   ```
 
 2. add dotfiles you want to track
-   > Treat dotbare as normal `git` commands. For interactive commands, check out [commands](#commands)
 
-```sh
-dotbare fadd -f
-# or
-dotbare add [FIELNAME]
+   ```sh
+   # Treat dotbare as normal `git` commands.
 
-# add entire repository like .config
-dotbare fadd -d
-# or
-dotbare add [DIRECTORY]
-```
+   dotbare fadd -f
+   # or
+   dotbare add [FIELNAME]
+
+   # add entire repository like .config
+   dotbare fadd -d
+   # or
+   dotbare add [DIRECTORY]
+   ```
 
 3. commit changes and push to remote
 
-```sh
-dotbare commit -m "First commit"
-dotbare remote add origin [URL]
-dotbare push -u origin master
-```
+   ```sh
+   dotbare commit -m "First commit"
+   dotbare remote add origin [URL]
+   dotbare push -u origin master
+   ```
 
 ### Migration
 
@@ -123,25 +127,25 @@ dotbare push -u origin master
 1. follow the steps in [install](#install) to install dotbare
 2. check your current alias of git bare reference
 
-```sh
-# Below is an example alias, check yours for reference
-alias config=/usr/bin/git --git-dir=$HOME/.cfg --work-tree=$HOME
-```
+   ```sh
+   # Below is an example alias, check yours for reference
+   alias config=/usr/bin/git --git-dir=$HOME/.cfg --work-tree=$HOME
+   ```
 
 3. set env variable for dotbare
 
-```sh
-export DOTBARE_DIR="$HOME/.cfg"
-export DOTBARE_TREE="$HOME"
-```
+   ```sh
+   export DOTBARE_DIR="$HOME/.cfg"
+   export DOTBARE_TREE="$HOME"
+   ```
 
 4. remove the original alias and use dotbare the same except with _super power_
 
 5. optionally you could alias config to dotbare so you keep your muscle memory
 
-```sh
-alias config=dotbare
-```
+   ```sh
+   alias config=dotbare
+   ```
 
 #### Migrating from a generic symlink setup or GNU stow
 
@@ -154,17 +158,17 @@ alias config=dotbare
 1. follow the steps in [install](#install) to install dotbare
 2. set environment variable so that dotbare knows where to look for git information
 
-```sh
-# e.g. I have all my dotfiles stored in folder $HOME/.myworld and symlinks all of them to appropriate location.
-# export DOTBARE_DIR="$HOME/.myworld/.git"
-# export DOTBARE_TREE="$HOME/.myworld"
-export DOTBARE_DIR=<Path to your .git directory>
-export DOTBARE_TREE=<Path to directory which contains all your dotfiles>
-```
+   ```sh
+   # e.g. I have all my dotfiles stored in folder $HOME/.myworld and symlinks all of them to appropriate location.
+   # export DOTBARE_DIR="$HOME/.myworld/.git"
+   # export DOTBARE_TREE="$HOME/.myworld"
+   export DOTBARE_DIR=<Path to your .git directory>
+   export DOTBARE_TREE=<Path to directory which contains all your dotfiles>
+   ```
 
 3. Run dotbare anywhere in your system
 4. Note: with this method, you do not run `dotbare finit -u [URL]` when migrating to new system,
-   you will do your normal migration steps and then do the above step.
+   you will do your normal migration steps and then do the above steps.
 
 ##### Complete migration
 
@@ -184,16 +188,16 @@ dotbare finit -u [URL]
 1. follow the steps in [install](#install) to install dotbare
 2. Optionally set env variable to customize dotbare location. Checkout [customization](#customization)
 
-```sh
-export DOTBARE_DIR="$HOME/.cfg"
-export DOTBARE_TREE="$HOME"
-```
+   ```sh
+   export DOTBARE_DIR="$HOME/.cfg"
+   export DOTBARE_TREE="$HOME"
+   ```
 
 3. give dotbare your remote URL and let it handle the rest
 
-```sh
-dotbare finit -u https://github.com/kazhala/dotfiles.git
-```
+   ```sh
+   dotbare finit -u https://github.com/kazhala/dotfiles.git
+   ```
 
 #### Test it in docker
 
@@ -394,6 +398,27 @@ way to untrack files, explained [here](https://www.git-scm.com/docs/git-update-i
 Update dotbare to the latest version in master. It basically just pull down changes from master,
 except you don't have to cd into dotbare directory, you can run this command any where.
 
+## Tips and Tricks
+
+- Most commands related to files support multi selection (default fzf setting is TAB)
+- Most commands related to commits and branches doesn't support multi selection
+- Checkout [this](https://github.com/junegunn/fzf/blob/97a725fbd0e54cbc07e4d72661ea2bd2bb7c01c1/man/man1/fzf.1#L648)
+  for more default fzf keybinds information.
+- Alias dotbare to shorter words to type less
+
+  ```sh
+  alias db=dotbare
+  ```
+
+- Create keybinds for dotbare (e.g. bind ctrl-g to launch fedit and edit files)
+
+  ```sh
+  # zsh example
+  bindkey -s '^g' "dotbare fedit"^j
+  # bash example
+  bind -x '"\C-g":"dotbare fedit"'
+  ```
+
 ## Background
 
 dotbare was initially part of my personal scripts, however as the number of scripts grows,
@@ -404,6 +429,8 @@ help me out by firing up issues and any PR is welcome.
 ## Testing
 
 dotbare is unit tested on a _best effort_ due the nature of fzf which require human input.
+Mock test are coming if I could make it work.
+
 Some functions may have a lot more coverage than others, so please fire up issues if something went wrong.
 dotbare uses [bats](https://github.com/bats-core/bats-core) to test individual functions.
 
@@ -420,6 +447,7 @@ Leave a star if possible :)
 
 ## Coming up
 
+- [ ] Improve unit test with mocking
 - [ ] Command line completion for dotbare commands
 - [ ] Man page
 - [ ] Command line completion for git commands?
