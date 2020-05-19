@@ -35,3 +35,4 @@ git fetch
 git checkout master &> /dev/null
 git pull origin master
 echo "Done"
+exit 0
