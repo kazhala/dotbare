@@ -9,8 +9,8 @@
 ## Introduction
 
 dotbare is a command line utility to help you manage your dotfiles. It wraps around git bare
-repository and heavily utilise [fzf](https://github.com/junegunn/fzf) for better user expereince.
-It is inspired by [forgit](https://github.com/wfxr/forgit), a git wrapper that utilise fzf for interactive expereince.
+repository and heavily utilise [fzf](https://github.com/junegunn/fzf) for better user experience.
+It is inspired by [forgit](https://github.com/wfxr/forgit), a git wrapper that utilise fzf for interactive experience.
 dotbare uses a different implementation approach and focuses on managing and interacting with your dotfiles.
 Don't worry about migration if you have a symlink/GNU stow setup, you can easily integrate dotbare with them.
 
@@ -34,19 +34,19 @@ is using symlink/GNU stow setup, checkout how to integrate dotbare with them [he
 ## Why
 
 It has always been a struggle for me to get started with managing dotfiles using version control,
-as some other tools like "gnu stow" really scares me off with all the symlinks, until I found
+as some other tools like "GNU stow" really scares me off with all the symlinks, until I found
 out about using git bare repository for managing dotfiles, zero symlinks, minimal setup
 required and you keep your dotfiles at the location they should be.
 
-However, it has always lack some interactive expereince as it does not provide any auto
+However, it has always lack some interactive experience as it does not provide any auto
 completion on git commands nor file paths by default. It is also a pain when migrating the setup over
-to another system as you will have to manully resolve all the git checkout issues.
+to another system as you will have to manually resolve all the git checkout issues.
 
 dotbare solves the above problems by providing a series of scripts starts with a prefix f
-(e.g. dotbare fadd, dotbare flog etc) that will enable a interactive expereince by processing
-all the git information from your bare repository and display it through fzf.
-dotbare also comes with the ability to migrate easily to other systems with one single
-command without having user to do any extra work.
+(e.g. `dotbare fadd`, `dotbare flog` etc) that will enable a interactive experience by processing
+all the git information and display it through fzf. dotbare also comes with the ability to integrate with
+GNU stow or any symlink set up as long as you are using git. It is easy to migrate to any system
+with minimal set up required.
 
 ## Getting started
 
@@ -135,7 +135,7 @@ export DOTBARE_DIR="$HOME/.cfg"
 export DOTBARE_TREE="$HOME"
 ```
 
-4. remove the origianl alias and use dotbare the same except with _super power_
+4. remove the original alias and use dotbare the same except with _super power_
 
 5. optionally you could alias config to dotbare so you keep your muscle memory
 
@@ -174,15 +174,15 @@ repository resembles the structure of your home holder (reference what I mean in
 simply run the command below.
 
 ```sh
-# Disclainmer: I have not test this with GNU stow, migrate in this way with caution.
-# I recommand you test this migration in docker, see #Test-it-in-docker
+# Disclaimer: I have not test this with GNU stow, migrate in this way with caution.
+# I recommend you test this migration in docker, see #Test-it-in-docker
 dotbare finit -u [URL]
 ```
 
 #### Migrating dotbare to a new system
 
 1. follow the steps in [install](#install) to install dotbare
-2. Optionallly set env variable to customize dotbare location. Checkout [customization](#customization)
+2. Optionally set env variable to customize dotbare location. Checkout [customization](#customization)
 
 ```sh
 export DOTBARE_DIR="$HOME/.cfg"
@@ -197,7 +197,7 @@ dotbare finit -u https://github.com/kazhala/dotfiles.git
 
 #### Test it in docker
 
-I stronly suggest you give dotbare a try in docker, especially
+I strongly suggest you give dotbare a try in docker, especially
 when it comes to first time migration.
 
 ```sh
@@ -230,7 +230,7 @@ DOTBARE_DIR="$HOME/.cfg"
 ### DOTBARE_TREE
 
 This is the working tree for the git bare repository, meaning this is where the version
-control will take place. I don't recommand changing this one unless **ALL** of your config
+control will take place. I don't recommend changing this one unless **ALL** of your config
 file is in something like \$XDG_CONFIG_HOME or if you are using symlink/GNU stow setup,
 set this variable to point to the folder contains your actual dotfiles.
 
@@ -317,7 +317,7 @@ edit commits through interactive rebase.
 
 ### fadd
 
-Stage modified files, stage new file or directory interactivly through fzf.
+Stage modified files, stage new file or directory interactive by through fzf.
 By default `dotbare fadd` will list modified files and stage them on selection.
 
 ![fadd demo](https://user-images.githubusercontent.com/43941510/82143265-f5cac380-9885-11ea-9c0a-27d3fcc1866a.gif)
@@ -331,7 +331,7 @@ commits. Demo only shows unstaging files, detailed usage checkout `dotbare frese
 
 ### fcheckout
 
-Checkout files/commit/branch interactivly, default behavior is to checkout files back
+Checkout files/commit/branch interactively, default behavior is to checkout files back
 to HEAD (Reset file changes back to HEAD).
 
 ![fcheckout demo](https://user-images.githubusercontent.com/43941510/82147244-d043b700-9891-11ea-8778-9fb9df6b441d.gif)
@@ -345,7 +345,7 @@ edit, reset, revert and checkout the selected commits.
 
 ### fstash
 
-View and manage your stash interactivly. Pass `-p` flag for `pop`, otherwise by default,
+View and manage your stash interactively. Pass `-p` flag for `pop`, otherwise by default,
 `stash apply` is used under the hood. Pass `-d` flag for deleting a stash.
 
 ![fstash demo](https://user-images.githubusercontent.com/43941510/82211351-119c9b00-9954-11ea-9579-66cd83b9ca8a.gif)
