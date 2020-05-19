@@ -97,6 +97,10 @@ case "$1" in
     action_command='finit'
     shift
     ;;
+  fupgrade)
+    action_command='fupgrade'
+    shift
+    ;;
   help)
     usage
     exit 0

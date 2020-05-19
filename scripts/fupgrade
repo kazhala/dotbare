@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+#
+# update dotbare to latest master
+
+set -e
+set -f
+
+mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+function usage() {
+  echo -e "Usage: dotbare fupgrade [-h] ...\n"
+  echo -e "Update dotbare to the latest version\n"
+  echo -e "optional arguments:"
+  echo -e "  -h\t\tshow this help message and exit"
+}
+
+while getopts ":h" opt; do
+  case "$opt" in
+    h)
+      usage
+      exit 0
+      ;;
+    *) 
+      echo "Invalid option: ${OPTARG}" >&2
+      usage
+      exit 1
+      ;;
+  esac
+done
+
+# change directory to dotbare folder
+cd "${mydir}/.."
+echo "Fetching latest changes ..."
+git fetch
+git checkout master &> /dev/null
+git pull origin master
+echo "Done"
