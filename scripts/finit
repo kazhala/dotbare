@@ -9,6 +9,7 @@
 # Arguments
 #   -h: show help message and exit
 #   -u: specify remote dotfiles url to init
+#   -y: confirm action by default and skip confirmation
 
 set -e
 set -f
@@ -21,9 +22,10 @@ function usage() {
   echo -e "Usage: dotbare finit [-h] [-u URL] ...\n"
   echo -e "Init the git bare repository if doesn't exist"
   # shellcheck disable=SC2016
-  echo -e 'The bare repository will be initialised under ${DOTBARE_DIR}, default to $HOME/.cfg if not set'
+  echo -e 'The bare repository will be initialised under $DOTBARE_DIR, default to $HOME/.cfg if not set'
   # shellcheck disable=SC2016
-  echo -e 'It will track ${DOTBARE_TREE}, default to $HOME if not set\n'
+  echo -e 'It will track $DOTBARE_TREE, default to $HOME if not set\n'
+  echo -e "Default: init the bare repository at $DOTBARE_DIR\n"
   echo -e "optional arguments:"
   echo -e "  -h\t\tshow this help message and exit"
   echo -e "  -u URL\tmigrate existing dotfiles from the git URL to current system"

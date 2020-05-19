@@ -26,13 +26,13 @@ source "${mydir}"/../helper/git_query.sh
 
 function usage() {
   echo -e "Usage: dotbare fcheckout [-h] [-a] [-b] [-c] ...\n"
-  echo -e "Checkout files/commit/branch using fzf"
-  echo -e "By default, checkout files back to HEAD (Reset changes back to HEAD)\n"
+  echo -e "Checkout files/commit/branch using fzf\n"
+  echo -e "Default: checkout files back to HEAD (Reset changes back to HEAD)\n"
   echo -e "optional arguments:"
-  echo -e "  -h\tshow this help message and exit"
-  echo -e "  -a\tsearch all files and select a commit to checkout for selected files"
-  echo -e "  -b\tcheckout branch"
-  echo -e "  -c\tcheckout commit"
+  echo -e "  -h\t\tshow this help message and exit"
+  echo -e "  -a\t\tsearch all files and select a commit to checkout for selected files"
+  echo -e "  -b\t\tlist all branch and checkout/switch the selected branch"
+  echo -e "  -c\t\tlist all commits and checkout selected commit"
 }
 
 action_type="modified"

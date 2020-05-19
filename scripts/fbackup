@@ -25,10 +25,12 @@ function usage() {
   echo -e "Usage: dotbare fbackup [-h] [-s] [-p PATH] ...\n"
   echo -e "Backup files to ${DOTBARE_BACKUP}"
   echo -e "This is useful when untracking files or migrating on new machines\n"
+  echo -e "Default: backup every tracked files using cp to ${DOTBARE_BACKUP} directory\n"
   echo -e "optional arguments:"
   echo -e "  -h\t\tshow this help message and exit"
   echo -e "  -s\t\tselect individual file through fzf and backup"
   echo -e "  -p PATH\tsepcify path to backup"
+  echo -e "  -m\t\tuse mv command for backup instead of default cp"
 }
 
 #######################################

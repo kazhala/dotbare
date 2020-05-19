@@ -22,12 +22,12 @@ source "${mydir}"/../helper/git_query.sh
 
 function usage() {
   echo -e "Usage: dotbare fadd [-h] [-f] [-d] ...\n"
-  echo -e "Stage the selected file to the dotfile gitbare repo"
-  echo -e "Press escape to stop staging file\n"
+  echo -e "Stage the selected file to the dotfile gitbare repo\n"
+  echo -e "Default: list all modified files and stage the selected files.\n"
   echo -e "optional arguments:"
-  echo -e "  -h\tshow this help message and exit"
-  echo -e "  -f\tselect a file in current directory and stage it"
-  echo -e "  -d\tselect a entire folder to stage"
+  echo -e "  -h\t\tshow this help message and exit"
+  echo -e "  -f\t\tselect a file in current directory and stage it"
+  echo -e "  -d\t\tselect a entire folder to stage"
 }
 
 #######################################

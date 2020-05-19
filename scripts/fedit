@@ -22,8 +22,8 @@ source "${mydir}"/../helper/git_query.sh
 
 function usage() {
   echo -e "Usage: dotbare fedit [-h] [-m] [-c] ...\n"
-  echo -e "List all tracked dotfiles and edit"
-  echo -e "also support commit message edit\n"
+  echo -e "Select files/commits through fzf and edit selected files/commits\n"
+  echo -e "Default: list all dotfiles and edit the selected files\n"
   echo -e "optional arguments:"
   echo -e "  -h\tshow this help message and exit"
   echo -e "  -m\tonly display modified file"
