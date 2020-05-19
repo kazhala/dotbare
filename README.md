@@ -357,9 +357,77 @@ Backup all of the tracked dotfiles to DOTBARE_BACKUP directory. This is used als
 
 ![fbackup demo](https://user-images.githubusercontent.com/43941510/82210006-9a660780-9951-11ea-8343-a6a8ca55138c.gif)
 
+### fstat
+
+Interactively toggle stage/unstage of files. This is less used compare to `dotbare fadd`,
+it might get deprecated.
+
+![fstat demo](https://user-images.githubusercontent.com/43941510/82325049-f0a07c80-9a1d-11ea-9d3f-e4de5987bedb.gif)
+
+### finit
+
+Initialise dotbare with a bare repository or add -u [URL] flag for migrating current
+dotfiles to a new system.
+
+Note: do not use this command if you are using symlink/GNU stow.
+
+### funtrack
+
+Stop tracking the selected git files. It could also be used to temporarily stop tracking changes
+for files and then later on resume tracking changes.
+
+**Note: This command has severe limitations.**
+
+By default, selected files are permanently untracked starting from next commit.
+It will not remove it from history. And if your other system pull down the new commit,
+the untracked files on the other system will actually get removed by git. This is a limitation
+with git, to overcome this, after untracking the files, run `dotbare fbackup` to backup the files.
+After pulling new changes, move the deleted files from backup back to their original position.
+More discussions [here](https://stackoverflow.com/questions/1274057/how-to-make-git-forget-about-a-file-that-was-tracked-but-is-now-in-gitignore).
+
+`dotbare funtrack` does come with capabilities to temporarily untrack files, which will not
+actually remove the untracked files from other system. However, this is **NOT** recommanded
+way to untrack files, explained [here](https://www.git-scm.com/docs/git-update-index#_notes).
+
+### fupgrade
+
+Update dotbare to the latest version in master. It basically just pull down changes from master,
+except you don't have to cd into dotbare directory, you can run this command any where.
+
 ## Background
 
 dotbare was initially part of my personal scripts, however as the number of scripts grows,
 I feel like is more appropriate to make a dedicated project for it. I've just started
 scripting for a few months, so there must be a lot of improvements that could be made, please
 help me out by firing up issues and any PR is welcome.
+
+## Testing
+
+dotbare is unit tested on a _best effort_ due the nature of fzf which require human input.
+Some functions may have a lot more coverage than others, so please fire up issues if something went wrong.
+dotbare uses [bats](https://github.com/bats-core/bats-core) to test individual functions.
+
+I've added AWSCodeBuild to CI/CD just for my personal practice, if you are interested in what's happening in AWSCodeBuild
+you could checkout my cloudformation [template](https://github.com/kazhala/AWSCloudFormationStacks/blob/master/CICD_dotbare.yaml).
+
+## Contributing
+
+Please help me out by pointing out things that I could improve, as I said, I've only been
+scripting for a few months and are still adapting many new things every day. PR are always welcome
+and please fire up issues if something went wrong.
+
+Leave a star if possible :)
+
+## Coming up
+
+- [ ] Command line completion for dotbare commands
+- [ ] Man page
+- [ ] Command line completion for git commands?
+- [ ] Installation method
+
+## Credit
+
+- credit to [forgit](https://github.com/wfxr/forgit) for inspiration
+- credit to [fzf](https://github.com/junegunn/fzf)
+- credit to [this](https://www.atlassian.com/git/tutorials/dotfiles) post
+- credit to [this](https://www.youtube.com/watch?v=tBoLDpTWVOM&t=288s) video
