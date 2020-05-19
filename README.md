@@ -13,17 +13,18 @@ repository and heavily utilise [fzf](https://github.com/junegunn/fzf) for better
 It is inspired by [forgit](https://github.com/wfxr/forgit), a git wrapper that utilise fzf for interactive expereince.
 dotbare uses a different implementation approach and focuses on managing and interacting with your dotfiles.
 
-Core characteristics:
+Pros:
 
 - No symlink
 - Easy setup/remove
 - Customization
 - Minimal dependency
 - Easy migration
-- Zero learning curve
+- Flat learning curve
 - Manage dotfiles in any directory
 
 You could find out how git bare repository could be used for managing dotfiles [here](https://www.atlassian.com/git/tutorials/dotfiles).
+Or a [video](https://www.youtube.com/watch?v=tBoLDpTWVOM&t=288s) explanation that helped me to get started.
 
 ![Demo](https://user-images.githubusercontent.com/43941510/82142379-4a1e7500-987f-11ea-8d35-8588a413efd3.png)
 
@@ -74,8 +75,6 @@ echo "PATH=$PATH:$HOME/.dotbare" >> "$HOME"/.bashrc
 
 ### Setup
 
-> Treat dotbare as normal `git` commands. For interactive commands, check out [usage](#usage)
-
 1. init git bare repository
    > Note: by default, `dotbare finit` will set up a bare repo in \$HOME/.cfg, to customize
    > location and various other settings, checkout [customization](#customization)
@@ -85,6 +84,7 @@ dotbare finit
 ```
 
 2. add dotfiles you want to track
+   > Treat dotbare as normal `git` commands. For interactive commands, check out [usage](#usage)
 
 ```sh
 dotbare fadd -f
@@ -159,7 +159,7 @@ dotbare finit -u [URL]
 
 #### Test it in docker
 
-If you know docker, I stronly suggest you give dotbare a try in docker, especially
+I stronly suggest you give dotbare a try in docker, especially
 when it comes to first time migration.
 
 ```sh
