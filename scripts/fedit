@@ -25,9 +25,9 @@ function usage() {
   echo -e "Select files/commits through fzf and edit selected files/commits\n"
   echo -e "Default: list all dotfiles and edit the selected files\n"
   echo -e "optional arguments:"
-  echo -e "  -h\tshow this help message and exit"
-  echo -e "  -m\tonly display modified file"
-  echo -e "  -c\tedit commit using interactive rebase instead"
+  echo -e "  -h\t\tshow this help message and exit"
+  echo -e "  -m\t\tonly display modified file"
+  echo -e "  -c\t\tedit commit using interactive rebase instead"
 }
 
 edit_type='all'

@@ -12,6 +12,7 @@
 #   -h: display help message and exit
 #   -s: temporarily untrack files
 #   -S: resume track of temp untracked files
+#   -y: confirm action by default and skip confirmation
 
 set -e
 set -f
@@ -24,17 +25,17 @@ source "${mydir}"/../helper/get_confirmation.sh
 function usage() {
   echo -e "Usage: dotbare funtrack [-h] [-s] [-S] ...\n"
   echo -e "Untrack selected files from git\n"
-  echo -e "Note: by default, the untrack will remove the file from index while"
+  echo -e "Default: the untrack will remove the file from index while"
   echo -e "keeping the file in your current system (git rm --cached filename)"
   echo -e "however, when your other computer pull down the changes, the file will be removed"
   echo -e "make sure to run dotbare fbackup before pulling down the changes, alternativly"
   echo -e "use the -s flag (git update-index --assume-unchanged [path])\n"
   echo -e "optional arguments:"
-  echo -e "  -h\tshow this help message and exit"
-  echo -e "  -s\ttemporarily ignore changes of selected files"
-  echo -e "    \tuse -S flag to resume tracking changes of selected_files"
-  echo -e "  -S\tresume tracking changes of selected files"
-  echo -e "  -y\tconfirm action by default and skip confirmation"
+  echo -e "  -h\t\tshow this help message and exit"
+  echo -e "  -s\t\ttemporarily ignore changes of selected files"
+  echo -e "    \t\tuse -S flag to resume tracking changes of selected_files"
+  echo -e "  -S\t\tresume tracking changes of selected files"
+  echo -e "  -y\t\tconfirm action by default and skip confirmation"
 }
 
 track_type="untrack"

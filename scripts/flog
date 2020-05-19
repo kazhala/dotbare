@@ -14,6 +14,7 @@
 #   -R: reset HEAD back to the selected commit
 #   -e: edit commmit (interactive rebase)
 #   -c: checkout selected commmit
+#   -y: confirm action by default and skip confirmation
 
 set -e
 set -f
@@ -26,14 +27,15 @@ source "${mydir}"/../helper/get_confirmation.sh
 function usage() {
   echo -e "Usage: dotbare flog [-h] [-r] [-R] [-e] [-c] ...\n"
   echo -e "Interactive log viewer with action menu"
-  echo -e "Action menu contains command including revert|reset|edit|checkout"
+  echo -e "Action menu contains command including revert|reset|edit|checkout|exit\n"
+  echo -e "Default: list all commits and prompt a menu for user to take action on the selected commit\n"
   echo -e "optional arguments:"
-  echo -e "  -h\tshow this help message and exit"
-  echo -e "  -r\trevert the selected commit"
-  echo -e "  -R\treset HEAD back to selected commit"
-  echo -e "  -e\tedit selected commit through interactive rebase"
-  echo -e "  -c\tcheckout selected commit"
-  echo -e "  -y\tconfirm action by default and skip confirmation"
+  echo -e "  -h\t\tshow this help message and exit"
+  echo -e "  -r\t\trevert the selected commit"
+  echo -e "  -R\t\treset HEAD back to selected commit"
+  echo -e "  -e\t\tedit selected commit through interactive rebase"
+  echo -e "  -c\t\tcheckout selected commit"
+  echo -e "  -y\t\tconfirm action by default and skip confirmation"
 }
 
 #######################################
