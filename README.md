@@ -12,19 +12,22 @@ dotbare is a command line utility to help you manage your dotfiles. It wraps aro
 repository and heavily utilise [fzf](https://github.com/junegunn/fzf) for better user expereince.
 It is inspired by [forgit](https://github.com/wfxr/forgit), a git wrapper that utilise fzf for interactive expereince.
 dotbare uses a different implementation approach and focuses on managing and interacting with your dotfiles.
+Don't worry about migration if you have a symlink/GNU stow setup, you can easily integrate dotbare with them.
 
 Pros:
 
 - No symlink
-- Easy setup/remove
+- Simple setup/remove
 - Customization
 - Minimal dependency
 - Easy migration
 - Flat learning curve
 - Manage dotfiles in any directory
+- Integration with symlink/GNU stow setup
 
 You could find out how git bare repository could be used for managing dotfiles [here](https://www.atlassian.com/git/tutorials/dotfiles).
-Or a [video](https://www.youtube.com/watch?v=tBoLDpTWVOM&t=288s) explanation that helped me to get started.
+Or a [video](https://www.youtube.com/watch?v=tBoLDpTWVOM&t=288s) explanation that helped me to get started. If you currently
+is using symlink/GNU stow setup, checkout how to integrate dotbare with them [here](#migrating-from-a-generic-symlink-setup-or-gnu-stow).
 
 ![Demo](https://user-images.githubusercontent.com/43941510/82142379-4a1e7500-987f-11ea-8d35-8588a413efd3.png)
 
@@ -58,7 +61,15 @@ git clone https://github.com/kazhala/dotbare.git ~/.dotbare
 2. Add dotbare to your PATH (below is only an example, put PATH into your appropriate shellrc file, `$HOME/.zshrc` etc)
 
 ```sh
-echo "PATH=$PATH:$HOME/.dotbare" >> "$HOME"/.bashrc
+# echo "PATH=$PATH:$HOME/.dotbare" >> "$HOME"/.bashrc
+# echo "PATH=$PATH:$HOME/.dotbare" >> "$HOME"/.zshrc
+PATH=$PATH:$HOME/.dotbare
+```
+
+3. Or you could create a alias which point to dotbare executable
+
+```sh
+alias dotbare="$HOME/.dotbare/dotbare"
 ```
 
 ### Dependencies
@@ -84,7 +95,7 @@ dotbare finit
 ```
 
 2. add dotfiles you want to track
-   > Treat dotbare as normal `git` commands. For interactive commands, check out [usage](#usage)
+   > Treat dotbare as normal `git` commands. For interactive commands, check out [commands](#commands)
 
 ```sh
 dotbare fadd -f
@@ -109,7 +120,7 @@ dotbare push -u origin master
 
 #### Migrating from normal git bare repository
 
-1. follow the steps in [install](#Install) to install dotbare
+1. follow the steps in [install](#install) to install dotbare
 2. check your current alias of git bare reference
 
 ```sh
@@ -124,17 +135,54 @@ export DOTBARE_DIR="$HOME/.cfg"
 export DOTBARE_TREE="$HOME"
 ```
 
-4. optionally you could alias config to dotbare so you keep your muscle memory
+4. remove the origianl alias and use dotbare the same except with _super power_
+
+5. optionally you could alias config to dotbare so you keep your muscle memory
 
 ```sh
 alias config=dotbare
 ```
 
+#### Migrating from a generic symlink setup or GNU stow
+
+> If you already have a symlink setup either custom or with GNU stow.
+> You could either integrate dotbare with your current set up or
+> do a complete migration.
+
+##### Keep your current setup but integrate dotbare
+
+1. follow the steps in [install](#install) to install dotbare
+2. set environment variable so that dotbare knows where to look for git information
+
+```sh
+# e.g. I have all my dotfiles stored in folder $HOME/.myworld and symlinks all of them to appropriate location.
+# export DOTBARE_DIR="$HOME/.myworld/.git"
+# export DOTBARE_TREE="$HOME/.myworld"
+export DOTBARE_DIR=<Path to your .git directory>
+export DOTBARE_TREE=<Path to directory which contains all your dotfiles>
+```
+
+3. Run dotbare anywhere in your system
+4. Note: with this method, you do not run `dotbare finit -u [URL]` when migrating to new system,
+   you will do your normal migration steps and then do the above step.
+
+##### Complete migration
+
+I haven't used GNU stow or any symlink setup, but I do recommand keep your current setup
+and integrate with dotbare. If you are really happy with `dotbare`, as long as your remote
+repository resembles the structure of your home holder (reference what I mean in my [repo](https://github.com/kazhala/dotfiles.git)),
+simply run the command below.
+
+```sh
+# Disclainmer: I have not test this with GNU stow, migrate in this way with caution.
+# I recommand you test this migration in docker, see #Test-it-in-docker
+dotbare finit -u [URL]
+```
+
 #### Migrating dotbare to a new system
 
-1. follow the steps in [install](#Install) to install dotbare
-2. set env variable to let dotbare know where to init dotbare, backup etc.
-   > Copy below to your cmd line and set them temporarily
+1. follow the steps in [install](#install) to install dotbare
+2. Optionallly set env variable to customize dotbare location. Checkout [customization](#customization)
 
 ```sh
 export DOTBARE_DIR="$HOME/.cfg"
@@ -145,16 +193,6 @@ export DOTBARE_TREE="$HOME"
 
 ```sh
 dotbare finit -u https://github.com/kazhala/dotfiles.git
-```
-
-#### Migrating from gnu stow
-
-I haven't used gnu stow but I would advise to stay with gnu stow if you are happy with it.
-If you want to give dotbare a try, as long as your remote repository resembles the structure
-of your home folder (reference what I mean in my [repo](https://github.com/kazhala/dotfiles.git))
-
-```sh
-dotbare finit -u [URL]
 ```
 
 #### Test it in docker
@@ -181,6 +219,9 @@ This is the location of the bare repository, dotbare will look for this director
 and query git information or it will create this directory when initializing dotbare.
 Change this to location or rename the directory to your liking.
 
+If you are using symlink/GNU stow setup, set this variable point to your .git folder
+in your working directory of your dotfiles.
+
 ```sh
 # Default
 DOTBARE_DIR="$HOME/.cfg"
@@ -189,8 +230,9 @@ DOTBARE_DIR="$HOME/.cfg"
 ### DOTBARE_TREE
 
 This is the working tree for the git bare repository, meaning this is where the version
-control will take place, I don't recommand changing this one unless **ALL** of your config
-file is in something like \$XDG_CONFIG_HOME.
+control will take place. I don't recommand changing this one unless **ALL** of your config
+file is in something like \$XDG_CONFIG_HOME or if you are using symlink/GNU stow setup,
+set this variable to point to the folder contains your actual dotfiles.
 
 ```sh
 # Default
