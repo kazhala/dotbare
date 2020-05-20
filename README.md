@@ -502,3 +502,8 @@ for it. I hope you find it useful and enjoy it, thanks!
 - credit to [fzf](https://github.com/junegunn/fzf) for fzf XD.
 - credit to [this](https://www.atlassian.com/git/tutorials/dotfiles) post for step by step guide of setting up git bare repo.
 - credit to [this](https://www.youtube.com/watch?v=tBoLDpTWVOM&t=288s) video for introduing git bare repo.
+
+## Demo
+
+You could find some more gif demo [here](https://github.com/kazhala/dotbare/issues/1)
+[![asciicast](https://asciinema.org/a/332231.svg)](https://asciinema.org/a/332231)
