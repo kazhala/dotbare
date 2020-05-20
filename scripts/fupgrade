@@ -32,7 +32,7 @@ done
 cd "${mydir}/.."
 echo "Fetching latest changes ..."
 git fetch
-git checkout master &> /dev/null
+git checkout master
 git pull origin master
 echo "Done"
 exit 0
