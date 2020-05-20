@@ -6,7 +6,6 @@ setup() {
 
 teardown() {
   git checkout "$DOTBARE_CURRENT_BRANCH"
-  unset "$DOTBARE_CURRENT_BRANCH"
 }
 
 help() {
