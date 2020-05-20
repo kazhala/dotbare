@@ -1,5 +1,14 @@
 #!/usr/bin/env bats
 
+setup() {
+  export DOTBARE_CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+}
+
+teardown() {
+  git checkout "$DOTBARE_CURRENT_BRANCH"
+  unset "$DOTBARE_CURRENT_BRANCH"
+}
+
 help() {
   bash "${BATS_TEST_DIRNAME}"/../dotbare fupgrade -h
 }
