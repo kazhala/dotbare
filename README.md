@@ -1,6 +1,5 @@
 # dotbare
 
-[![Build Status](https://img.shields.io/travis/com/kazhala/dotbare/master?label=Travis&logo=Travis)](https://travis-ci.com/kazhala/dotbare)
 ![CI Status](https://github.com/kazhala/dotbare/workflows/CI/badge.svg)
 ![AWSCodeBuild](https://codebuild.ap-southeast-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiYWVnOEdGbWxuMmpJdVF2S3RTOFdUeGhEZDZvVkZ1cnBtZGJjd0RuOFdxUWxGeG1zR2YycFcydFJZT25VV3NkZnNsRWJ4ZVNsZ0VxZnpOY3RFUGdMV0RNPSIsIml2UGFyYW1ldGVyU3BlYyI6IlNDNjNHTlkyS2ZmbE5lZGIiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
 ![Platform](https://img.shields.io/badge/platform-macos%20%7C%20linux-blue)
@@ -48,29 +47,70 @@ all the git information and display it through fzf. dotbare also comes with the 
 GNU stow or any symlink set up as long as you are using git. It is easy to migrate to any system
 with minimal set up required.
 
+## Table of Contents
+
+- [Getting started](#getting-started)
+  - [Install](#install)
+  - [Dependencies](#dependencies)
+  - [Setup](#setup)
+  - [Migration](#migration)
+    - [Migrating from normal git bare repository](#migrating-from-normal-git-bare-repository)
+    - [Migrating from a generic symlink setup or GNU stow](#migrating-from-a-generic-symlink-setup-or-gnu-stow)
+      - [Keep your current setup but integrate dotbare](#keep-your-current-setup-but-integrate-dotbare)
+      - [Complete migration](#complete-migration)
+    - [Migrating dotbare to a new system](#migrating-dotbare-to-a-new-system)
+    - [Test it in docker](#test-it-in-docker)
+- [Customization](#customization)
+  - [DOTBARE_DIR: location of the git directory](#dotbare_dir)
+  - [DOTBARE_TREE: location of the working index](#dotbare_key)
+  - [DOTBARE_BACKUP: location to backup files](#dotbare_backup)
+  - [EDITOR: editor used to open files](#editor)
+  - [DOTBARE_KEY: keybinds](#dotbare_key)
+  - [DOTBARE_FZF_DEFAULT_OPTS: fzf customization](#dotbare_fzf_default_opts)
+- [Commands](#commands)
+  - [Checkout all available scripts and their help manual](#checkout-all-available-scripts-and-their-help-manual)
+  - [fedit: edit dotfiles](#fedit)
+  - [fadd: stage changes](#fadd)
+  - [freset: unstage changes](#freset)
+  - [fcheckout: discard changes/checkout commits and branch](#fcheckout)
+  - [flog: interactive log viewer](#flog)
+  - [fstash: stash management](#fstash)
+  - [fbackup: backup tracked files](#fbackup)
+  - [fstat: toggle stage/unstage files](#fstat)
+  - [finit: initialise/migrating dotbare](#finit)
+  - [funtrack: untrack files](#funtrack)
+  - [fupgrade: update dotbare](#fupgrade)
+- [Tips and Tricks](#tips-and-tricks)
+- [Testing](#testing)
+- [Contributing](#contributing)
+- [Coming up](#coming-up)
+- [Background](#background)
+- [Credit](#credit)
+- [Demo](#demo)
+
 ## Getting started
 
 ### Install
 
 1. Clone the repository (change ~/.dotbare to the location of your preference)
 
-```sh
-git clone https://github.com/kazhala/dotbare.git ~/.dotbare
-```
+   ```sh
+   git clone https://github.com/kazhala/dotbare.git ~/.dotbare
+   ```
 
 2. Add dotbare to your PATH (below is only an example, put PATH into your appropriate shellrc file, `$HOME/.zshrc` etc)
 
-```sh
-# echo "PATH=$PATH:$HOME/.dotbare" >> "$HOME"/.bashrc
-# echo "PATH=$PATH:$HOME/.dotbare" >> "$HOME"/.zshrc
-PATH=$PATH:$HOME/.dotbare
-```
+   ```sh
+   # echo "export PATH=$PATH:$HOME/.dotbare" >> "$HOME"/.bashrc
+   # echo "export PATH=$PATH:$HOME/.dotbare" >> "$HOME"/.zshrc
+   export PATH=$PATH:$HOME/.dotbare
+   ```
 
 3. Or you could create a alias which point to dotbare executable
 
-```sh
-alias dotbare="$HOME/.dotbare/dotbare"
-```
+   ```sh
+   alias dotbare="$HOME/.dotbare/dotbare"
+   ```
 
 ### Dependencies
 
@@ -78,7 +118,9 @@ alias dotbare="$HOME/.dotbare/dotbare"
   - [fzf](https://github.com/junegunn/fzf)
   - bash(You don't need to run bash, but dotbare does require you have bash in your system)
 - Optional dependency
+
   - [tree](https://linux.die.net/man/1/tree) (Will provide a directory tree view when finding directory)
+
     ```sh
     # if you are on macos
     brew install tree
@@ -87,34 +129,36 @@ alias dotbare="$HOME/.dotbare/dotbare"
 ### Setup
 
 1. init git bare repository
-   > Note: by default, `dotbare finit` will set up a bare repo in \$HOME/.cfg, to customize
-   > location and various other settings, checkout [customization](#customization)
 
-```sh
-dotbare finit
-```
+   Note: by default, `dotbare finit` will set up a bare repo in \$HOME/.cfg, to customize
+   location and various other settings, checkout [customization](#customization)
+
+   ```sh
+   dotbare finit
+   ```
 
 2. add dotfiles you want to track
-   > Treat dotbare as normal `git` commands. For interactive commands, check out [commands](#commands)
 
-```sh
-dotbare fadd -f
-# or
-dotbare add [FIELNAME]
+   ```sh
+   # Treat dotbare as normal `git` commands.
 
-# add entire repository like .config
-dotbare fadd -d
-# or
-dotbare add [DIRECTORY]
-```
+   dotbare fadd -f
+   # or
+   dotbare add [FIELNAME]
+
+   # add entire repository like .config
+   dotbare fadd -d
+   # or
+   dotbare add [DIRECTORY]
+   ```
 
 3. commit changes and push to remote
 
-```sh
-dotbare commit -m "First commit"
-dotbare remote add origin [URL]
-dotbare push -u origin master
-```
+   ```sh
+   dotbare commit -m "First commit"
+   dotbare remote add origin [URL]
+   dotbare push -u origin master
+   ```
 
 ### Migration
 
@@ -123,25 +167,25 @@ dotbare push -u origin master
 1. follow the steps in [install](#install) to install dotbare
 2. check your current alias of git bare reference
 
-```sh
-# Below is an example alias, check yours for reference
-alias config=/usr/bin/git --git-dir=$HOME/.cfg --work-tree=$HOME
-```
+   ```sh
+   # Below is an example alias, check yours for reference
+   alias config=/usr/bin/git --git-dir=$HOME/.cfg --work-tree=$HOME
+   ```
 
 3. set env variable for dotbare
 
-```sh
-export DOTBARE_DIR="$HOME/.cfg"
-export DOTBARE_TREE="$HOME"
-```
+   ```sh
+   export DOTBARE_DIR="$HOME/.cfg"
+   export DOTBARE_TREE="$HOME"
+   ```
 
 4. remove the original alias and use dotbare the same except with _super power_
 
 5. optionally you could alias config to dotbare so you keep your muscle memory
 
-```sh
-alias config=dotbare
-```
+   ```sh
+   alias config=dotbare
+   ```
 
 #### Migrating from a generic symlink setup or GNU stow
 
@@ -154,17 +198,17 @@ alias config=dotbare
 1. follow the steps in [install](#install) to install dotbare
 2. set environment variable so that dotbare knows where to look for git information
 
-```sh
-# e.g. I have all my dotfiles stored in folder $HOME/.myworld and symlinks all of them to appropriate location.
-# export DOTBARE_DIR="$HOME/.myworld/.git"
-# export DOTBARE_TREE="$HOME/.myworld"
-export DOTBARE_DIR=<Path to your .git directory>
-export DOTBARE_TREE=<Path to directory which contains all your dotfiles>
-```
+   ```sh
+   # e.g. I have all my dotfiles stored in folder $HOME/.myworld and symlinks all of them to appropriate location.
+   # export DOTBARE_DIR="$HOME/.myworld/.git"
+   # export DOTBARE_TREE="$HOME/.myworld"
+   export DOTBARE_DIR=<Path to your .git directory>
+   export DOTBARE_TREE=<Path to directory which contains all your dotfiles>
+   ```
 
 3. Run dotbare anywhere in your system
 4. Note: with this method, you do not run `dotbare finit -u [URL]` when migrating to new system,
-   you will do your normal migration steps and then do the above step.
+   you will do your normal migration steps and then do the above steps.
 
 ##### Complete migration
 
@@ -184,16 +228,16 @@ dotbare finit -u [URL]
 1. follow the steps in [install](#install) to install dotbare
 2. Optionally set env variable to customize dotbare location. Checkout [customization](#customization)
 
-```sh
-export DOTBARE_DIR="$HOME/.cfg"
-export DOTBARE_TREE="$HOME"
-```
+   ```sh
+   export DOTBARE_DIR="$HOME/.cfg"
+   export DOTBARE_TREE="$HOME"
+   ```
 
 3. give dotbare your remote URL and let it handle the rest
 
-```sh
-dotbare finit -u https://github.com/kazhala/dotfiles.git
-```
+   ```sh
+   dotbare finit -u https://github.com/kazhala/dotfiles.git
+   ```
 
 #### Test it in docker
 
@@ -205,7 +249,7 @@ docker pull kazhala/dotbare:latest
 docker container run -it --rm --name dotbare kazhala/dotbare:latest
 ```
 
-![migration demo](https://user-images.githubusercontent.com/43941510/82143024-201b8180-9884-11ea-9aee-388414bbcf19.gif)
+![migration demo](https://user-images.githubusercontent.com/43941510/82392054-3ee96600-9a86-11ea-9ea9-158452c62d06.gif)
 
 ## Customization
 
@@ -313,56 +357,84 @@ dotbare --help
 List all tracked dotfiles and edit the selected file through \$EDITOR, it also support
 edit commits through interactive rebase.
 
-![fedit](https://user-images.githubusercontent.com/43941510/82144921-edc15280-988a-11ea-81c6-7fc1a845afd5.gif)
+- Default: list all tracked files and open \$EDITOR to edit it. Support multi selection.
+- -m: list all modified files and open \$EDITOR to edit it. Support multi selection.
+- -c: list all commits and open interactive rebase to edit commits.
+
+![fedit](https://user-images.githubusercontent.com/43941510/82388905-0d6c9c80-9a7e-11ea-845f-21338c2d3a1f.png)
 
 ### fadd
 
 Stage modified files, stage new file or directory interactive by through fzf.
-By default `dotbare fadd` will list modified files and stage them on selection.
 
-![fadd demo](https://user-images.githubusercontent.com/43941510/82143265-f5cac380-9885-11ea-9c0a-27d3fcc1866a.gif)
+- Default: list all modified files and stage selected files. Support multi selection.
+- -f: list all files in current directory and stage selected files. Support multi selection. (Used for staging new files to index)
+- -d: list all directory under current directory and stage selected directory. Support multi selection. (Used for staging new files to index)
+
+![fadd demo](https://user-images.githubusercontent.com/43941510/82388994-4e64b100-9a7e-11ea-953a-621d85347c57.png)
 
 ### freset
 
 Reset/unstage file, reset HEAD back to certain commits and reset certain file back to certain
-commits. Demo only shows unstaging files, detailed usage checkout `dotbare freset -h`.
+commits. Also supports reset HEAD back to certian commits either `--soft`, `--hard`, `--mixed`, as well
+as reset a file back to certian commits. More information on differences [here](https://git-scm.com/docs/git-reset#Documentation/git-reset.txt-emgitresetemltmodegtltcommitgt).
 
-![freset demo](https://user-images.githubusercontent.com/43941510/82147148-295f1b00-9891-11ea-9765-e5befd30cfd9.gif)
+- Default: list all staged files and unstage the selected files. Support multi selection.
+- -a: list all tracked files and then prompt commits selection. Reset selected file back to the selected commits. (Default: `--mixed`)
+- -c: list all commits and then reset HEAD back to the selected commits. (Default: `--mixed`)
+- -S: use `--soft` flag instead of `--mixed` flag
+- -H: use `--hard` flag instead of `--mixed` flag
 
 ### fcheckout
 
-Checkout files/commit/branch interactively, default behavior is to checkout files back
-to HEAD (Reset file changes back to HEAD).
+Checkout files/commit/branch interactively.
 
-![fcheckout demo](https://user-images.githubusercontent.com/43941510/82147244-d043b700-9891-11ea-8778-9fb9df6b441d.gif)
+- Default: list all modified files and reset selected files back to HEAD. Support multi selection. (Discard all changes)
+  Note: if your file is staged, you will need to unstage first before running fcheckout to make it work.
+- -a: list all tracked files and then prompt commit selection, checkout selected file in the version of selected commit.
+- -b: list all branch and switch to selected branch.
+- -c: list all commits and checkout selected commit.
+
+![fcheckout demo](https://user-images.githubusercontent.com/43941510/82389569-e2834800-9a7f-11ea-92b5-ed20c8f2ecda.png)
 
 ### flog
 
 Interactive log viewer that will prompt you with a menu after selecting a commit. Allows
 edit, reset, revert and checkout the selected commits.
 
-![flog demo](https://user-images.githubusercontent.com/43941510/82210660-d057bb80-9952-11ea-81fb-564cf8d4b143.gif)
+- Default: list all commits and then prompt menu to select actions.
+- -r: revert the selected commit
+- -R: reset HEAD back to the selected commit
+- -e: edit selected commit through interactive rebase
+- -c: checkout selected commit
+
+![flog demo](https://user-images.githubusercontent.com/43941510/82389843-810fa900-9a80-11ea-9653-544816eb9eb8.png)
 
 ### fstash
 
-View and manage your stash interactively. Pass `-p` flag for `pop`, otherwise by default,
-`stash apply` is used under the hood. Pass `-d` flag for deleting a stash.
+View and manage stash interactively.
 
-![fstash demo](https://user-images.githubusercontent.com/43941510/82211351-119c9b00-9954-11ea-9579-66cd83b9ca8a.gif)
+- Default: list all stash and apply the selected stash. (Default: `apply`)
+- -f: list modified files and only stash selected files. Support multi selection.
+- -d: list all stash and delete selected stash. Support multi selection.
+- -p: use `pop` instead of `apply`. (`pop` would remove the stash while `apply` preserve the stash)
+
+![fstash demo](https://user-images.githubusercontent.com/43941510/82390106-275bae80-9a81-11ea-8c7c-6573bb1ecada.png)
 
 ### fbackup
 
-Backup all of the tracked dotfiles to DOTBARE_BACKUP directory. This is used also by
+Backup all of the tracked dotfiles to \$DOTBARE_BACKUP directory. This is used also by
 `dotbare finit -u [URL]` for backing up conflicted checkout files.
 
-![fbackup demo](https://user-images.githubusercontent.com/43941510/82210006-9a660780-9951-11ea-8343-a6a8ca55138c.gif)
+- Default: backup all tracked dotfiles to \$DOTBARE_BACKUP directory. (Default: use `cp`)
+- -s: list all tracked files and only backup selected files. Support multi selection.
+- -p PATH: specify path to files and then backup. (This is mainly used by `dotbare finit -u [URL]`)
+- -m: use `mv` instead of `cp` to backup. (This is mainly used by `dotbare finit -u [URL]`)
 
 ### fstat
 
 Interactively toggle stage/unstage of files. This is less used compare to `dotbare fadd`,
 it might get deprecated.
-
-![fstat demo](https://user-images.githubusercontent.com/43941510/82325049-f0a07c80-9a1d-11ea-9d3f-e4de5987bedb.gif)
 
 ### finit
 
@@ -370,6 +442,9 @@ Initialise dotbare with a bare repository or add -u [URL] flag for migrating cur
 dotfiles to a new system.
 
 Note: do not use this command if you are using symlink/GNU stow.
+
+- Default: initialise a git bare repository at \$DOTBARE_DIR
+- -u URL: migrate existing bare repository from remote to current system.
 
 ### funtrack
 
@@ -389,21 +464,50 @@ More discussions [here](https://stackoverflow.com/questions/1274057/how-to-make-
 actually remove the untracked files from other system. However, this is **NOT** recommanded
 way to untrack files, explained [here](https://www.git-scm.com/docs/git-update-index#_notes).
 
+- Default: list all tracked files and permanently untrack the selected files. Support multi selection.
+- -s: list all tracked files and temporarily untrack changes of the selected files. Support multi selection.
+- -S: list all tracked files and resume tracking changes of the selected files.
+
 ### fupgrade
 
 Update dotbare to the latest version in master. It basically just pull down changes from master,
 except you don't have to cd into dotbare directory, you can run this command any where.
 
-## Background
+## Tips and Tricks
 
-dotbare was initially part of my personal scripts, however as the number of scripts grows,
-I feel like is more appropriate to make a dedicated project for it. I've just started
-scripting for a few months, so there must be a lot of improvements that could be made, please
-help me out by firing up issues and any PR is welcome.
+- Most commands related to files support multi selection (default fzf setting is TAB)
+- Most commands related to commits and branches doesn't support multi selection
+- Checkout fzf [doc](https://github.com/junegunn/fzf/blob/97a725fbd0e54cbc07e4d72661ea2bd2bb7c01c1/man/man1/fzf.1#L648)
+  for more default fzf keybinds information.
+- Alias dotbare to shorter words to type less
+
+  ```sh
+  alias db=dotbare
+  ```
+
+- Create keybinds for dotbare (e.g. bind ctrl-g to launch fedit and edit files)
+
+  ```sh
+  # zsh example
+  bindkey -s '^g' "dotbare fedit"^j
+  # bash example
+  bind -x '"\C-g":"dotbare fedit"'
+  ```
+
+- `dotbare` has disabled the command `dotbare add --All` as it is a really dangerous command in the conext of `dotbare` as it will stage everything in your \$DOTBARE_TREE to the index.
+
+  ```sh
+  # Recommanded ways
+  dotbare fadd  # and then press alt-a to select all
+  dotbare add -u # stage all modified file to index
+  dotbare commit -am "message" # this also works, it will stage all modified files and then commit
+  ```
 
 ## Testing
 
 dotbare is unit tested on a _best effort_ due the nature of fzf which require human input.
+Mock test are coming if I could make it work.
+
 Some functions may have a lot more coverage than others, so please fire up issues if something went wrong.
 dotbare uses [bats](https://github.com/bats-core/bats-core) to test individual functions.
 
@@ -412,7 +516,7 @@ you could checkout my cloudformation [template](https://github.com/kazhala/AWSCl
 
 ## Contributing
 
-Please help me out by pointing out things that I could improve, as I said, I've only been
+Please help me out by pointing out things that I could improve, I've only been
 scripting for a few months and are still adapting many new things every day. PR are always welcome
 and please fire up issues if something went wrong.
 
@@ -420,14 +524,26 @@ Leave a star if possible :)
 
 ## Coming up
 
+- [ ] Improve unit test with mocking
 - [ ] Command line completion for dotbare commands
 - [ ] Man page
 - [ ] Command line completion for git commands?
 - [ ] Installation method
 
+## Background
+
+dotbare was initially part of my personal scripts, I had a hard time sharing those scripts
+and as the number of scripts grows, I feel like is more appropriate to make a dedicated project
+for it. I hope you find it useful and enjoy it, thanks!
+
 ## Credit
 
-- credit to [forgit](https://github.com/wfxr/forgit) for inspiration
-- credit to [fzf](https://github.com/junegunn/fzf)
-- credit to [this](https://www.atlassian.com/git/tutorials/dotfiles) post
-- credit to [this](https://www.youtube.com/watch?v=tBoLDpTWVOM&t=288s) video
+- credit to [forgit](https://github.com/wfxr/forgit) for inspiration.
+- credit to [fzf](https://github.com/junegunn/fzf) for fzf XD.
+- credit to [this](https://www.atlassian.com/git/tutorials/dotfiles) post for step by step guide of setting up git bare repo.
+- credit to [this](https://www.youtube.com/watch?v=tBoLDpTWVOM&t=288s) video for introduing git bare repo.
+
+## Demo
+
+You could find some more gif demo [here](https://github.com/kazhala/dotbare/issues/1)
+[![asciicast](https://asciinema.org/a/332231.svg)](https://asciinema.org/a/332231)
