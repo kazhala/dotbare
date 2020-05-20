@@ -317,56 +317,84 @@ dotbare --help
 List all tracked dotfiles and edit the selected file through \$EDITOR, it also support
 edit commits through interactive rebase.
 
-![fedit](https://user-images.githubusercontent.com/43941510/82144921-edc15280-988a-11ea-81c6-7fc1a845afd5.gif)
+- Default: list all tracked files and open \$EDITOR to edit it. Support multi selection.
+- -m: list all modified files and open \$EDITOR to edit it. Support multi selection.
+- -c: list all commits and open interactive rebase to edit commits.
+
+![fedit](https://user-images.githubusercontent.com/43941510/82388905-0d6c9c80-9a7e-11ea-845f-21338c2d3a1f.png)
 
 ### fadd
 
 Stage modified files, stage new file or directory interactive by through fzf.
-By default `dotbare fadd` will list modified files and stage them on selection.
 
-![fadd demo](https://user-images.githubusercontent.com/43941510/82143265-f5cac380-9885-11ea-9c0a-27d3fcc1866a.gif)
+- Default: list all modified files and stage selected files. Support multi selection.
+- -f: list all files in current directory and stage selected files. Support multi selection. (Used for staging new files to index)
+- -d: list all directory under current directory and stage selected directory. Support multi selection. (Used for staging new files to index)
+
+![fadd demo](https://user-images.githubusercontent.com/43941510/82388994-4e64b100-9a7e-11ea-953a-621d85347c57.png)
 
 ### freset
 
 Reset/unstage file, reset HEAD back to certain commits and reset certain file back to certain
-commits. Demo only shows unstaging files, detailed usage checkout `dotbare freset -h`.
+commits. Also supports reset HEAD back to certian commits either `--soft`, `--hard`, `--mixed`, as well
+as reset a file back to certian commits. More information on differences [here](https://git-scm.com/docs/git-reset#Documentation/git-reset.txt-emgitresetemltmodegtltcommitgt).
 
-![freset demo](https://user-images.githubusercontent.com/43941510/82147148-295f1b00-9891-11ea-9765-e5befd30cfd9.gif)
+- Default: list all staged files and unstage the selected files. Support multi selection.
+- -a: list all tracked files and then prompt commits selection. Reset selected file back to the selected commits. (Default: `--mixed`)
+- -c: list all commits and then reset HEAD back to the selected commits. (Default: `--mixed`)
+- -S: use `--soft` flag instead of `--mixed` flag
+- -H: use `--hard` flag instead of `--mixed` flag
 
 ### fcheckout
 
-Checkout files/commit/branch interactively, default behavior is to checkout files back
-to HEAD (Reset file changes back to HEAD).
+Checkout files/commit/branch interactively.
 
-![fcheckout demo](https://user-images.githubusercontent.com/43941510/82147244-d043b700-9891-11ea-8778-9fb9df6b441d.gif)
+- Default: list all modified files and reset selected files back to HEAD. Support multi selection. (Discard all changes)
+  Note: if your file is staged, you will need to unstage first before running fcheckout to make it work.
+- -a: list all tracked files and then prompt commit selection, checkout selected file in the version of selected commit.
+- -b: list all branch and switch to selected branch.
+- -c: list all commits and checkout selected commit.
+
+![fcheckout demo](https://user-images.githubusercontent.com/43941510/82389569-e2834800-9a7f-11ea-92b5-ed20c8f2ecda.png)
 
 ### flog
 
 Interactive log viewer that will prompt you with a menu after selecting a commit. Allows
 edit, reset, revert and checkout the selected commits.
 
-![flog demo](https://user-images.githubusercontent.com/43941510/82210660-d057bb80-9952-11ea-81fb-564cf8d4b143.gif)
+- Default: list all commits and then prompt menu to select actions.
+- -r: revert the selected commit
+- -R: reset HEAD back to the selected commit
+- -e: edit selected commit through interactive rebase
+- -c: checkout selected commit
+
+![flog demo](https://user-images.githubusercontent.com/43941510/82389843-810fa900-9a80-11ea-9653-544816eb9eb8.png)
 
 ### fstash
 
-View and manage your stash interactively. Pass `-p` flag for `pop`, otherwise by default,
-`stash apply` is used under the hood. Pass `-d` flag for deleting a stash.
+View and manage stash interactively.
 
-![fstash demo](https://user-images.githubusercontent.com/43941510/82211351-119c9b00-9954-11ea-9579-66cd83b9ca8a.gif)
+- Default: list all stash and apply the selected stash. (Default: `apply`)
+- -f: list modified files and only stash selected files. Support multi selection.
+- -d: list all stash and delete selected stash. Support multi selection.
+- -p: use `pop` instead of `apply`. (`pop` would remove the stash while `apply` preserve the stash)
+
+![fstash demo](https://user-images.githubusercontent.com/43941510/82390106-275bae80-9a81-11ea-8c7c-6573bb1ecada.png)
 
 ### fbackup
 
-Backup all of the tracked dotfiles to DOTBARE_BACKUP directory. This is used also by
+Backup all of the tracked dotfiles to \$DOTBARE_BACKUP directory. This is used also by
 `dotbare finit -u [URL]` for backing up conflicted checkout files.
 
-![fbackup demo](https://user-images.githubusercontent.com/43941510/82210006-9a660780-9951-11ea-8343-a6a8ca55138c.gif)
+- Default: backup all tracked dotfiles to \$DOTBARE_BACKUP directory. (Default: use `cp`)
+- -s: list all tracked files and only backup selected files. Support multi selection.
+- -p PATH: specify path to files and then backup. (This is mainly used by `dotbare finit -u [URL]`)
+- -m: use `mv` instead of `cp` to backup. (This is mainly used by `dotbare finit -u [URL]`)
 
 ### fstat
 
 Interactively toggle stage/unstage of files. This is less used compare to `dotbare fadd`,
 it might get deprecated.
-
-![fstat demo](https://user-images.githubusercontent.com/43941510/82325049-f0a07c80-9a1d-11ea-9d3f-e4de5987bedb.gif)
 
 ### finit
 
@@ -374,6 +402,9 @@ Initialise dotbare with a bare repository or add -u [URL] flag for migrating cur
 dotfiles to a new system.
 
 Note: do not use this command if you are using symlink/GNU stow.
+
+- Default: initialise a git bare repository at \$DOTBARE_DIR
+- -u URL: migrate existing bare repository from remote to current system.
 
 ### funtrack
 
@@ -393,6 +424,10 @@ More discussions [here](https://stackoverflow.com/questions/1274057/how-to-make-
 actually remove the untracked files from other system. However, this is **NOT** recommanded
 way to untrack files, explained [here](https://www.git-scm.com/docs/git-update-index#_notes).
 
+- Default: list all tracked files and permanently untrack the selected files. Support multi selection.
+- -s: list all tracked files and temporarily untrack changes of the selected files. Support multi selection.
+- -S: list all tracked files and resume tracking changes of the selected files.
+
 ### fupgrade
 
 Update dotbare to the latest version in master. It basically just pull down changes from master,
@@ -402,7 +437,7 @@ except you don't have to cd into dotbare directory, you can run this command any
 
 - Most commands related to files support multi selection (default fzf setting is TAB)
 - Most commands related to commits and branches doesn't support multi selection
-- Checkout [this](https://github.com/junegunn/fzf/blob/97a725fbd0e54cbc07e4d72661ea2bd2bb7c01c1/man/man1/fzf.1#L648)
+- Checkout fzf [doc](https://github.com/junegunn/fzf/blob/97a725fbd0e54cbc07e4d72661ea2bd2bb7c01c1/man/man1/fzf.1#L648)
   for more default fzf keybinds information.
 - Alias dotbare to shorter words to type less
 
@@ -417,6 +452,15 @@ except you don't have to cd into dotbare directory, you can run this command any
   bindkey -s '^g' "dotbare fedit"^j
   # bash example
   bind -x '"\C-g":"dotbare fedit"'
+  ```
+
+- `dotbare` has disabled the command `dotbare add --All` as it is a really dangerous command in the conext of `dotbare` as it will stage everything in your \$DOTBARE_TREE to the index.
+
+  ```sh
+  # Recommanded ways
+  dotbare fadd  # and then press alt-a to select all
+  dotbare add -u # stage all modified file to index
+  dotbare commit -am "message" # this also works, it will stage all modified files and then commit
   ```
 
 ## Background
@@ -455,7 +499,7 @@ Leave a star if possible :)
 
 ## Credit
 
-- credit to [forgit](https://github.com/wfxr/forgit) for inspiration
-- credit to [fzf](https://github.com/junegunn/fzf)
-- credit to [this](https://www.atlassian.com/git/tutorials/dotfiles) post
-- credit to [this](https://www.youtube.com/watch?v=tBoLDpTWVOM&t=288s) video
+- credit to [forgit](https://github.com/wfxr/forgit) for inspiration.
+- credit to [fzf](https://github.com/junegunn/fzf) for fzf XD.
+- credit to [this](https://www.atlassian.com/git/tutorials/dotfiles) post for step by step guide of setting up git bare repo.
+- credit to [this](https://www.youtube.com/watch?v=tBoLDpTWVOM&t=288s) video for introduing git bare repo.
