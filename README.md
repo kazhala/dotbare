@@ -209,7 +209,7 @@ docker pull kazhala/dotbare:latest
 docker container run -it --rm --name dotbare kazhala/dotbare:latest
 ```
 
-![migration demo](https://user-images.githubusercontent.com/43941510/82143024-201b8180-9884-11ea-9aee-388414bbcf19.gif)
+![migration demo](https://user-images.githubusercontent.com/43941510/82392054-3ee96600-9a86-11ea-9ea9-158452c62d06.gif)
 
 ## Customization
 
@@ -463,13 +463,6 @@ except you don't have to cd into dotbare directory, you can run this command any
   dotbare commit -am "message" # this also works, it will stage all modified files and then commit
   ```
 
-## Background
-
-dotbare was initially part of my personal scripts, however as the number of scripts grows,
-I feel like is more appropriate to make a dedicated project for it. I've just started
-scripting for a few months, so there must be a lot of improvements that could be made, please
-help me out by firing up issues and any PR is welcome.
-
 ## Testing
 
 dotbare is unit tested on a _best effort_ due the nature of fzf which require human input.
@@ -483,7 +476,7 @@ you could checkout my cloudformation [template](https://github.com/kazhala/AWSCl
 
 ## Contributing
 
-Please help me out by pointing out things that I could improve, as I said, I've only been
+Please help me out by pointing out things that I could improve, I've only been
 scripting for a few months and are still adapting many new things every day. PR are always welcome
 and please fire up issues if something went wrong.
 
@@ -496,6 +489,12 @@ Leave a star if possible :)
 - [ ] Man page
 - [ ] Command line completion for git commands?
 - [ ] Installation method
+
+## Background
+
+dotbare was initially part of my personal scripts, I had a hard time sharing those scripts
+and as the number of scripts grows, I feel like is more appropriate to make a dedicated project
+for it. I hope you find it useful and enjoy it, thanks!
 
 ## Credit
 
