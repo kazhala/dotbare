@@ -48,6 +48,46 @@ all the git information and display it through fzf. dotbare also comes with the 
 GNU stow or any symlink set up as long as you are using git. It is easy to migrate to any system
 with minimal set up required.
 
+## Table of Contents
+
+- [Getting started](#getting-started)
+  - [Install](#install)
+  - [Dependencies](#dependencies)
+  - [Setup](#setup)
+  - [Migration](#migration)
+    - [Migrating from normal git bare repository](#migrating-from-normal-git-bare-repository)
+    - [Migrating from a generic symlink setup or GNU stow](#migrating-from-a-generic-symlink-setup-or-gnu-stow)
+      - [Keep your current setup but integrate dotbare](#keep-your-current-setup-but-integrate-dotbare)
+      - [Complete migration](#complete-migration)
+    - [Migrating dotbare to a new system](#migrating-dotbare-to-a-new-system)
+    - [Test it in docker](#test-it-in-docker)
+- [Customization](#customization)
+  - [DOTBARE_DIR](#dotbare_dir)
+  - [DOTBARE_BACKUP](#dotbare_backup)
+  - [EDITOR](#editor)
+  - [DOTBARE_KEY](#dotbare_key)
+  - [DOTBARE_FZF_DEFAULT_OPTS](#dotbare_fzf_default_opts)
+- [Commands](#commands)
+  - [Checkout all available scripts and their help manual](#checkout-all-available-scripts-and-their-help-manual)
+  - [fedit](#fedit)
+  - [fadd](#fadd)
+  - [freset](#freset)
+  - [fcheckout](#fcheckout)
+  - [flog](#flog)
+  - [fstash](#fstash)
+  - [fbackup](#fbackup)
+  - [fstat](#fstat)
+  - [finit](#finit)
+  - [funtrack](#funtrack)
+  - [fupgrade](#fupgrade)
+- [Tips and Tricks](#tips-and-tricks)
+- [Testing](#testing)
+- [Contributing](#contributing)
+- [Coming up](#coming-up)
+- [Background](#background)
+- [Credit](#credit)
+- [Demo](#demo)
+
 ## Getting started
 
 ### Install
