@@ -120,7 +120,25 @@ with minimal set up required.
 
 ##### Zinit
 
-add `zinit light kazhala/dotbare` to `~/.zshrc`.
+- Add below to `~/.zshrc`
+
+  ```sh
+  zinit light kazhala/dotbare
+  ```
+
+##### oh-my-zsh
+
+- Clone the repository in to [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh) plugins directory
+
+  ```sh
+  git clone https://github.com/kazhala/dotbare.git $HOME/.oh-my-zsh/custom/plugins/dotbare
+  ```
+
+- Activate the plugin in `~/.zshrc`
+
+  ```zsh
+  plugins=( [plugins...] dotbare [plugins...] )
+  ```
 
 ### Dependencies
 
