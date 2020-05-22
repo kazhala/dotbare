@@ -51,6 +51,8 @@ with minimal set up required.
 
 - [Getting started](#getting-started)
   - [Install](#install)
+    - [Manual](#manual)
+    - [Zsh Plugin](#zsh-plugin)
   - [Dependencies](#dependencies)
   - [Setup](#setup)
   - [Migration](#migration)
@@ -92,6 +94,8 @@ with minimal set up required.
 
 ### Install
 
+#### Manual
+
 1. Clone the repository (change ~/.dotbare to the location of your preference)
 
    ```sh
@@ -111,6 +115,12 @@ with minimal set up required.
    ```sh
    alias dotbare="$HOME/.dotbare/dotbare"
    ```
+
+#### Zsh plugin
+
+##### Zinit
+
+add `zinit light kazhala/dotbare` to `~/.zshrc`.
 
 ### Dependencies
 
