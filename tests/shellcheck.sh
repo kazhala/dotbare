@@ -4,6 +4,9 @@
 
 set -e
 
+mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "${mydir}"/../
+
 scripts=()
 while IFS=  read -r -d $'\0' line; do
     scripts+=("$line")
@@ -12,7 +15,7 @@ done < <(
     dotbare \
     helper/* \
     scripts/* \
-    shellcheck.sh \
+    tests/shellcheck.sh \
     -type f \
     -print0
   )

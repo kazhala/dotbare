@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: sudo apt-get install shellcheck -y
-      - run: ./shellcheck.sh
+      - run: ./tests/shellcheck.sh
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -33,7 +33,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: brew install shellcheck
-      - run: ./shellcheck.sh
+      - run: ./tests/shellcheck.sh
       - run: brew install bats
       - run: ./dotbare finit -u https://github.com/kazhala/dotfiles.git
       - run: bats tests

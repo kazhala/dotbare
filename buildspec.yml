@@ -18,7 +18,7 @@ phases:
   build:
     commands:
       - echo Checking script compliance
-      - ./shellcheck.sh
+      - ./tests/shellcheck.sh
       - echo Building docker url image ...
       - docker image build --build-arg MIGRATE=url -t kazhala/dotbare:testurl -f tests/Dockerfile .
       - echo Running bats unittest ...
