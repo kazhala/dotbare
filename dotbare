@@ -57,65 +57,17 @@ fi
   echo "dotbare disabled add --all option as this will stage every single file in ${DOTBARE_TREE}" && \
   exit 1
 
-action_command=''
 case "$1" in
-  fadd)
-    action_command='fadd'
-    shift
-    ;;
-  funtrack)
-    action_command='funtrack'
-    shift
-    ;;
-  fstash)
-    action_command='fstash'
-    shift
-    ;;
-  freset)
-    action_command='freset'
-    shift
-    ;;
-  fcheckout)
-    action_command='fcheckout'
-    shift
-    ;;
-  fstat)
-    action_command='fstat'
-    shift
-    ;;
-  fedit)
-    action_command='fedit'
-    shift
-    ;;
-  flog)
-    action_command="flog"
-    shift
-    ;;
-  fbackup)
-    action_command="fbackup"
-    shift
-    ;;
-  finit)
-    action_command='finit'
-    shift
-    ;;
-  fupgrade)
-    action_command='fupgrade'
-    shift
-    ;;
-  help)
+  help|-h)
     usage
     exit 0
     ;;
-  -h)
-    usage
-    exit 0
+  *)
+    if [[ -x "${mydir}/scripts/$1" ]]; then
+      # run the scripts
+      exec "${mydir}/scripts/$1" "${@:2}"
+    fi
     ;;
 esac
 
-if [[ -z "${action_command}" ]]; then
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" "$@"
-else
-  # run the scripts
-  "${mydir}/scripts/${action_command}" "$@"
-fi
+/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" "$@"
