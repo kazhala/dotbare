@@ -49,10 +49,11 @@ with minimal set up required.
 
 ## Table of Contents
 
+- [Install](#install)
+  - [zsh](#zsh)
+  - [bash](#bash)
+  - [others](#others)
 - [Getting started](#getting-started)
-  - [Install](#install)
-    - [Manual](#manual)
-    - [Zsh Plugin](#zsh-plugin)
   - [Dependencies](#dependencies)
   - [Setup](#setup)
   - [Migration](#migration)
@@ -90,43 +91,19 @@ with minimal set up required.
 - [Credit](#credit)
 - [Demo](#demo)
 
-## Getting started
+## Install
 
-### Install
+### zsh
 
-#### Manual
+dotbare should work with any zsh plugin manager, below is only demonstration
 
-1. Clone the repository (change ~/.dotbare to the location of your preference)
+#### zinit
 
-   ```sh
-   git clone https://github.com/kazhala/dotbare.git ~/.dotbare
-   ```
+```sh
+zinit light kazhala/dotbare
+```
 
-2. Add dotbare to your PATH (below is only an example, put PATH into your appropriate shellrc file, `$HOME/.zshrc` etc)
-
-   ```sh
-   # echo "export PATH=$PATH:$HOME/.dotbare" >> "$HOME"/.bashrc
-   # echo "export PATH=$PATH:$HOME/.dotbare" >> "$HOME"/.zshrc
-   export PATH=$PATH:$HOME/.dotbare
-   ```
-
-3. Or you could create a alias which point to dotbare executable
-
-   ```sh
-   alias dotbare="$HOME/.dotbare/dotbare"
-   ```
-
-#### Zsh plugin
-
-##### Zinit
-
-- Add below to `~/.zshrc`
-
-  ```sh
-  zinit light kazhala/dotbare
-  ```
-
-##### oh-my-zsh
+#### oh-my-zsh
 
 - Clone the repository in to [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh) plugins directory
 
@@ -139,6 +116,64 @@ with minimal set up required.
   ```zsh
   plugins=( [plugins...] dotbare [plugins...] )
   ```
+
+#### Antigen
+
+```sh
+antigen bundle kazhala/dotbare
+```
+
+#### Manual
+
+- Clone the repository (change ~/.dotbare to the location of your preference)
+
+  ```sh
+  git clone https://github.com/kazhala/dotbare.git ~/.dotbare
+  ```
+
+- Put below into `.zshrc`
+
+  ```sh
+  source ~/.dotbare/dotbare.plugin.zsh
+  ```
+
+### bash
+
+- Clone the repository (change ~/.dotbare to the location of your preference)
+
+  ```sh
+  git clone https://github.com/kazhala/dotbare.git ~/.dotbare
+  ```
+
+- Put below into `.bashrc` or `.bash_profile`
+
+  ```sh
+  source ~/.dotbare/dotbare.plugin.bash
+  ```
+
+### Others
+
+1. Clone the repository (change ~/.dotbare to the location of your preference)
+
+   ```sh
+   git clone https://github.com/kazhala/dotbare.git ~/.dotbare
+   ```
+
+2. Add dotbare to your PATH
+
+   ```sh
+   # This is only an example command for Posix shell
+   # If you are on Fish, use the Fish way to add dotbare to your path
+   export PATH=$PATH:$HOME/.dotbare
+   ```
+
+3. Or you could create a alias which point to dotbare executable
+
+   ```sh
+   alias dotbare="$HOME/.dotbare/dotbare"
+   ```
+
+## Getting started
 
 ### Dependencies
 
