@@ -29,6 +29,7 @@ function usage() {
   echo -e "Available commands:"
   echo -e "  Any git commands, treat dotbare as git"
   echo -e "  fadd      \t\tstage modified file interactively"
+  echo -e "  freset    \t\tunstage file or reset commit interactively"
   echo -e "  funtrack  \t\tuntrack file interactively"
   echo -e "  fstash    \t\tmanage stash interactively"
   echo -e "  fcheckout \t\tcheckout branch/files/commits interactively"
