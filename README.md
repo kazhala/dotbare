@@ -141,7 +141,7 @@ antigen bundle kazhala/dotbare
 
 dotbare comes with a `dotbare.plugin.bash` which will enable both bash command line
 completion for dotbare commands and adding dotbare to your PATH. If you don't want the completion,
-simple follow the instructions in [Others](#Others) and add dotbare to your PATH.
+simply follow the instructions in [Others](#Others) and add dotbare to your PATH.
 
 - Clone the repository (change ~/.dotbare to the location of your preference)
 
@@ -166,8 +166,8 @@ simple follow the instructions in [Others](#Others) and add dotbare to your PATH
 2. Add dotbare to your PATH
 
    ```sh
-   # This is only an example command for Posix shell
-   # If you are on Fish, use the Fish way to add dotbare to your path
+   # This is only an example command for posix shell
+   # If you are on fish, use the fish way to add dotbare to your path
    export PATH=$PATH:$HOME/.dotbare
    ```
 
@@ -279,7 +279,7 @@ simple follow the instructions in [Others](#Others) and add dotbare to your PATH
 
 ##### Complete migration
 
-I haven't used GNU stow or any symlink setup, but I do recommand keep your current setup
+I haven't used GNU stow or any symlink setup, but I do recommend keep your current setup
 and integrate with dotbare. If you are really happy with `dotbare`, as long as your remote
 repository resembles the structure of your home holder (reference what I mean in my [repo](https://github.com/kazhala/dotfiles.git)),
 simply run the command below.
@@ -443,8 +443,8 @@ Stage modified files, stage new file or directory interactive by through fzf.
 ### freset
 
 Reset/unstage file, reset HEAD back to certain commits and reset certain file back to certain
-commits. Also supports reset HEAD back to certian commits either `--soft`, `--hard`, `--mixed`, as well
-as reset a file back to certian commits. More information on differences [here](https://git-scm.com/docs/git-reset#Documentation/git-reset.txt-emgitresetemltmodegtltcommitgt).
+commits. Also supports reset HEAD back to certain commits either `--soft`, `--hard`, `--mixed`, as well
+as reset a file back to certain commits. More information on differences [here](https://git-scm.com/docs/git-reset#Documentation/git-reset.txt-emgitresetemltmodegtltcommitgt).
 
 - Default: list all staged files and unstage the selected files. Support multi selection.
 - -a: list all tracked files and then prompt commits selection. Reset selected file back to the selected commits. (Default: `--mixed`)
@@ -528,7 +528,7 @@ After pulling new changes, move the deleted files from backup back to their orig
 More discussions [here](https://stackoverflow.com/questions/1274057/how-to-make-git-forget-about-a-file-that-was-tracked-but-is-now-in-gitignore).
 
 `dotbare funtrack` does come with capabilities to temporarily untrack files, which will not
-actually remove the untracked files from other system. However, this is **NOT** recommanded
+actually remove the untracked files from other system. However, this is **NOT** recommended
 way to untrack files, explained [here](https://www.git-scm.com/docs/git-update-index#_notes).
 
 - Default: list all tracked files and permanently untrack the selected files. Support multi selection.
@@ -606,9 +606,9 @@ for it. I hope you find it useful and enjoy it, thanks!
 ## Credit
 
 - credit to [forgit](https://github.com/wfxr/forgit) for inspiration.
-- credit to [fzf](https://github.com/junegunn/fzf) for fzf XD.
+- credit to [fzf](https://github.com/junegunn/fzf) for fzf.
 - credit to [this](https://www.atlassian.com/git/tutorials/dotfiles) post for step by step guide of setting up git bare repo.
-- credit to [this](https://www.youtube.com/watch?v=tBoLDpTWVOM&t=288s) video for introduing git bare repo.
+- credit to [this](https://www.youtube.com/watch?v=tBoLDpTWVOM&t=288s) video for introducing git bare repo.
 
 ## Demo
 
