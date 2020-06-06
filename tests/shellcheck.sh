@@ -12,6 +12,7 @@ while IFS=  read -r -d $'\0' line; do
     scripts+=("$line")
 done < <(
   find \
+    dotbare.plugin.bash \
     dotbare \
     helper/* \
     scripts/* \
