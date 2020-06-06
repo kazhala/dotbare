@@ -28,10 +28,14 @@ _dotbare_completions()
       COMPREPLY=( "${COMPREPLY[0]%% *}" )
     fi
 
-  elif [[ "$COMP_CWORD" -eq "2" && "${prev}" != '-h' ]]; then
-    case "${prev}" in
+  elif [[ "${COMP_WORDS[1]}" == "fbackup" && "${prev}" == '-p' ]]; then
+      # shellcheck disable=SC2207
+      COMPREPLY=($(compgen -d -- "${curr}"))
+
+  elif [[ "${prev}" != '-h' ]]; then
+    case "${COMP_WORDS[1]}" in
       fbackup)
-        options=$("${mydir}"/dotbare "${prev}" -h \
+        options=$("${mydir}"/dotbare fbackup -h \
           | awk '{
               if ($0 ~ /  -p PATH/) {
                 gsub(/^  -p PATH/, "-p  ", $0)
@@ -45,7 +49,7 @@ _dotbare_completions()
             }')
         ;;
       finit)
-        options=$("${mydir}"/dotbare "${prev}" -h \
+        options=$("${mydir}"/dotbare finit -h \
           | awk '{
               if ($0 ~ /  -u URL/) {
                 gsub(/^  -u URL/, "-u  ", $0)
@@ -59,7 +63,7 @@ _dotbare_completions()
             }')
         ;;
       *)
-        options=$("${mydir}"/dotbare "${prev}" -h \
+        options=$("${mydir}"/dotbare "${COMP_WORDS[1]}" -h \
           | awk '{
               if ($0 ~ /  -*/) {
                 gsub(/^  /, "", $0)
@@ -74,10 +78,6 @@ _dotbare_completions()
     if [[ ${#COMPREPLY[*]} -eq 1 ]]; then
       COMPREPLY=( "${COMPREPLY[0]%% *}" )
     fi
-  elif [[ "$COMP_CWORD" -eq "3" ]]; then
-    # shellcheck disable=SC2207
-    [[ "${COMP_WORDS[1]}" == "fbackup" && "${COMP_WORDS[2]}" == "-p" ]] && \
-      COMPREPLY=($(compgen -d -- "${curr}"))
   fi
 }
 complete -F _dotbare_completions dotbare
