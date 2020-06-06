@@ -21,5 +21,6 @@ done < <(
   )
 
 shellcheck -e SC1090 "${scripts[@]}"
+shellcheck -e SC1090 --shell=bash "dotbare.plugin.bash"
 
 exit $?
