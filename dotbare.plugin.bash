@@ -3,7 +3,7 @@ mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 _dotbare_completions()
 {
-  local IFS=$'\n' subcommands curr prev options
+  local IFS=$'\n' subcommands curr prev options selected
   curr="${COMP_WORDS[$COMP_CWORD]}"
   prev="${COMP_WORDS[$COMP_CWORD-1]}"
 
@@ -33,14 +33,17 @@ _dotbare_completions()
       COMPREPLY=($(compgen -d -- "${curr}"))
 
   elif [[ "${prev}" != '-h' ]]; then
+    selected=("${COMP_WORDS[@]:1}")
     case "${COMP_WORDS[1]}" in
       fbackup)
         options=$("${mydir}"/dotbare fbackup -h \
-          | awk '{
-              if ($0 ~ /  -p PATH/) {
+          | awk -v selected="${selected[*]}" '{
+              if (selected ~ $1) {
+                next
+              } else if ($0 ~ /  -p PATH/) {
                 gsub(/^  -p PATH/, "-p  ", $0)
                 gsub(/\t/, "  ", $0)
-                print $0
+                print selected
               } else if ($0 ~ /  -*/) {
                 gsub(/^  /, "", $0)
                 gsub(/\t/, "  ", $0)
@@ -50,8 +53,10 @@ _dotbare_completions()
         ;;
       finit)
         options=$("${mydir}"/dotbare finit -h \
-          | awk '{
-              if ($0 ~ /  -u URL/) {
+          | awk -v selected="${selected[*]}" '{
+              if (selected ~ $1) {
+                next
+              } else if ($0 ~ /  -u URL/) {
                 gsub(/^  -u URL/, "-u  ", $0)
                 gsub(/\t/, "  ", $0)
                 print $0
@@ -64,8 +69,10 @@ _dotbare_completions()
         ;;
       *)
         options=$("${mydir}"/dotbare "${COMP_WORDS[1]}" -h \
-          | awk '{
-              if ($0 ~ /  -*/) {
+          | awk -v selected="${selected[*]}" '{
+              if (selected ~ $1) {
+                next
+              } else if ($0 ~ /  -*/) {
                 gsub(/^  /, "", $0)
                 gsub(/\t/, "  ", $0)
                 print $0
