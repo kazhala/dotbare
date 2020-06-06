@@ -139,6 +139,10 @@ antigen bundle kazhala/dotbare
 
 ### bash
 
+dotbare comes with a `dotbare.plugin.bash` which will enable both bash command line
+completion for dotbare commands and adding dotbare to your PATH. If you don't want the completion,
+simple follow the instructions in [Others](#Others) and add dotbare to your PATH.
+
 - Clone the repository (change ~/.dotbare to the location of your preference)
 
   ```sh
