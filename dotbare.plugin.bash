@@ -43,7 +43,7 @@ _dotbare_completions()
               } else if ($0 ~ /  -p PATH/) {
                 gsub(/^  -p PATH/, "-p  ", $0)
                 gsub(/\t/, "  ", $0)
-                print selected
+                print $0
               } else if ($0 ~ /  -*/) {
                 gsub(/^  /, "", $0)
                 gsub(/\t/, "  ", $0)
