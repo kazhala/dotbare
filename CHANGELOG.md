@@ -10,6 +10,7 @@ Noteble changes are documentated in this file.
 - Added bash plugin
 - Added drop-in functionality [#6](https://github.com/kazhala/dotbare/pull/6)
   - User can now place custom fzf scripts into scripts folder
+- Added bash completion capabilities [#7](https://github.com/kazhala/dotbare/pull/7)
 
 ### Fixed
 
