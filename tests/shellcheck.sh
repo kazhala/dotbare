@@ -12,7 +12,6 @@ while IFS=  read -r -d $'\0' line; do
     scripts+=("$line")
 done < <(
   find \
-    dotbare.plugin.bash \
     dotbare \
     helper/* \
     scripts/* \
@@ -22,5 +21,6 @@ done < <(
   )
 
 shellcheck -e SC1090 "${scripts[@]}"
+shellcheck -e SC1090 --shell=bash "dotbare.plugin.bash"
 
 exit $?
