@@ -17,8 +17,7 @@ Pros:
 
 - No symlink
 - Simple setup/remove
-- Customization
-- Minimal dependency
+- Customizable
 - Easy migration
 - Flat learning curve
 - Manage dotfiles in any directory
@@ -59,8 +58,6 @@ with minimal set up required.
   - [Migration](#migration)
     - [Migrating from normal git bare repository](#migrating-from-normal-git-bare-repository)
     - [Migrating from a generic symlink setup or GNU stow](#migrating-from-a-generic-symlink-setup-or-gnu-stow)
-      - [Keep your current setup but integrate dotbare](#keep-your-current-setup-but-integrate-dotbare)
-      - [Complete migration](#complete-migration)
     - [Migrating dotbare to a new system](#migrating-dotbare-to-a-new-system)
     - [Test it in docker](#test-it-in-docker)
 - [Customization](#customization)
@@ -141,7 +138,7 @@ antigen bundle kazhala/dotbare
 
 dotbare comes with a `dotbare.plugin.bash` which will enable both bash command line
 completion for dotbare commands and adding dotbare to your PATH. If you don't want the completion,
-simply follow the instructions in [Others](#Others) and add dotbare to your PATH.
+simply follow the instructions in [others](#others) and add dotbare to your PATH.
 
 - Clone the repository (change ~/.dotbare to the location of your preference)
 
@@ -155,7 +152,7 @@ simply follow the instructions in [Others](#Others) and add dotbare to your PATH
   source ~/.dotbare/dotbare.plugin.bash
   ```
 
-### Others
+### others
 
 1. Clone the repository (change ~/.dotbare to the location of your preference)
 
@@ -564,10 +561,22 @@ except you don't have to cd into dotbare directory, you can run this command any
 - `dotbare` has disabled the command `dotbare add --All` as it is a really dangerous command in the conext of `dotbare` as it will stage everything in your \$DOTBARE_TREE to the index.
 
   ```sh
-  # Recommanded ways
+  # Recommended ways
   dotbare fadd  # and then press alt-a to select all
   dotbare add -u # stage all modified file to index
   dotbare commit -am "message" # this also works, it will stage all modified files and then commit
+  ```
+
+- Add the value of `$DOTBARE_DIR` to global .gitignore to avoid any weird recursion problem if accidentally adding
+  `$DOTBARE_DIR` to index, the value needs to be relative path to `$DOTBARE_TREE`
+
+  ```sh
+  # e.g. DOTBARE_DIR="$HOME/.cfg", DOTBARE_TREE="$HOME"
+  echo ".cfg" >> $HOME/.gitignore
+  # e.g. DOTBARE_DIR="$HOME/.config/.cfg" DOTBARE_TREE="$HOME"
+  echo ".config/.cfg" >> $HOME/.gitignore
+  # e.g. DOTBARE_DIR="$HOME/.config/.cfg" DOTBARE_TREE="$HOME/.config"
+  echo ".cfg" >> $HOME/.gitignore
   ```
 
 ## Testing
@@ -592,9 +601,10 @@ Leave a star if possible :)
 ## Coming up
 
 - [ ] Improve unit test with mocking
-- [ ] Command line completion for dotbare commands
+- [ ] Support submodules during migration
+- [ ] Command line completion for dotbare in zsh
+- [x] Command line completion for dotbare in bash
 - [ ] Man page
-- [ ] Command line completion for git commands?
 - [ ] Installation method
 
 ## Background
