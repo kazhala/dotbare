@@ -15,3 +15,8 @@ Noteble changes are documentated in this file.
 ### Fixed
 
 - Fixed ambiguous argument error [#3](https://github.com/kazhala/dotbare/pull/3)
+
+### Removed
+
+- Removed global .gitignore manipulation during migration, not needed. Added .gitignore tips to README and
+  let user handle it
