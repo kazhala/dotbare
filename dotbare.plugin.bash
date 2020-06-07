@@ -3,7 +3,7 @@ mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 _dotbare_completions()
 {
-  local IFS=$'\n' subcommands curr prev options selected
+  local IFS=$'\n' subcommands curr prev options selected suggestions
   curr="${COMP_WORDS[$COMP_CWORD]}"
   prev="${COMP_WORDS[$COMP_CWORD-1]}"
 
@@ -19,18 +19,16 @@ _dotbare_completions()
 
     if [[ $curr == -* ]]; then
       # shellcheck disable=SC2207
-      COMPREPLY=($(compgen -W "-h" -- "${curr}"))
+      suggestions=($(compgen -W "-h" -- "${curr}"))
     else
       # shellcheck disable=SC2207
-      COMPREPLY=($(compgen -W "${subcommands}" -- "${curr}"))
-    fi
-    if [[ ${#COMPREPLY[*]} -eq 1 ]]; then
-      COMPREPLY=( "${COMPREPLY[0]%% *}" )
+      suggestions=($(compgen -W "${subcommands}" -- "${curr}"))
     fi
 
   elif [[ "${COMP_WORDS[1]}" == "fbackup" && "${prev}" == '-p' ]]; then
       # shellcheck disable=SC2207
       COMPREPLY=($(compgen -d -- "${curr}"))
+      return
 
   elif [[ "${prev}" != '-h' ]]; then
     selected=("${COMP_WORDS[@]:1}")
@@ -81,10 +79,16 @@ _dotbare_completions()
         ;;
     esac
     # shellcheck disable=SC2207
-    COMPREPLY=($(compgen -W "${options}" -- "${curr}"))
-    if [[ ${#COMPREPLY[*]} -eq 1 ]]; then
-      COMPREPLY=( "${COMPREPLY[0]%% *}" )
-    fi
+    suggestions=($(compgen -W "${options}" -- "${curr}"))
+  fi
+
+  if [[ "${#suggestions[*]}" -eq 1 ]]; then
+    COMPREPLY=( "${suggestions[0]%% *}" )
+  else
+    for i in "${!suggestions[@]}"; do
+      suggestions[$i]="$(printf '%*s' "-$COLUMNS"  "${suggestions[$i]}")"
+    done
+    COMPREPLY=("${suggestions[@]}")
   fi
 }
 complete -F _dotbare_completions dotbare
