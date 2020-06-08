@@ -43,10 +43,9 @@ function usage() {
 }
 
 # if no argument, display all possible actions
-# disbale shell check for ls, we are not processing
 if [[ $# -eq 0 ]]; then
-  # shellcheck disable=SC2012
-  ls "${mydir}"/scripts \
+  find scripts/* -type f -print0 \
+    | xargs -I __ -0 basename __ \
     | fzf --no-multi --header='Available commands' --preview="dotbare {} -h" \
     | xargs -I __ dotbare __ -h
   exit 0
