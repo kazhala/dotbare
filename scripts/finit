@@ -85,9 +85,9 @@ else
       | xargs -I __ "${mydir}"/fbackup -p __ -m
     echo "dotfiles backup succeeded, checkout continue"
     /usr/bin/git --git-dir "${DOTBARE_DIR}" --work-tree "${DOTBARE_TREE}" checkout
-    /usr/bin/git --git-dir "${DOTBARE_DIR}" --work-tree "${DOTBARE_TREE}" \
-      config --local status.showUntrackedFiles no
   fi
+  /usr/bin/git --git-dir "${DOTBARE_DIR}" --work-tree "${DOTBARE_TREE}" \
+    config --local status.showUntrackedFiles no
   echo "File checkout succeeded"
   echo "Migration completed"
   exit 0
