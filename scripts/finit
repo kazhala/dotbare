@@ -6,9 +6,11 @@
 # Globals
 #   ${mydir}: current dir of the script
 #   ${confirm}: confirm status of the user
+#   ${post_hooks}: post checkout actions to perform
 # Arguments
 #   -h: show help message and exit
 #   -u: specify remote dotfiles url to init
+#   -s: clone submodules after checkout
 #   -y: confirm action by default and skip confirmation
 
 set -e
@@ -19,7 +21,7 @@ source "${mydir}"/../helper/set_variable.sh
 source "${mydir}"/../helper/get_confirmation.sh
 
 function usage() {
-  echo -e "Usage: dotbare finit [-h] [-u URL] ...\n"
+  echo -e "Usage: dotbare finit [-h] [-y] [-s] [-u URL] ...\n"
   echo -e "Init the git bare repository if doesn't exist"
   # shellcheck disable=SC2016
   echo -e 'The bare repository will be initialised under $DOTBARE_DIR, default to $HOME/.cfg if not set'
@@ -29,12 +31,18 @@ function usage() {
   echo -e "optional arguments:"
   echo -e "  -h\t\tshow this help message and exit"
   echo -e "  -u URL\tmigrate existing dotfiles from the git URL to current system"
+  echo -e "  -s\t\tclone submodules after checkout"
   echo -e "  -y\t\tconfirm action by default and skip confirmation"
 }
 
 remote_url=""
-while getopts ":hu:y" opt; do
+post_hooks=()
+while getopts ":hu:ys" opt; do
   case "$opt" in
+    s)
+      [[ ! "${post_hooks[*]}" =~ "submodule" ]] && \
+        post_hooks+=("submodule")
+      ;;
     u)
       remote_url="${OPTARG}"
       ;;
@@ -89,6 +97,17 @@ else
   /usr/bin/git --git-dir "${DOTBARE_DIR}" --work-tree "${DOTBARE_TREE}" \
     config --local status.showUntrackedFiles no
   echo "File checkout succeeded"
+
+  for hook in "${post_hooks[@]}"; do
+    case "${hook}" in
+      submodule)
+        echo "Cloning submodules ..."
+        /usr/bin/git --git-dir "${DOTBARE_DIR}" --work-tree "${DOTBARE_TREE}" \
+          submodule update --init --recursive
+        ;;
+    esac
+  done
+
   echo "Migration completed"
   exit 0
 fi
