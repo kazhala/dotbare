@@ -65,7 +65,7 @@ _dotbare_completions()
               }
             }')
         ;;
-      *)
+      f*)
         options=$("${mydir}"/dotbare "${COMP_WORDS[1]}" -h \
           | awk -v selected="${selected[*]}" '{
               if (selected ~ $1) {
