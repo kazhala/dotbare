@@ -40,7 +40,7 @@ post_hooks=()
 while getopts ":hu:ys" opt; do
   case "$opt" in
     s)
-      [[ ! "${post_hooks[*]}" =~ "submodule" ]] && \
+      [[ ! "${post_hooks[*]}" =~ submodule ]] && \
         post_hooks+=("submodule")
       ;;
     u)

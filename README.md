@@ -509,6 +509,8 @@ Note: do not use this command if you are using symlink/GNU stow.
 
 - Default: initialise a git bare repository at \$DOTBARE_DIR
 - -u URL: migrate existing bare repository from remote to current system.
+- -s: if you have defined submodules in your bare repo (i.e. containes .gitmodule), add -s
+  flag to clone submodules as well during migration.
 
 ### funtrack
 
