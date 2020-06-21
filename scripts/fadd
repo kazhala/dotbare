@@ -6,11 +6,11 @@
 # Globals
 #   ${mydir}: string, current directory of the executing script
 #   ${stage_type}: modified, new file, or directory to stage
-#   ${selected_files}: user selected files to stage
+#   ${selected_files}: bash array of user selected files to stage
 # Arguments
-#   -h: show help message
-#   -f: select a file in PWD to stage
-#   -d: select a directory in PWD to stage
+#   -h|--help: show help message
+#   -f|--file: select a file in PWD to stage
+#   -d|--dir: select a directory in PWD to stage
 
 set -e
 set -f
@@ -22,6 +22,7 @@ source "${mydir}"/../helper/git_query.sh
 
 function usage() {
   echo -e "Usage: dotbare fadd [-h] [-f] [-d] ...\n"
+  echo -e "Select files/directory or modified files through fzf"
   echo -e "Stage the selected file to the dotfile gitbare repo\n"
   echo -e "Default: list all modified files and stage the selected files.\n"
   echo -e "optional arguments:"
@@ -33,19 +34,16 @@ function usage() {
 #######################################
 # stage file
 # Arguments:
-#   $1: files to stage
+#   $1: array of files to stage
 #######################################
 function stage_file() {
-  local file=$1
-  if [[ -z "${file}" ]]; then
-    exit 1
-  else
-    # shellcheck disable=SC2086
-    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" add ${file}
-  fi
+  local files=("$@")
+  [[ "${#files[@]}" -eq 0 ]] && exit 1
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" add "${files[@]}"
 }
 
 stage_type="modified"
+selected_files=()
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
@@ -62,18 +60,23 @@ while [ "$#" -gt 0 ]; do
       exit 0
       ;;
     *)
-      echo "Invalid option: $1" >&2
+      echo "Invalid option: $1" 1>&2
       usage
       exit 1
       ;;
   esac
 done
 
-if [[ "${stage_type}" == "file" ]]; then
-  selected_files=$(search_file 'f' | tr '\n' ' ')
-elif [[ "${stage_type}" == "dir" ]]; then
-  selected_files=$(search_file 'd' | tr '\n' ' ')
-else
-  selected_files=$(get_modified_file 'select files to stage' "unstaged" | tr '\n' ' ')
-fi
-stage_file "${selected_files}"
+while IFS= read -r line; do
+  selected_files+=("${line}")
+done < <(
+  if [[ "${stage_type}" == "file" ]]; then
+    search_file 'f'
+  elif [[ "${stage_type}" == "dir" ]]; then
+    search_file 'd'
+  else
+    get_modified_file "select files to stage" "unstaged"
+  fi
+)
+
+stage_file "${selected_files[@]}"
