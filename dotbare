@@ -5,7 +5,6 @@
 # @params
 # Globals
 #   ${mydir}: string, directory of the executing script, used for sourcing helpers
-#   ${action_command}: string, determine which script to call
 # Arguments
 #   action_command: sub commands dotbare should run
 #     General git command: log, status etc
@@ -43,7 +42,7 @@ function usage() {
 }
 
 # if no argument, display all possible actions
-if [[ $# -eq 0 ]]; then
+if [[ "$#" -eq 0 ]]; then
   find "${mydir}"/scripts/* -type f -print0 \
     | xargs -I __ -0 basename __ \
     | fzf --no-multi --header='Available commands' --preview="dotbare {} -h" \
@@ -51,8 +50,7 @@ if [[ $# -eq 0 ]]; then
   exit 0
 fi
 
-# shellcheck disable=SC2199
-[[ "$@" == 'add --all' ]] && \
+[[ "$*" == 'add --all' ]] && \
   echo 'If you intend to stage all modified file, run dotbare add -u' && \
   echo "dotbare disabled add --all option as this will stage every single file in ${DOTBARE_TREE}" && \
   exit 1
@@ -64,7 +62,6 @@ case "$1" in
     ;;
   *)
     if [[ -x "${mydir}/scripts/$1" ]]; then
-      # run the scripts
       exec "${mydir}/scripts/$1" "${@:2}"
     fi
     ;;
