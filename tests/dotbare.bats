@@ -12,6 +12,10 @@ routing() {
   "${BATS_TEST_DIRNAME}"/../dotbare fadd -h
 }
 
+routing2() {
+  "${BATS_TEST_DIRNAME}"/../dotbare flog -h
+}
+
 normal_git() {
   "${BATS_TEST_DIRNAME}"/../dotbare add -h
 }
@@ -36,6 +40,12 @@ invalid_command() {
   run routing
   [ "${status}" -eq 0 ]
   [ "${lines[0]}" = "Usage: dotbare fadd [-h] [-f] [-d] ..." ]
+}
+
+@test "main routing" {
+  run routing2
+  [ "${status}" -eq 0 ]
+  [ "${lines[0]}" = "Usage: dotbare flog [-h] [-r] [-R] [-e] [-c] ..." ]
 }
 
 @test "main git command" {
