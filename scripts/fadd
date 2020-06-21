@@ -25,9 +25,9 @@ function usage() {
   echo -e "Stage the selected file to the dotfile gitbare repo\n"
   echo -e "Default: list all modified files and stage the selected files.\n"
   echo -e "optional arguments:"
-  echo -e "  -h\t\tshow this help message and exit"
-  echo -e "  -f\t\tselect a file in current directory and stage it"
-  echo -e "  -d\t\tselect a entire folder to stage"
+  echo -e "  -h, --help\t\tshow this help message and exit"
+  echo -e "  -f, --file\t\tselect a file in current directory and stage it"
+  echo -e "  -d, --dir\t\tselect a entire folder to stage"
 }
 
 #######################################
@@ -47,21 +47,22 @@ function stage_file() {
 
 stage_type="modified"
 
-while getopts ":fhd" opt
-do
-  case "$opt" in
-    f)
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    -f|--file)
       stage_type="file"
+      shift
       ;;
-    d)
+    -d|--dir)
       stage_type="dir"
+      shift
       ;;
-    h)
+    -h|--help)
       usage
       exit 0
       ;;
-    *) 
-      echo "Invalid option: ${OPTARG}" >&2
+    *)
+      echo "Invalid option: $1" >&2
       usage
       exit 1
       ;;
