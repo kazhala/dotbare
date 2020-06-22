@@ -432,8 +432,8 @@ edit commits through interactive rebase.
 Stage modified files, stage new file or directory interactive by through fzf.
 
 - Default: list all modified files and stage selected files. Support multi selection.
-- -f: list all files in current directory and stage selected files. Support multi selection. (Used for staging new files to index)
-- -d: list all directory under current directory and stage selected directory. Support multi selection. (Used for staging new files to index)
+- `-f, --file`: list all files in current directory and stage selected files. Support multi selection. (Used for staging new files to index)
+- `-d, --dir`: list all directory under current directory and stage selected directory. Support multi selection. (Used for staging new files to index)
 
 ![fadd demo](https://user-images.githubusercontent.com/43941510/82388994-4e64b100-9a7e-11ea-953a-621d85347c57.png)
 
@@ -444,10 +444,9 @@ commits. Also supports reset HEAD back to certain commits either `--soft`, `--ha
 as reset a file back to certain commits. More information on differences [here](https://git-scm.com/docs/git-reset#Documentation/git-reset.txt-emgitresetemltmodegtltcommitgt).
 
 - Default: list all staged files and unstage the selected files. Support multi selection.
-- -a: list all tracked files and then prompt commits selection. Reset selected file back to the selected commits. (Default: `--mixed`)
-- -c: list all commits and then reset HEAD back to the selected commits. (Default: `--mixed`)
-- -S: use `--soft` flag instead of `--mixed` flag
-- -H: use `--hard` flag instead of `--mixed` flag
+- `-c, --commit`: list all commits and then reset HEAD back to the selected commits. (Default: `--mixed`, put all changes into modified state)
+- `-S, --soft`: use `--soft` flag instead of `--mixed` flag, reset HEAD to certain commit without modify working tree.
+- `-H, --hard`: use `--hard` flag instead of `--mixed` flag, reset HEAD to certain commit discard all changes from the working tree.
 
 ### fcheckout
 

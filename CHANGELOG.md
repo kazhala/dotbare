@@ -21,3 +21,5 @@ Noteble changes are documentated in this file.
 
 - Removed global .gitignore manipulation during migration, not needed. Added .gitignore tips to README and
   let user handle it
+- Removed `-a` flag of `dotbare freset`. It's not working as intended because I misunderstand git, the intended
+  behavior is actually achieved by `dotbare fcheckout -a`, use `dotbare fcheckout -a` instead.
