@@ -45,7 +45,7 @@ function stage_file() {
 stage_type="modified"
 selected_files=()
 
-while [ "$#" -gt 0 ]; do
+while [[ "$#" -gt 0 ]]; do
   case "$1" in
     -f|--file)
       stage_type="file"
