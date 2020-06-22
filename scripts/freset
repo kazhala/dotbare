@@ -27,7 +27,7 @@ source "${mydir}"/../helper/get_confirmation.sh
 source "${mydir}"/../helper/git_query.sh
 
 function usage() {
-  echo -e "Usage: dotbare freset [-h] [-a] [-c] [-S] [-H] ...\n"
+  echo -e "Usage: dotbare freset [-h] [-c] [-S] [-H] [-y] ...\n"
   echo -e "Reset/Unstage the selected staged file"
   echo -e "Or reset the HEAD to certain commits by using -c flag\n"
   echo -e "Default: unstage the selected files\n"
