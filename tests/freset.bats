@@ -43,12 +43,12 @@ select_files() {
 
 @test "freset no selection made" {
   run no_selection_made
-  [ -z "${output}" ]
+  echo "${output}" >&3
   [ "${status}" -eq 1 ]
 }
 
 @test "freset select files" {
   run select_files
-  [ -z "${output}" ]
+  echo "${output}" >&3
   [ "${status}" -eq 0 ]
 }

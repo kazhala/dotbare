@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#
+# This script is for mocking fzf for testing,
+# it will stop fzf for goin into a interactive mode
+#
+# usage:
+#   export PATH="${BATS_TEST_DIRNAME}:$PATH"
+
+echo "$@"
