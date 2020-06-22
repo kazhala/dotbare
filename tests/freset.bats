@@ -36,19 +36,27 @@ select_files() {
 
 @test "freset select commit" {
   run select_commit
-  result=$(echo "${lines[0]}" | tr '`' "'")
+  if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
+    [ "${lines[0]}" = "fatal: your current branch 'master' does not have any commits yet" ]
+  else
+    result=$(echo "${lines[0]}" | tr '`' "'")
+    [ "${result}" = "error: unknown option 'no-multi'" ]
+  fi
   [ "${status}" -eq 129 ]
-  [ "${result}" = "error: unknown option 'no-multi'" ]
 }
 
 @test "freset no selection made" {
   run no_selection_made
-  echo "${output}" >&3
   [ "${status}" -eq 1 ]
 }
 
 @test "freset select files" {
   run select_files
-  echo "${output}" >&3
-  [ "${status}" -eq 0 ]
+  if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
+    [ "${status}" -eq 128 ]
+    [ "${lines[0]}" = "fatal: ambiguous argument 'HEAD': unknown revision or path not in the working tree." ]
+  else
+    [ "${status}" -eq 0 ]
+    [ -z "${output}" ]
+  fi
 }

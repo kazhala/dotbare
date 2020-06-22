@@ -42,7 +42,7 @@ invalid_command() {
   [ "${lines[0]}" = "Usage: dotbare fadd [-h] [-f] [-d] ..." ]
 }
 
-@test "main routing" {
+@test "main routing2" {
   run routing2
   [ "${status}" -eq 0 ]
   [ "${lines[0]}" = "Usage: dotbare flog [-h] [-r] [-R] [-e] [-c] ..." ]
