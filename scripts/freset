@@ -42,6 +42,7 @@ function usage() {
 
 reset_option="--mixed"
 reset_type="modified"
+selected_files=()
 
 while getopts ":hacSHy" opt
 do
@@ -77,10 +78,9 @@ if [[ "${reset_type}" == "commit" ]]; then
   [[ "${confirm}" != 'y' ]] && exit 1
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset "${selected_commit}" "${reset_option}"
 else
-  selected_files=$(get_modified_file 'select files to unstage' 'staged')
-  echo "${selected_files}"
-  exit 1
-  [[ -z "${selected_files}" ]] && exit 0
-  # shellcheck disable=SC2086
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset HEAD ${selected_files}
+  while IFS= read -r line; do
+    selected_files+=("${line}")
+  done < <(get_modified_file 'select files to unstage' 'staged')
+  [[ "${#selected_files}" -eq 0 ]] && exit 1
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset HEAD "${selected_files[@]}"
 fi

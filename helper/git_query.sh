@@ -143,7 +143,10 @@ function get_modified_file() {
             diff HEAD --color=always -- ${DOTBARE_TREE}/__" \
     | awk -v home="${DOTBARE_TREE}" -v format="${output_format}" '{
         if (format == "name") {
-          print home "/" $2
+          $1=""
+          gsub(/^[ \t]/, "", $0)
+          gsub(/"/, "", $0)
+          print home "/" $0
         } else {
           print $0
         }
