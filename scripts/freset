@@ -34,7 +34,6 @@ function usage() {
   echo -e "Default: unstage the selected files from\n"
   echo -e "optional arguments:"
   echo -e "  -h\t\tshow this help message and exit"
-  echo -e "  -a\t\tselect files and then select a commit to reset the file back to the selected comit"
   echo -e "  -c\t\treset commit to certain commit, default --mixed flag, reset HEAD to certain commit put all changes into modified states"
   echo -e "  -S\t\treset commit using --soft flag, reset HEAD to certain commit without modify working tree"
   echo -e "  -H\t\treset commit using --hard flag, reset HEAD to certain commit dicard all changes from the working tree"
@@ -47,9 +46,6 @@ reset_type="modified"
 while getopts ":hacSHy" opt
 do
   case "$opt" in
-    a)
-      reset_type="allfiles"
-      ;;
     c)
       reset_type="commit"
       ;;
@@ -81,17 +77,10 @@ if [[ "${reset_type}" == "commit" ]]; then
   [[ "${confirm}" != 'y' ]] && exit 1
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset "${selected_commit}" "${reset_option}"
 else
-  if [[ "${reset_type}" == "modified" ]]; then
-    selected_files=$(get_modified_file 'select files to unstage' 'staged' | tr '\n' ' ')
-    [[ -z "${selected_files}" ]] && exit 0
-    # shellcheck disable=SC2086
-    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset HEAD ${selected_files}
-  else
-    selected_files=$(get_git_file 'select a file to reset' | tr '\n' ' ')
-    [[ -z "${selected_files}" ]] && exit 0
-    selected_commit=$(get_commit "select the target commit" "${selected_files}")
-    [[ -z "${selected_commit}" ]] && exit 0
-    # shellcheck disable=SC2086
-    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset "${selected_commit}" ${selected_files}
-  fi
+  selected_files=$(get_modified_file 'select files to unstage' 'staged')
+  echo "${selected_files}"
+  exit 1
+  [[ -z "${selected_files}" ]] && exit 0
+  # shellcheck disable=SC2086
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset HEAD ${selected_files}
 fi
