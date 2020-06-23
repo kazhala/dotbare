@@ -25,7 +25,7 @@ stage_selected_dir() {
 
 stage_modified_file() {
   export PATH="${BATS_TEST_DIRNAME}:$PATH"
-  bash "${BATS_TEST_DIRNAME}"/../dotbare fadd --dir
+  bash "${BATS_TEST_DIRNAME}"/../dotbare fadd
 }
 
 @test "fadd help" {
@@ -47,14 +47,18 @@ stage_modified_file() {
 
 @test "fadd stage selected file" {
   run stage_selected_file
-  [ "${status}" -eq 129 ]
-  result=$(echo "${lines[0]}" | tr '`' "'")
-  [ "${result}" = "error: unknown option 'multi --preview head -200 {}'" ]
+  [ "${status}" -eq 128 ]
+  [ "${lines[0]}" = "fatal: pathspec 'searchfile' did not match any files" ]
 }
 
 @test "fadd stage selected dir" {
   run stage_selected_dir
-  [ "${status}" -eq 129 ]
-  result=$(echo "${lines[0]}" | tr '`' "'")
-  [ "${result}" = "error: unknown option 'multi --preview tree -L 1 -C --dirsfirst {}'" ]
+  [ "${status}" -eq 128 ]
+  [ "${lines[0]}" = "fatal: pathspec 'searchdir' did not match any files" ]
+}
+
+@test "fadd stage modified file" {
+  run stage_modified_file
+  [ "${status}" -eq 128 ]
+  [ "${lines[0]}" = "fatal: pathspec '/Users/kevinzhuang/modifiedfile' did not match any files" ]
 }

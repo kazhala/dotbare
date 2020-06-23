@@ -73,12 +73,12 @@ done
 
 if [[ "${action_type}" == "branch" ]]; then
   # checkout branch
-  selected_branch=$(get_branch 'Select a branch to checkout')
+  selected_branch=$(get_branch 'select a branch to checkout')
   [[ -z "${selected_branch}" ]] && exit 0
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout "${selected_branch}"
 elif [[ "${action_type}" == "commit" ]]; then
   # checkout commit
-  selected_commit=$(get_commit 'Select a commit to checkout')
+  selected_commit=$(get_commit 'select a commit to checkout')
   [[ -z "${selected_commit}" ]] && exit 0
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout "${selected_commit}"
 elif [[ "${action_type}" == "modified" ]]; then
