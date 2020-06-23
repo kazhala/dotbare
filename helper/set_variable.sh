@@ -4,7 +4,7 @@
 #
 # @params
 # Globals
-#		${DOTBARE_DIR}: location of the bare repo
+#   ${DOTBARE_DIR}: location of the bare repo
 #   ${DOTBARE_TREE}: which folder is the bare repo tracking
 #   ${DOTBARE_BACKUP}: backup directory for all tracked files
 #   ${DOTBARE_KEY}: defualt key bindings

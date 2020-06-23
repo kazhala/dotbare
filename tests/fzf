@@ -6,4 +6,14 @@
 # usage:
 #   export PATH="${BATS_TEST_DIRNAME}:$PATH"
 
-echo "$@"
+if [[ "$*" =~ "--header=Select a commit to checkout" ]] && [[ "$*" =~ "show --color" ]]; then
+  echo "--commitshow"
+elif [[ "$*" =~ "--no-multi --header=Select a branch to checkout" ]]; then
+  echo "--branch"
+elif [[ "$*" =~ "--header=select a file to checkout version in HEAD --preview" ]]; then
+  echo "-- modifiedfile"
+elif [[ "$*" =~ '--header=select a file to checkout' ]] && [[ "$*" =~ "cat" ]]; then
+  echo "selectgitfile"
+elif [[ "$*" =~ '--header=select the target commit' ]] && [[ "$*" =~ "diff --color" ]]; then
+  echo "commitdiff"
+fi

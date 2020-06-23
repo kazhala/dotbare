@@ -92,7 +92,7 @@ function get_git_file() {
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
     ls-files --full-name --directory "${DOTBARE_TREE}" \
     | fzf --header="${header}" \
-        --preview "head -50 ${DOTBARE_TREE}/{}" \
+        --preview "cat ${DOTBARE_TREE}/{}" \
     | awk -v home="${DOTBARE_TREE}" -v print_opt="${print_opt}" '{
         if (print_opt == "full") {
           print home "/" $0
