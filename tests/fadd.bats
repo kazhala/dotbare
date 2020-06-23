@@ -48,17 +48,17 @@ stage_modified_file() {
 @test "fadd stage selected file" {
   run stage_selected_file
   [ "${status}" -eq 128 ]
-  [ "${lines[0]}" = "fatal: pathspec 'searchfile' did not match any files" ]
+  [[ "${lines[0]}" =~ "fatal: pathspec 'searchfile' did not match any files" ]]
 }
 
 @test "fadd stage selected dir" {
   run stage_selected_dir
   [ "${status}" -eq 128 ]
-  [ "${lines[0]}" = "fatal: pathspec 'searchdir' did not match any files" ]
+  [[ "${lines[0]}" =~ "fatal: pathspec 'searchdir' did not match any files" ]]
 }
 
 @test "fadd stage modified file" {
   run stage_modified_file
   [ "${status}" -eq 128 ]
-  [ "${lines[0]}" = "fatal: pathspec '$HOME/modifiedfile' did not match any files" ]
+  [[ "${lines[0]}" =~ "fatal: pathspec '$HOME/modifiedfile' did not match any files" ]]
 }

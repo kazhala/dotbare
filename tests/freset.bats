@@ -42,10 +42,10 @@ select_files() {
 @test "freset select commit" {
   run select_commit
   if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
-    [ "${lines[0]}" = "fatal: your current branch 'master' does not have any commits yet" ]
+    [[ "${lines[0]}" =~ "fatal: your current branch 'master' does not have any commits yet" ]]
   else
     result=$(echo "${lines[0]}" | tr '`' "'")
-    [ "${result}" = "error: unknown option 'commitshow'" ]
+    [[ "${result}" =~ "error: unknown option 'commitshow'" ]]
   fi
   [ "${status}" -eq 129 ]
 }
@@ -54,9 +54,9 @@ select_files() {
   run select_files
   if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
     [ "${status}" -eq 128 ]
-    [ "${lines[0]}" = "fatal: ambiguous argument 'HEAD': unknown revision or path not in the working tree." ]
+    [[ "${lines[0]}" =~ "fatal: ambiguous argument '$HOME/modifiedfile': unknown revision or path not in the working tree" ]]
   else
     [ "${status}" -eq 128 ]
-    [ "${lines[0]}" = "fatal: ambiguous argument '$HOME/modifiedfile': unknown revision or path not in the working tree." ]
+    [[ "${lines[0]}" =~ "fatal: ambiguous argument '$HOME/modifiedfile': unknown revision or path not in the working tree" ]]
   fi
 }
