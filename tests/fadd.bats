@@ -60,5 +60,5 @@ stage_modified_file() {
 @test "fadd stage modified file" {
   run stage_modified_file
   [ "${status}" -eq 128 ]
-  [ "${lines[0]}" = "fatal: pathspec '/Users/kevinzhuang/modifiedfile' did not match any files" ]
+  [ "${lines[0]}" = "fatal: pathspec '$HOME/modifiedfile' did not match any files" ]
 }

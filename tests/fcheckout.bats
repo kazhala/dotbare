@@ -57,12 +57,12 @@ checkout_selected_file() {
 @test "fcheckout modified" {
   run checkout_modified_file
   [ "${status}" -eq 1 ]
-  [ "${lines[0]}" = "error: pathspec '/Users/kevinzhuang/modifiedfile' did not match any file(s) known to git" ]
+  [ "${lines[0]}" = "error: pathspec '$HOME/modifiedfile' did not match any file(s) known to git" ]
 }
 
 @test "fcheckout select" {
   run checkout_selected_file
   [ "${status}" -eq 1 ]
   [ "${lines[0]}" = "error: pathspec 'commitdiff' did not match any file(s) known to git" ]
-  [ "${lines[1]}" = "error: pathspec '/Users/kevinzhuang/selectgitfile' did not match any file(s) known to git" ]
+  [ "${lines[1]}" = "error: pathspec '$HOME/selectgitfile' did not match any file(s) known to git" ]
 }

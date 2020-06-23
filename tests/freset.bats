@@ -57,6 +57,6 @@ select_files() {
     [ "${lines[0]}" = "fatal: ambiguous argument 'HEAD': unknown revision or path not in the working tree." ]
   else
     [ "${status}" -eq 128 ]
-    [ "${lines[0]}" = "fatal: ambiguous argument '/Users/kevinzhuang/modifiedfile': unknown revision or path not in the working tree." ]
+    [ "${lines[0]}" = "fatal: ambiguous argument '$HOME/modifiedfile': unknown revision or path not in the working tree." ]
   fi
 }

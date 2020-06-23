@@ -8,10 +8,10 @@
 # example:
 #   echo "commitdiff" when attempting to mock a local file search
 #     error code 128
-#     fatal: pathspec '/Users/kevinzhuang/modifiedfile' did not match any files
+#     fatal: pathspec '$HOME/modifiedfile' did not match any files
 #   echo "-- modifiedfile" when attempting to mock a local file search
 #     error code 1 or code 128
-#     error: pathspec '/Users/kevinzhuang/modifiedfile' did not match any file(s) known to git
+#     error: pathspec '$HOME/modifiedfile' did not match any file(s) known to git
 #   echo "--branch" when attempting to mock branch commit
 #     error code 129
 #     error: unknown option `commitshow'
