@@ -5,21 +5,36 @@
 #
 # usage:
 #   export PATH="${BATS_TEST_DIRNAME}:$PATH"
+# example:
+#   echo "commitdiff" when attempting to mock a local file search
+#     error code 128
+#     fatal: pathspec '/Users/kevinzhuang/modifiedfile' did not match any files
+#   echo "-- modifiedfile" when attempting to mock a local file search
+#     error code 1 or code 128
+#     error: pathspec '/Users/kevinzhuang/modifiedfile' did not match any file(s) known to git
+#   echo "--branch" when attempting to mock branch commit
+#     error code 129
+#     error: unknown option `commitshow'
+#     use something like tr "`" "'" to avoid any potential error bats would raise
 
 if [[ "$*" =~ "--header=select a commit to checkout" ]] && [[ "$*" =~ "show --color" ]]; then
   echo "--commitshow"
+elif [[ "$*" =~ '--no-multi --header=select the target commit for HEAD' ]] && [[ "$*" =~ "show --color" ]]; then
+  echo "--commitshow"
 elif [[ "$*" =~ "--no-multi --header=select a branch to checkout" ]]; then
   echo "--branch"
-elif [[ "$*" =~ "--header=select a file to checkout version in HEAD" ]] && [[ "$*" =~ "diff HEAD --color=always" ]]; then
-  echo "-- modifiedfile"
 elif [[ "$*" =~ '--header=select a file to checkout' ]] && [[ "$*" =~ "cat" ]]; then
   echo "selectgitfile"
+elif [[ "$*" =~ '--multi --preview ' ]] && [[ "$*" =~ "tree -L 1 -C --dirsfirst {}" ]]; then
+  echo "searchdir"
 elif [[ "$*" =~ '--header=select the target commit' ]] && [[ "$*" =~ "diff --color" ]]; then
   echo "commitdiff"
 elif [[ "$*" =~ '--multi --preview ' ]] && [[ "$*" =~ "cat {}" ]]; then
   echo "searchfile"
-elif [[ "$*" =~ '--multi --preview ' ]] && [[ "$*" =~ "tree -L 1 -C --dirsfirst {}" ]]; then
-  echo "searchdir"
+elif [[ "$*" =~ "--header=select a file to checkout version in HEAD" ]] && [[ "$*" =~ "diff HEAD --color=always" ]]; then
+  echo "-- modifiedfile"
 elif [[ "$*" =~ '--header=select files to stage' ]] && [[ "$*" =~ "diff HEAD --color=always" ]]; then
+  echo "-- modifiedfile"
+elif [[ "$*" =~ "--header=select files to unstage" ]] && [[ "$*" =~ "diff HEAD --color=always" ]]; then
   echo "-- modifiedfile"
 fi

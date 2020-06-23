@@ -74,7 +74,7 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 if [[ "${reset_type}" == "commit" ]]; then
-  selected_commit=$(get_commit)
+  selected_commit=$(get_commit "select the target commit for HEAD")
   [[ -z "${selected_commit}" ]] && exit 0
   [[ -z "${confirm}" ]] && confirm=$(get_confirmation "Reset HEAD to ${selected_commit} ${reset_option}?")
   [[ "${confirm}" != 'y' ]] && exit 1
@@ -83,6 +83,6 @@ else
   while IFS= read -r line; do
     selected_files+=("${line}")
   done < <(get_modified_file 'select files to unstage' 'staged')
-  [[ "${#selected_files}" -eq 0 ]] && exit 1
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset HEAD "${selected_files[@]}"
+  [[ "${#selected_files[@]}" -eq 0 ]] && exit 1
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset "${selected_files[@]}"
 fi
