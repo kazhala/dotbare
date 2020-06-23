@@ -42,8 +42,6 @@ checkout_selected_file() {
 
 @test "fchekcout branch" {
   run checkout_branch
-  echo "${status}" >&3
-  echo "${output}" >&3
   result=$(echo "${output}" | tr '`' "'")
   [ "${status}" -eq 129 ]
   [[ "${result}" =~ "error: unknown option 'branch'" ]]
