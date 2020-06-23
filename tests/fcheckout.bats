@@ -31,7 +31,7 @@ checkout_selected_file() {
 @test "fcheckout help" {
   run help
   [ "${status}" -eq 0 ]
-  [ "${lines[0]}" = "Usage: dotbare fcheckout [-h] [-s] [-b] [-c] ..." ]
+  [ "${lines[0]}" = "Usage: dotbare fcheckout [-h] [-s] [-b] [-c] [-y] ..." ]
 }
 
 @test "fchekcout invalid option" {

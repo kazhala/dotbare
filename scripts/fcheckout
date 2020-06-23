@@ -25,7 +25,7 @@ source "${mydir}"/../helper/get_confirmation.sh
 source "${mydir}"/../helper/git_query.sh
 
 function usage() {
-  echo -e "Usage: dotbare fcheckout [-h] [-s] [-b] [-c] ...\n"
+  echo -e "Usage: dotbare fcheckout [-h] [-s] [-b] [-c] [-y] ...\n"
   echo -e "Checkout files/commit/branch using fzf"
   echo -e "files: checkout the version in HEAD or in a specific commit (reset files content back to the selected commit)"
   echo -e "branch: switch to the selected branch"
@@ -36,6 +36,7 @@ function usage() {
   echo -e "  -s, --select\t\tsearch all files and select a commit to checkout for selected files"
   echo -e "  -b, --branch\t\tlist all branch and checkout/switch the selected branch"
   echo -e "  -c, --commit\t\tlist all commits and checkout selected commit"
+  echo -e "  -y, --yes\t\tconfirm action by default and skip confirmation"
 }
 
 action_type="modified"
