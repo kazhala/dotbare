@@ -1,7 +1,9 @@
 #!/usr/bin/env bats
 
 setup() {
-  export PATH="${BATS_TEST_DIRNAME}:$PATH"
+  if "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
+    export PATH="${BATS_TEST_DIRNAME}:$PATH"
+  fi
 }
 
 help() {
@@ -42,38 +44,47 @@ checkout_selected_file() {
 
 @test "fchekcout branch" {
   run checkout_branch
-  result=$(echo "${output}" | tr '`' "'")
-  [ "${status}" -eq 129 ]
-  [[ "${result}" =~ "error: unknown option 'branch'" ]]
+  if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
+    [ "${status}" -eq 1 ]
+    [ -z "${output}" ]
+  else
+    result=$(echo "${output}" | tr '`' "'")
+    [ "${status}" -eq 129 ]
+    [[ "${result}" =~ "error: unknown option 'branch'" ]]
+  fi
 }
 
 @test "fchekcout commit" {
   run checkout_commit
   if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
-    [[ "${lines[0]}" =~ "fatal: your current branch 'master' does not have any commits yet" ]]
-    result=$(echo "${lines[1]}" | tr '`' "'")
+    [ "${status}" -eq 1 ]
+    [ "${lines[0]}" = "fatal: your current branch 'master' does not have any commits yet" ]
   else
     result=$(echo "${lines[0]}" | tr '`' "'")
+    [ "${status}" -eq 129 ]
+    [[ "${result}" =~ "error: unknown option 'commitshow'" ]]
   fi
-  [ "${status}" -eq 129 ]
-  [[ "${result}" =~ "error: unknown option 'commitshow'" ]]
 }
 
 @test "fcheckout modified" {
   run checkout_modified_file
-  [ "${status}" -eq 1 ]
-  [[ "${lines[0]}" =~ "error: pathspec '$HOME/modifiedfile' did not match any file(s) known to git" ]]
+  if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
+    [ "${status}" -eq 1 ]
+    [ -z "${output}" ]
+  else
+    [ "${status}" -eq 1 ]
+    [[ "${lines[0]}" =~ "error: pathspec '$HOME/modifiedfile' did not match any file(s) known to git" ]]
+  fi
 }
 
 @test "fcheckout select" {
   run checkout_selected_file
   if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
-    [[ "${lines[0]}" =~ "fatal: your current branch 'master' does not have any commits yet" ]]
-    [[ "${lines[1]}" =~ "error: pathspec 'commitdiff' did not match any file(s) known to git" ]]
-    [[ "${lines[2]}" =~ "error: pathspec '$HOME/selectgitfile' did not match any file(s) known to git" ]]
+    [ "${status}" -eq 1 ]
+    [ -z "${output}" ]
   else
     [[ "${lines[0]}" =~ "error: pathspec 'commitdiff' did not match any file(s) known to git" ]]
     [[ "${lines[1]}" =~ "error: pathspec '$HOME/selectgitfile' did not match any file(s) known to git" ]]
+    [ "${status}" -eq 1 ]
   fi
-  [ "${status}" -eq 1 ]
 }
