@@ -29,6 +29,8 @@ elif [[ "$*" =~ '--multi --preview ' ]] && [[ "$*" =~ "tree -L 1 -C --dirsfirst 
   echo "searchdir"
 elif [[ "$*" =~ '--header=select the target commit' ]] && [[ "$*" =~ "diff --color" ]]; then
   echo "commitdiff"
+elif [[ "$*" =~ "--no-multi --header=select a commit to rename" ]] && [[ "$*" =~ "show --color=always" ]]; then
+  echo "commitdiff"
 elif [[ "$*" =~ '--multi --preview ' ]] && [[ "$*" =~ "cat {}" ]]; then
   echo "searchfile"
 elif [[ "$*" =~ "--header=select a file to checkout version in HEAD" ]] && [[ "$*" =~ "diff HEAD --color=always" ]]; then
@@ -37,4 +39,6 @@ elif [[ "$*" =~ '--header=select files to stage' ]] && [[ "$*" =~ "diff HEAD --c
   echo "-- modifiedfile"
 elif [[ "$*" =~ "--header=select files to unstage" ]] && [[ "$*" =~ "diff HEAD --color=always" ]]; then
   echo "-- modifiedfile"
+elif [[ "$*" =~ "--header=select tracked files to edit" ]]; then
+  exit
 fi

@@ -48,7 +48,7 @@ while [[ "$#" -gt 0 ]]; do
       exit 0
       ;;
     *)
-      echo "Invalid option $1" >&2
+      echo "Invalid option: $1" >&2
       usage
       exit 1
       ;;
@@ -56,7 +56,7 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 if [[ "${edit_type}" == "commit" ]]; then
-  selected_commit=$(get_commit "Select a commit to rename")
+  selected_commit=$(get_commit "select a commit to rename")
   [[ -z "${selected_commit}" ]] && exit 1
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" rebase -i "${selected_commit}"~
 else

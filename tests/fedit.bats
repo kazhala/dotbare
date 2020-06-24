@@ -13,6 +13,16 @@ no_file_selected() {
   bash "${BATS_TEST_DIRNAME}"/../dotbare fedit -m
 }
 
+edit_commits() {
+  export PATH="${BATS_TEST_DIRNAME}:$PATH"
+  bash "${BATS_TEST_DIRNAME}"/../dotbare fedit --commit
+}
+
+edit_files() {
+  export PATH="${BATS_TEST_DIRNAME}:$PATH"
+  bash "${BATS_TEST_DIRNAME}"/../dotbare fedit
+}
+
 @test "fedit help" {
   run help
   [ "${status}" -eq 0 ]
@@ -22,10 +32,25 @@ no_file_selected() {
 @test "fedit invalid option" {
   run invalid_option
   [ "${status}" -eq 1 ]
-  [ "${lines[0]}" = "Invalid option: p" ]
+  [ "${lines[0]}" = "Invalid option: -p" ]
 }
 
 @test "fedit no file selected" {
   run no_file_selected
   [ "${status}" -eq 1 ]
+}
+
+@test "fedit edit commits" {
+  run edit_commits
+  if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
+    skip
+  fi
+  [ "${status}" -eq 128 ]
+  [ "${lines[0]}" = "fatal: invalid upstream 'commitdiff~'" ]
+}
+
+@test "fedit edit files" {
+  run edit_files
+  [ "${status}" -eq 1 ]
+  [ -z "${output}" ]
 }
