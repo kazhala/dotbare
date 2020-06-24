@@ -47,10 +47,8 @@ stage_modified_file() {
 
 @test "fadd stage selected file" {
   run stage_selected_file
-  echo "${output}"
-  echo "${status}"
   [ "${status}" -eq 128 ]
-  [ "${lines[0]}" = "fatal: pathspec 'searchfile' did not match any files" ]
+  [[ "${output}" =~ "fatal: pathspec 'searchfile' did not match any files" ]]
 }
 
 @test "fadd stage selected dir" {
