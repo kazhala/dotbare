@@ -13,16 +13,12 @@ no_selection_made() {
 }
 
 select_commit() {
-  if "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
-    export PATH="${BATS_TEST_DIRNAME}:$PATH"
-  fi
+  export PATH="${BATS_TEST_DIRNAME}:$PATH"
   bash "${BATS_TEST_DIRNAME}"/../dotbare freset --commit -y
 }
 
 select_files() {
-  if "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
-    export PATH="${BATS_TEST_DIRNAME}:$PATH"
-  fi
+  export PATH="${BATS_TEST_DIRNAME}:$PATH"
   bash "${BATS_TEST_DIRNAME}"/../dotbare freset
 }
 
@@ -44,24 +40,20 @@ select_files() {
 }
 
 @test "freset select commit" {
-  run select_commit
   if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
-    [[ "${lines[0]}" =~ "fatal: your current branch 'master' does not have any commits yet" ]]
-    [ "${status}" -eq 1 ]
-  else
-    result=$(echo "${lines[0]}" | tr '`' "'")
-    [[ "${result}" =~ "error: unknown option 'commitshow'" ]]
-    [ "${status}" -eq 129 ]
+    skip
   fi
+  run select_commit
+  result=$(echo "${lines[0]}" | tr '`' "'")
+  [[ "${result}" =~ "error: unknown option 'commitshow'" ]]
+  [ "${status}" -eq 129 ]
 }
 
 @test "freset select files" {
-  run select_files
   if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
-    [ "${status}" -eq 1 ]
-    [ -z "${output}" ]
-  else
-    [ "${status}" -eq 128 ]
-    [[ "${lines[0]}" =~ "fatal: ambiguous argument '$HOME/modifiedfile': unknown revision or path not in the working tree" ]]
+    skip
   fi
+  run select_files
+  [ "${status}" -eq 128 ]
+  [[ "${lines[0]}" =~ "fatal: ambiguous argument '$HOME/modifiedfile': unknown revision or path not in the working tree" ]]
 }
