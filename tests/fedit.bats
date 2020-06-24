@@ -14,7 +14,9 @@ no_file_selected() {
 }
 
 edit_commits() {
-  export PATH="${BATS_TEST_DIRNAME}:$PATH"
+  if "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
+    export PATH="${BATS_TEST_DIRNAME}:$PATH"
+  fi
   bash "${BATS_TEST_DIRNAME}"/../dotbare fedit --commit
 }
 
@@ -43,10 +45,12 @@ edit_files() {
 @test "fedit edit commits" {
   run edit_commits
   if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
-    skip
+    [ "${status}" -eq 1 ]
+    [ "${output}" = "fatal: your current branch 'master' does not have any commits yet" ]
+  else
+    [ "${status}" -eq 128 ]
+    [ "${lines[0]}" = "fatal: invalid upstream 'commitdiff~'" ]
   fi
-  [ "${status}" -eq 128 ]
-  [ "${lines[0]}" = "fatal: invalid upstream 'commitdiff~'" ]
 }
 
 @test "fedit edit files" {
