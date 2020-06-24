@@ -75,7 +75,7 @@ done
 
 if [[ "${reset_type}" == "commit" ]]; then
   selected_commit=$(get_commit "select the target commit for HEAD")
-  [[ -z "${selected_commit}" ]] && exit 0
+  [[ -z "${selected_commit}" ]] && exit 1
   [[ -z "${confirm}" ]] && confirm=$(get_confirmation "Reset HEAD to ${selected_commit} ${reset_option}?")
   [[ "${confirm}" != 'y' ]] && exit 1
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset "${selected_commit}" "${reset_option}"
