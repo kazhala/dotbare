@@ -74,8 +74,7 @@ select_file() {
 
 @test "fbackup select file" {
   run select_file
-  echo "${status}" >&3
-  echo "${output}" >&3
   [ "${status}" -eq 1 ]
-  [[ "${output}" =~ 'cp: selectgitfile: No such file or directory' ]]
+  [[ "${output}" =~ 'No such file or directory' ]]
+  [[ "${output}" =~ 'selectgitfile' ]]
 }

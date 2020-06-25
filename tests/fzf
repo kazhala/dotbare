@@ -18,35 +18,48 @@
 #     use something like tr "`" "'" to avoid any potential error bats would raise
 
 if [[ "$*" =~ "--header=select a commit to checkout" ]] && [[ "$*" =~ "show --color" ]]; then
+  # dotbare fcheckout --c -- "./fcheckout.bats" @test "fcheckout commit"
   echo "--commitshow"
 elif [[ "$*" =~ '--no-multi --header=select the target commit for HEAD' ]] && [[ "$*" =~ "show --color" ]]; then
+  # dotbare freset --commit -y -- "./freset.bats" @test "freset select commit"
   echo "--commitshow"
 elif [[ "$*" =~ "--no-multi --header=select a commit to rename" ]] && [[ "$*" =~ "show --color=always" ]]; then
-  # dotbare fedit -c test
+  # dotbare fedit --commit -- "./fedit.bats" @test "fedit edit commits"
   echo "commitdiff"
 elif [[ "$*" =~ '--header=select a commit' ]] && [[ "$*" =~ "show --color" ]]; then
+  # dotbare flog --reset -y -- "./flog.bats" @test "flog reset"
   echo "--commitshow"
 elif [[ "$*" =~ "--no-multi --header=select a branch to checkout" ]]; then
+  # dotbare fcheckout --branch -- "./fcheckout.bats" @test "fcheckout branch"
   echo "--branch"
 elif [[ "$*" =~ '--header=select a file to checkout' ]] && [[ "$*" =~ "cat" ]]; then
+  # dotbare fcheckout --yes -s -- "./fcheckout.bats" @test "fcheckout select"
   echo "selectgitfile"
 elif [[ "$*" =~ '--header=select files to backup' ]] && [[ "$*" =~ "cat" ]]; then
+  # dotbare fbackup --select  -- "./fbackup.bats" @test "fbackup select file"
   echo "selectgitfile"
 elif [[ "$*" =~ '--multi --preview ' ]] && [[ "$*" =~ "tree -L 1 -C --dirsfirst {}" ]]; then
+  # dotbare fadd --dir -- "./fadd.bats" @test "fadd stage selected dir"
   echo "searchdir"
 elif [[ "$*" =~ '--header=select the target commit' ]] && [[ "$*" =~ "diff --color" ]]; then
+  # dotbare fcheckout --yes -s -- "./fcheckout.bats" @test "fcheckout select"
   echo "commitdiff"
 elif [[ "$*" =~ '--multi --preview ' ]] && [[ "$*" =~ "cat {}" ]]; then
+  # dotbare fadd -f -- "./fadd.bats" @test "fadd stage selected file"
   echo "searchfile"
 elif [[ "$*" =~ "--header=select a file to checkout version in HEAD" ]] && [[ "$*" =~ "diff HEAD --color=always" ]]; then
+  # dotbare fcheckout -y -- "./fcheckout.bats" @test "fcheckout modified"
   echo "-- modifiedfile"
 elif [[ "$*" =~ '--header=select files to stage' ]] && [[ "$*" =~ "diff HEAD --color=always" ]]; then
+  # dotbare fadd -- "./fadd.bats" @test "fadd stage modified files"
   echo "-- modifiedfile"
 elif [[ "$*" =~ "--header=select files to unstage" ]] && [[ "$*" =~ "diff HEAD --color=always" ]]; then
+  # dotbare freset -- "./freset.bats" @test "freset select files"
   echo "-- modifiedfile"
 elif [[ "$*" =~ "--header=select tracked files to edit" ]]; then
+  # dotbare fedit -- "./fedit.bats" @test "fedit edit files"
   exit
 elif [[ "$*" =~ "--no-multi --header=commit --commitshow" ]]; then
-  # dotbare flog test
+  # dotbare flog -- "./flog.bats" @test "flog checkout routing"
   echo "exit"
 fi
