@@ -21,6 +21,8 @@ if [[ "$*" =~ "--header=select a commit to checkout" ]] && [[ "$*" =~ "show --co
   echo "--commitshow"
 elif [[ "$*" =~ '--no-multi --header=select the target commit for HEAD' ]] && [[ "$*" =~ "show --color" ]]; then
   echo "--commitshow"
+elif [[ "$*" =~ '--header=select a commit' ]] && [[ "$*" =~ "show --color" ]]; then
+  echo "--commitshow"
 elif [[ "$*" =~ "--no-multi --header=select a branch to checkout" ]]; then
   echo "--branch"
 elif [[ "$*" =~ '--header=select a file to checkout' ]] && [[ "$*" =~ "cat" ]]; then
@@ -43,4 +45,6 @@ elif [[ "$*" =~ "--header=select files to unstage" ]] && [[ "$*" =~ "diff HEAD -
   echo "-- modifiedfile"
 elif [[ "$*" =~ "--header=select tracked files to edit" ]]; then
   exit
+elif [[ "$*" =~ "--no-multi --header=commit --commitshow" ]]; then
+  echo "exit"
 fi

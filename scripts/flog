@@ -25,7 +25,7 @@ source "${mydir}"/../helper/git_query.sh
 source "${mydir}"/../helper/get_confirmation.sh
 
 function usage() {
-  echo -e "Usage: dotbare flog [-h] [-r] [-R] [-e] [-c] ...\n"
+  echo -e "Usage: dotbare flog [-h] [-r] [-R] [-e] [-c] [-y] ...\n"
   echo -e "Interactive log viewer with action menu"
   echo -e "Action menu contains command including revert|reset|edit|checkout|exit\n"
   echo -e "Default: list all commits and prompt a menu for user to take action on the selected commit\n"
