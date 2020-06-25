@@ -9,19 +9,19 @@ invalid_option() {
 }
 
 stash_file() {
-  bash "${BATS_TEST_DIRNAME}"/../dotbare fstash -f
+  bash "${BATS_TEST_DIRNAME}"/../dotbare fstash -s
 }
 
 @test "fstash help" {
   run help
   [ "${status}" -eq 0 ]
-  [ "${lines[0]}" = "Usage: dotbare fstash [-h] [-f] [-d] [-p] ..." ]
+  [ "${lines[0]}" = "Usage: dotbare fstash [-h] [-s] [-d] [-p] ..." ]
 }
 
 @test "fstash invalid option" {
   run invalid_option
   [ "${status}" -eq 1 ]
-  [ "${lines[0]}" = "Invalid option: w" ]
+  [ "${lines[0]}" = "Invalid option: -w" ]
 }
 
 @test "fstash stash single file" {
