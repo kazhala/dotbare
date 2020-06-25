@@ -6,7 +6,7 @@ setup() {
 }
 
 teardown() {
-  [ -d "${DOTBARE_BACKUP}" ] && rm -r "$DOTBARE_BACKUP"
+  [ -d "${DOTBARE_BACKUP}" ] && rm -r "${DOTBARE_BACKUP}"
   unset DOTBARE_BACKUP
 }
 
@@ -27,8 +27,14 @@ individual_backup() {
   bash "${BATS_TEST_DIRNAME}"/../dotbare fbackup -p fadd.bats
 }
 
-check_empty() {
-  bash "${BATS_TEST_DIRNAME}"/../dotbare log
+move_file() {
+  touch bats_test.txt
+  bash "${BATS_TEST_DIRNAME}"/../dotbare fbackup --path bats_test.txt -m
+}
+
+select_file() {
+  export PATH="${BATS_TEST_DIRNAME}:$PATH"
+  bash "${BATS_TEST_DIRNAME}"/../dotbare fbackup --select
 }
 
 @test "fbackup help" {
@@ -39,18 +45,17 @@ check_empty() {
 @test "fbackup invalid option" {
   run invalid_option
   [ "${status}" -eq 1 ]
-  [ "${lines[0]}" = 'Invalid option: f' ]
+  [ "${lines[0]}" = 'Invalid option: -f' ]
 }
 
 @test "fbackup backup all files" {
-  run check_empty
-  if [ "${status}" -eq 0 ]; then
+  if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
+    run backup
+    [ "${status}" -eq 1 ]
+  else
     run backup
     [ "${status}" -eq 0 ]
     [ -f "${DOTBARE_BACKUP}"/.bashrc ]
-  else
-    run backup
-    [ "${status}" -eq 1 ]
   fi
 }
 
@@ -58,4 +63,17 @@ check_empty() {
   run individual_backup
   [ "${status}" -eq 0 ]
   [ -f "${DOTBARE_BACKUP}"/fadd.bats ]
+}
+
+@test "fbackup move file" {
+  run move_file
+  [ "${status}" -eq 0 ]
+  [ -f "${DOTBARE_BACKUP}"/bats_test.txt ]
+  [ ! -f "${BATS_TEST_DIRNAME}"/bats_test.txt ]
+}
+
+@test "fbackup select file" {
+  run select_file
+  [ "${status}" -eq 1 ]
+  [[ "${output}" =~ 'cp: selectgitfile: No such file or directory' ]]
 }

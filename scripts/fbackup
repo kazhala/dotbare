@@ -9,10 +9,10 @@
 #   ${selected_files}: selected files to backup
 #   ${action_command}: actions to run, cp|mv
 # Arguments
-#   -h: show help message and exit
-#   -s: select individual files through fzf and backup
-#   -p: pass in path and backup
-#   -m: use mv to backup instead of cp
+#   -h|--help: show help message and exit
+#   -s|--select: select individual files through fzf and backup
+#   -p|--path: pass in path and backup
+#   -m|--move: use mv to backup instead of cp
 
 set -e
 set -f

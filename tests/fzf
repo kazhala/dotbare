@@ -25,6 +25,8 @@ elif [[ "$*" =~ "--no-multi --header=select a branch to checkout" ]]; then
   echo "--branch"
 elif [[ "$*" =~ '--header=select a file to checkout' ]] && [[ "$*" =~ "cat" ]]; then
   echo "selectgitfile"
+elif [[ "$*" =~ '--header=select files to backup' ]] && [[ "$*" =~ "cat" ]]; then
+  echo "selectgitfile"
 elif [[ "$*" =~ '--multi --preview ' ]] && [[ "$*" =~ "tree -L 1 -C --dirsfirst {}" ]]; then
   echo "searchdir"
 elif [[ "$*" =~ '--header=select the target commit' ]] && [[ "$*" =~ "diff --color" ]]; then
