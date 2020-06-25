@@ -9,12 +9,12 @@
 #   ${selected_commit}: user selected commit
 #   ${confirm}: confirm status of user
 # Arguments
-#   -h: display help message
-#   -r: revert the selected commit
-#   -R: reset HEAD back to the selected commit
-#   -e: edit commmit (interactive rebase)
-#   -c: checkout selected commmit
-#   -y: confirm action by default and skip confirmation
+#   -h|--help: display help message
+#   -r|--revert: revert the selected commit
+#   -R|--reset: reset HEAD back to the selected commit
+#   -e|--edit: edit commmit (interactive rebase)
+#   -c|--checkout: checkout selected commmit
+#   -y|--yes: confirm action by default and skip confirmation
 
 set -e
 set -f
@@ -30,12 +30,12 @@ function usage() {
   echo -e "Action menu contains command including revert|reset|edit|checkout|exit\n"
   echo -e "Default: list all commits and prompt a menu for user to take action on the selected commit\n"
   echo -e "optional arguments:"
-  echo -e "  -h\t\tshow this help message and exit"
-  echo -e "  -r\t\trevert the selected commit"
-  echo -e "  -R\t\treset HEAD back to selected commit"
-  echo -e "  -e\t\tedit selected commit through interactive rebase"
-  echo -e "  -c\t\tcheckout selected commit"
-  echo -e "  -y\t\tconfirm action by default and skip confirmation"
+  echo -e "  -h, --help\t\tshow this help message and exit"
+  echo -e "  -r, --revert\t\trevert the selected commit"
+  echo -e "  -R, --reset\t\treset HEAD back to selected commit"
+  echo -e "  -e, --edit\t\tedit selected commit through interactive rebase"
+  echo -e "  -c, --checkout\t\tcheckout selected commit"
+  echo -e "  -y, --yes\t\tconfirm action by default and skip confirmation"
 }
 
 #######################################
@@ -65,8 +65,7 @@ function draw_menu() {
     header="commit ${selected_commit}: ${message}"
     selected_action=$(echo -e "${menu}" \
       | fzf --no-multi --header="${header}" \
-      | awk '{
-          gsub(/:/, "", $1)
+      | awk -F ":" '{
           print $1
         }'
     )
@@ -75,30 +74,37 @@ function draw_menu() {
 }
 
 selected_action=""
+selected_commit=""
+confirm=""
 
-while getopts ":hrRecy" opt; do
-  case "$opt" in
-    r)
+while [[ "$#" -gt 0 ]]; do
+  case "$1" in
+    -r|--revert)
       selected_action="revert"
+      shift
       ;;
-    R)
+    -R|--reset)
       selected_action="reset"
+      shift
       ;;
-    e)
+    -e|--edit)
       selected_action="edit"
+      shift
       ;;
-    c)
+    -c|--checkout)
       selected_action="checkout"
+      shift
       ;;
-    y)
+    -y|--yes)
       confirm='y'
+      shift
       ;;
-    h)
+    -h|--help)
       usage
       exit 0
       ;;
     *)
-      echo "Invalid option: ${OPTARG}" >&2
+      echo "Invalid option: $1" >&2
       usage
       exit 1
       ;;
@@ -113,9 +119,9 @@ while :; do
 done
 
 if [[ "${selected_action}" != 'exit' ]]; then
-  if [[ "${selected_action}" == "reset" ]]; then
+  if [[ "${selected_action}" == "reset" ]] && [[ -z "${confirm}" ]]; then
     echo "(dryrun) reset HEAD to ${selected_commit}"
-  else
+  elif [[ -z "${confirm}" ]]; then
     echo "(dryrun) ${selected_action} ${selected_commit}"
   fi
   [[ -z "${confirm}" ]] && confirm=$(get_confirmation)
