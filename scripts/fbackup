@@ -11,7 +11,7 @@
 # Arguments
 #   -h|--help: show help message and exit
 #   -s|--select: select individual files through fzf and backup
-#   -p|--path: pass in path and backup
+#   -p PATH|--path PATH: pass in path and backup
 #   -m|--move: use mv to backup instead of cp
 
 set -e

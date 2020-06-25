@@ -1,17 +1,18 @@
 #!/usr/bin/env bash
 #
-# init the git bare repo
+# init or migrate the git bare repo
 #
 # @params
 # Globals
 #   ${mydir}: current dir of the script
 #   ${confirm}: confirm status of the user
-#   ${post_hooks}: post checkout actions to perform
+#   ${post_hooks}: array of post checkout actions to perform
+#   ${remote_url}; remote_url to clone and migrate
 # Arguments
-#   -h: show help message and exit
-#   -u: specify remote dotfiles url to init
-#   -s: clone submodules after checkout
-#   -y: confirm action by default and skip confirmation
+#   -h|--help: show help message and exit
+#   -u URL|--url URL: specify remote dotfiles url to init
+#   -s|--select: clone submodules after checkout
+#   -y|--yes: confirm action by default and skip confirmation
 
 set -e
 set -f
@@ -29,32 +30,38 @@ function usage() {
   echo -e 'It will track $DOTBARE_TREE, default to $HOME if not set\n'
   echo -e "Default: init the bare repository at $DOTBARE_DIR\n"
   echo -e "optional arguments:"
-  echo -e "  -h\t\tshow this help message and exit"
-  echo -e "  -u URL\tmigrate existing dotfiles from the git URL to current system"
-  echo -e "  -s\t\tclone submodules after checkout"
-  echo -e "  -y\t\tconfirm action by default and skip confirmation"
+  echo -e "  -h, --help\t\tshow this help message and exit"
+  echo -e "  -u URL, --url URL\tmigrate existing dotfiles from the git URL to current system"
+  echo -e "  -s, --select\t\tclone submodules after checkout"
+  echo -e "  -y, --yes\t\tconfirm action by default and skip confirmation"
 }
 
 remote_url=""
 post_hooks=()
-while getopts ":hu:ys" opt; do
-  case "$opt" in
-    s)
+
+while [[ "$#" -gt 0 ]]; do
+  case "$1" in
+    -s|--submodule)
       [[ ! "${post_hooks[*]}" =~ submodule ]] && \
         post_hooks+=("submodule")
+      shift
       ;;
-    u)
-      remote_url="${OPTARG}"
+    -u|--url)
+      [[ -z "$2" ]] && echo "Invalid option: $1" >&2 && usage && exit 1
+      remote_url="$2"
+      shift
+      shift
       ;;
-    y)
+    -y|--yes)
       confirm='y'
+      shift
       ;;
-    h)
+    -h|--help)
       usage
       exit 0
       ;;
     *)
-      echo "Invalid option: ${OPTARG}" >&2
+      echo "Invalid option: $1" >&2
       usage
       exit 1
       ;;
@@ -62,7 +69,6 @@ while getopts ":hu:ys" opt; do
 done
 
 if [[ -z "${remote_url}" ]]; then
-  echo "modify DOTBARE_DIR and DOTBARE_TREE to customize location, more information run dotbare finit -h"
   echo "git bare repository will be initialised at ${DOTBARE_DIR}"
   echo "git bare repository will be tracking ${DOTBARE_TREE}"
   [[ -z "${confirm}" ]] && confirm=$(get_confirmation)
