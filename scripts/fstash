@@ -6,13 +6,14 @@
 # Globals
 #   ${mydir}: current dir of the script, source purpose
 #   ${stash_command}: stash command, pop, apply or file/delete to stash file or delete stash
-#   ${selected_file}: selected files to stash
+#   ${selected_files}: selected files to stash
 #   ${selected_stash}: selected stash to apply
+#   ${confirm}: user confirm status
 # Arguments
-#   -h: show help message
-#   -f: select individual files and stash
-#   -d: delete selected stash
-#   -p: use pop instead of apply on the selected stash
+#   -h|--help: show help message
+#   -s|--select: select individual files and stash
+#   -d|--delete: delete selected stash
+#   -p|--pop: use pop instead of apply on the selected stash
 
 set -e
 set -f
@@ -23,55 +24,63 @@ source "${mydir}"/../helper/get_confirmation.sh
 source "${mydir}"/../helper/git_query.sh
 
 function usage() {
-  echo -e "Usage: dotbare fstash [-h] [-f] [-d] [-p] ...\n"
+  echo -e "Usage: dotbare fstash [-h] [-s] [-d] [-p] ...\n"
   echo -e "save/apply/delect stash using fzf, also supports stashing individual file\n"
   echo -e "Default: running fstash will apply the selected stash\n"
   echo -e "optional arguments:"
-  echo -e "  -h\t\tshow this help message and exit"
-  echo -e "  -f\t\tselect modified files through fzf and stash them"
-  echo -e "  -d\t\tdelete the selected stash from stash list"
-  echo -e "  -p\t\tuse pop instead of apply when retrieving stash"
+  echo -e "  -h, --help\t\tshow this help message and exit"
+  echo -e "  -s, --select\t\tselect modified files through fzf and stash them"
+  echo -e "  -d, --delete\t\tdelete the selected stash from stash list"
+  echo -e "  -p, --pop\t\tuse pop instead of apply when retrieving stash"
 }
 
 stash_command="apply"
+selected_files=()
+selected_stash=""
 
-while getopts ":hdfpy" opt; do
-  case "$opt" in
-    p)
+while [[ "$#" -gt 0 ]]; do
+  case "$1" in
+    -p|--pop)
       stash_command="pop"
+      shift
       ;;
-    f)
-      stash_command="file"
+    -s|--select)
+      stash_command="select"
+      shift
       ;;
-    d)
+    -d|--delete)
       stash_command="delete"
+      shift
       ;;
-    y)
-      confirm='y'
+    -y|--yes)
+      confirm="y"
+      shift
       ;;
-    h)
+    -h|--help)
       usage
       exit 0
       ;;
     *)
-      echo "Invalid option: ${OPTARG}" >&2
+      echo "Invalid option: $1" >&2
       usage
-      exit 1
+      exit 0
       ;;
   esac
 done
 
-if [[ "${stash_command}" == "file" ]]; then
-  selected_file=$(get_modified_file "select files to add to a stash")
-  [[ -z "${selected_file}" ]] && exit 1
-  # shellcheck disable=SC2086
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" stash -- ${selected_file}
+if [[ "${stash_command}" == "select" ]]; then
+  while IFS= read -r line; do
+    selected_files+=("${line}")
+  done < <(get_modified_file "select files to add to a stash")
+  [[ "${#selected_files[@]}" -eq 0 ]] && exit 1
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" stash -- "${selected_files[@]}"
 elif [[ "${stash_command}" == "delete" ]]; then
   selected_stash=$(get_stash "select stash to delete")
   [[ -z "${selected_stash}" ]] && exit 1
-  while IFS= read -r line; do
-    echo "(dryrun) Drop ${line}"
-  done <<< "${selected_stash}"
+  [[ -z "${confirm}" ]] && \
+    while IFS= read -r line; do
+      echo "(dryrun) drop ${line}"
+    done <<< "${selected_stash}"
   [[ -z "${confirm}" ]] && confirm=$(get_confirmation)
   [[ "${confirm}" != 'y' ]] && exit 1
   while IFS= read -r line; do
@@ -80,5 +89,8 @@ elif [[ "${stash_command}" == "delete" ]]; then
 else
   selected_stash=$(get_stash "select stash to apply" "true")
   [[ -z "${selected_stash}" ]] && exit 1
+  [[ -z "${confirm}" ]] && echo "(dryrun) "${stash_command}" ${selected_stash}"
+  [[ -z "${confirm}" ]] && confirm=$(get_confirmation)
+  [[ "${confirm}" != 'y' ]] && exit 1
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" stash "${stash_command}" "${selected_stash}"
 fi
