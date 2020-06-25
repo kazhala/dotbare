@@ -27,10 +27,10 @@ function usage() {
   echo -e "This is useful when untracking files or migrating on new machines\n"
   echo -e "Default: backup every tracked files using cp to ${DOTBARE_BACKUP} directory\n"
   echo -e "optional arguments:"
-  echo -e "  -h\t\tshow this help message and exit"
-  echo -e "  -s\t\tselect individual file through fzf and backup"
-  echo -e "  -p PATH\tsepcify path to backup"
-  echo -e "  -m\t\tuse mv command for backup instead of default cp"
+  echo -e "  -h, --help\t\tshow this help message and exit"
+  echo -e "  -s, --select\t\tselect individual file through fzf and backup"
+  echo -e "  -p PATH, --path PATH\tsepcify path of files to backup"
+  echo -e "  -m, --move\t\tuse mv command for backup instead of default cp"
 }
 
 #######################################
@@ -52,23 +52,30 @@ function dotbare_backup() {
 
 backup_type="all"
 action_command='cp'
-while getopts ":hsp:m" opt; do
-  case "$opt" in
-    s)
-      backup_type='individual'
+selected_files=""
+
+while [[ "$#" -gt 0 ]]; do
+  case "$1" in
+    -s|--select)
+      backup_type="select"
+      shift
       ;;
-    p)
-      selected_files="${OPTARG}"
+    -p|--path)
+      [[ -z "$2" ]] && echo "Invalid option: $1" >&2 && usage && exit 1
+      selected_files="$2"
+      shift
+      shift
       ;;
-    m)
+    -m|--move)
       action_command="mv"
+      shift
       ;;
-    h)
+    -h|--help)
       usage
       exit 0
       ;;
     *)
-      echo "Invalid option: ${OPTARG}" >&2
+      echo "Invalid option: $1" >&2
       usage
       exit 1
       ;;
@@ -79,7 +86,7 @@ done
 [[ -n "${selected_files}" ]] && dotbare_backup "${selected_files}" "${action_command}"
 
 cd "${DOTBARE_TREE}"
-if [[ "${backup_type}" == 'individual' ]]; then
+if [[ "${backup_type}" == 'select' ]]; then
   selected_files=$(get_git_file "select files to backup" "raw")
 else
   selected_files=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
