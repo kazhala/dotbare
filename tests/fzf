@@ -21,6 +21,9 @@ if [[ "$*" =~ "--header=select a commit to checkout" ]] && [[ "$*" =~ "show --co
   echo "--commitshow"
 elif [[ "$*" =~ '--no-multi --header=select the target commit for HEAD' ]] && [[ "$*" =~ "show --color" ]]; then
   echo "--commitshow"
+elif [[ "$*" =~ "--no-multi --header=select a commit to rename" ]] && [[ "$*" =~ "show --color=always" ]]; then
+  # dotbare fedit -c test
+  echo "commitdiff"
 elif [[ "$*" =~ '--header=select a commit' ]] && [[ "$*" =~ "show --color" ]]; then
   echo "--commitshow"
 elif [[ "$*" =~ "--no-multi --header=select a branch to checkout" ]]; then
@@ -33,8 +36,6 @@ elif [[ "$*" =~ '--multi --preview ' ]] && [[ "$*" =~ "tree -L 1 -C --dirsfirst 
   echo "searchdir"
 elif [[ "$*" =~ '--header=select the target commit' ]] && [[ "$*" =~ "diff --color" ]]; then
   echo "commitdiff"
-elif [[ "$*" =~ "--no-multi --header=select a commit to rename" ]] && [[ "$*" =~ "show --color=always" ]]; then
-  echo "commitdiff"
 elif [[ "$*" =~ '--multi --preview ' ]] && [[ "$*" =~ "cat {}" ]]; then
   echo "searchfile"
 elif [[ "$*" =~ "--header=select a file to checkout version in HEAD" ]] && [[ "$*" =~ "diff HEAD --color=always" ]]; then
@@ -46,5 +47,6 @@ elif [[ "$*" =~ "--header=select files to unstage" ]] && [[ "$*" =~ "diff HEAD -
 elif [[ "$*" =~ "--header=select tracked files to edit" ]]; then
   exit
 elif [[ "$*" =~ "--no-multi --header=commit --commitshow" ]]; then
+  # dotbare flog test
   echo "exit"
 fi

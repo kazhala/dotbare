@@ -45,7 +45,7 @@ invalid_command() {
 @test "main routing2" {
   run routing2
   [ "${status}" -eq 0 ]
-  [ "${lines[0]}" = "Usage: dotbare flog [-h] [-r] [-R] [-e] [-c] ..." ]
+  [ "${lines[0]}" = "Usage: dotbare flog [-h] [-r] [-R] [-e] [-c] [-y] ..." ]
 }
 
 @test "main git command" {
