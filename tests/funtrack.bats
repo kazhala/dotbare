@@ -11,11 +11,11 @@ invalid_option() {
 @test "funtrack help" {
   run help
   [ "${status}" -eq 0 ]
-  [ "${lines[0]}" = "Usage: dotbare funtrack [-h] [-s] [-S] ..." ]
+  [ "${lines[0]}" = "Usage: dotbare funtrack [-h] [-t] [-r] [-y] ..." ]
 }
 
 @test "funtrack invalid option" {
   run invalid_option
   [ "${status}" -eq 1 ]
-  [ "${lines[0]}" = "Invalid option: p" ]
+  [ "${lines[0]}" = "Invalid option: -p" ]
 }
