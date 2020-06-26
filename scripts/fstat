@@ -27,10 +27,6 @@ function usage() {
   echo -e "  -h, --help\t\tshow this help message and exit"
 }
 
-selected_filenames=()
-selected_files=""
-stage_file=""
-
 while [[ "$#" -gt 0 ]]; do
   case "$1" in
     -h|--help)
@@ -46,14 +42,21 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 while :; do
-  selected_files=$(get_modified_file "select files to stage/unstage" "all" "raw")
-  [[ -z "${selected_files}" ]] && break
+  # reset all variable and arrays for each loop
+  selected_files=()
+  selected_filenames=()
+  stage_file=""
+
+  while IFS= read -r line; do
+    selected_files+=("${line}")
+  done < <(get_modified_file "select files to stage/unstage" "all" "raw")
+  [[ "${#selected_files[@]}" -eq 0 ]] && break
 
   # check if current operation should stage file or unstage file
   # if any file start with M but has char immediately follow it, new changes are made, stage file
   # if any file start with a space or tab, the file is not staged, stage file
   # otherwise, we unstage
-  stage_file=$(echo "${selected_files}" | awk '{
+  stage_file=$(printf '%s\n' "${selected_files[@]}" | awk '{
     if ($0 ~ /^[A-Za-z][A-Za-z].*$/) {
       print "stage"
     } else if ($0 ~ /^[ \t].*$/) {
@@ -63,7 +66,15 @@ while :; do
 
   while IFS= read -r line; do
     selected_filenames+=("${line}")
-  done < <(echo "${selected_files}" | awk -v home="${DOTBARE_TREE}" '{print home "/" $2}')
+  done < <(
+    printf '%s\n' "${selected_files[@]}" \
+      | awk -v home="${DOTBARE_TREE}" '{
+          $1=""
+          gsub(/^[ \t]/, "", $0)
+          gsub(/"/, "", $0)
+          print home "/" $0
+        }'
+  )
 
   if [[ -z "${stage_file}" ]]; then
     /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset --quiet HEAD "${selected_filenames[@]}"
