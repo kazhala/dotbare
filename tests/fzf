@@ -32,11 +32,14 @@ elif [[ "$*" =~ '--header=select a commit' ]] && [[ "$*" =~ "show --color" ]]; t
 elif [[ "$*" =~ "--no-multi --header=select a branch to checkout" ]]; then
   # dotbare fcheckout --branch -- "./fcheckout.bats" @test "fcheckout branch"
   echo "--branch"
-elif [[ "$*" =~ '--header=select a file to checkout' ]] && [[ "$*" =~ "cat" ]]; then
+elif [[ "$*" =~ '--header=select a file to checkout' ]] && [[ "$*" =~ "cat ${DOTBARE_TREE}/{}" ]]; then
   # dotbare fcheckout --yes -s -- "./fcheckout.bats" @test "fcheckout select"
   echo "selectgitfile"
-elif [[ "$*" =~ '--header=select files to backup' ]] && [[ "$*" =~ "cat" ]]; then
+elif [[ "$*" =~ '--header=select files to backup' ]] && [[ "$*" =~ "cat ${DOTBARE_TREE}/{}" ]]; then
   # dotbare fbackup --select  -- "./fbackup.bats" @test "fbackup select file"
+  echo "selectgitfile"
+elif [[ "$*" =~ "--header=select files to untrack" ]] && [[ "$*" =~ "cat ${DOTBARE_TREE}/{}" ]]; then
+  # dotbare funtrack -- "./funtrack.bats" @test "funtrack untrack file"
   echo "selectgitfile"
 elif [[ "$*" =~ '--multi --preview ' ]] && [[ "$*" =~ "tree -L 1 -C --dirsfirst {}" ]]; then
   # dotbare fadd --dir -- "./fadd.bats" @test "fadd stage selected dir"
