@@ -29,11 +29,14 @@ upgrade() {
 @test "fupgrade invliad option" {
   run invalid_option
   [ "${status}" -eq 1 ]
-  [ "${lines[0]}" = "Invalid option: p" ]
+  [ "${lines[0]}" = "Invalid option: -p" ]
 }
 
 @test "fupgrade upgrade" {
+  dotbare_version="$(git describe --tags $(git rev-list --tags --max-count=1))"
   run upgrade
   [ "${status}" -eq 0 ]
-  [ "${lines[0]}" = "Fetching latest changes ..." ]
+  [ "${lines[0]}" = "Updating dotbare ..." ]
+  [[ "${output}" =~ "dotbare updated successfully" ]]
+  [[ "${output}" =~ "Current dotbare version: ${dotbare_version}" ]]
 }
