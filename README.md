@@ -603,11 +603,11 @@ Leave a star if possible :)
 ## Coming up
 
 - [ ] Improve unit test with mocking
-- [ ] Support submodules during migration
+- [x] Support submodules during migration
 - [ ] Command line completion for dotbare in zsh
 - [x] Command line completion for dotbare in bash
 - [ ] Man page
-- [ ] Installation method
+- [x] Installation method
 
 ## Background
 
