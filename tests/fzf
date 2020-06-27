@@ -50,6 +50,15 @@ elif [[ "$*" =~ '--header=select the target commit' ]] && [[ "$*" =~ "diff --col
 elif [[ "$*" =~ '--multi --preview ' ]] && [[ "$*" =~ "cat {}" ]]; then
   # dotbare fadd -f -- "./fadd.bats" @test "fadd stage selected file"
   echo "searchfile"
+elif [[ "$*" =~ '--header=select files to add to a stash' ]] && [[ "$*" =~ "diff HEAD --color=always" ]]; then
+  # dotbare fstash -s -- "./fstash.bats" @test "fstash stash select file"
+  echo "-- stash_select"
+elif [[ "$*" =~ '--header=select stash to delete' ]] && [[ "$*" =~ "show -p __ --color=always" ]]; then
+  # dotbare fstash --delete -- "./fstash.bats" @test "fstash stash delete"
+  echo "stash_delete"
+elif [[ "$*" =~ '--header=select stash to apply' ]] && [[ "$*" =~ "show -p __ --color=always" ]]; then
+  # dotbare fstash -- "./fstash.bats" @test "fstash apply stash"
+  echo "stash_apply"
 elif [[ "$*" =~ "--header=select a file to checkout version in HEAD" ]] && [[ "$*" =~ "diff HEAD --color=always" ]]; then
   # dotbare fcheckout -y -- "./fcheckout.bats" @test "fcheckout modified"
   echo "-- modifiedfile"
