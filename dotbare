@@ -16,7 +16,7 @@ mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "${mydir}"/helper/set_variable.sh
 
 function usage() {
-  echo -e "Usage: dotbare [-h] [COMMANDS] [OPTIONS] ...\n"
+  echo -e "Usage: dotbare [-h] [-v] [COMMANDS] [OPTIONS] ...\n"
   echo -e "Interactively manage dotfiles with the help of fzf and git bare repo"
   echo -e "To see all dotbare specific COMMANDS, run dotbare without any arguments\n"
   echo -e "dotbare is just a wrapper around git hence all git commands will function"

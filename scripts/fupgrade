@@ -8,14 +8,14 @@ mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 function usage() {
   echo -e "Usage: dotbare fupgrade [-h] ...\n"
-  echo -e "Update dotbare to the latest version\n"
+  echo -e "Upgrade dotbare to the latest master\n"
   echo -e "optional arguments:"
   echo -e "  -h, --help\t\tshow this help message and exit"
 }
 
 while [[ "$#" -gt 0 ]]; do
   case "$1" in
-    -h|--helo)
+    -h|--help)
       usage
       exit 0
       ;;

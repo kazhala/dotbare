@@ -24,10 +24,22 @@ invalid_command() {
   "${BATS_TEST_DIRNAME}"/../dotbare hello
 }
 
+version() {
+  "${BATS_TEST_DIRNAME}"/../dotbare --version
+}
+
 @test "main help" {
   run help
   [ "${status}" -eq 0 ]
-  [ "${lines[0]}" = "Usage: dotbare [-h] [COMMANDS] [OPTIONS] ..." ]
+  [ "${lines[0]}" = "Usage: dotbare [-h] [-v] [COMMANDS] [OPTIONS] ..." ]
+}
+
+@test "main version" {
+  cd "${BATS_TEST_DIRNAME}"/..
+  dotbare_version="$(git describe --tags $(git rev-list --tags --max-count=1))"
+  run version
+  [ "${status}" -eq 0 ]
+  [[ "${output}" = "Current dotbare version: ${dotbare_version}" ]]
 }
 
 @test "main disable add --all" {
