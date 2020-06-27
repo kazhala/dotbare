@@ -39,7 +39,6 @@ function usage() {
   echo -e "  fbackup   \t\tperform backup for tracked dotfiles"
   echo -e "  fupgrade  \t\tupdate dotbare to the latest version"
   echo -e "  finit     \t\tinitialise/migrate dotbare"
-  echo -e "  help      \t\tshow this help message and exit"
 }
 
 # if no argument, display all possible actions
@@ -62,8 +61,9 @@ case "$1" in
     exit 0
     ;;
   -v|--version)
-    cd "${mydir}"
-    printf "Current dotbare version: %s\n" "$(git describe --tags $(git rev-list --tags --max-count=1))"
+    cd "${mydir}" || exit
+    dotbare_version=$(git describe --tags "$(git rev-list --tags --max-count=1)")
+    printf "Current dotbare version: %s\n" "${dotbare_version}"
     exit 0
     ;;
   *)
