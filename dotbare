@@ -24,7 +24,8 @@ function usage() {
   echo -e "dotbare added couple useful scripts starting with 'f' prefix to help you"
   echo -e "manage your interact with your git bare repo a little easier with the help of fzf\n"
   echo -e "optional arguments:"
-  echo -e "  -h\t\tshow this help message and exit"
+  echo -e "  -h, --help\t\tshow this help message and exit"
+  echo -e "  -v, --version\t\tshow dotbare current version"
   echo -e "Available commands:"
   echo -e "  Any git commands, treat dotbare as git"
   echo -e "  fadd      \t\tstage modified file interactively"
@@ -56,8 +57,13 @@ fi
   exit 1
 
 case "$1" in
-  help|-h)
+  --help|-h)
     usage
+    exit 0
+    ;;
+  -v|--version)
+    cd "${mydir}"
+    printf "Current dotbare version: %s\n" "$(git describe --tags $(git rev-list --tags --max-count=1))"
     exit 0
     ;;
   *)

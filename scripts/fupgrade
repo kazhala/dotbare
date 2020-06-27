@@ -2,7 +2,6 @@
 #
 # update dotbare to latest master
 
-set -e
 set -f
 
 mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -39,7 +38,7 @@ cd "${mydir}/.."
 echo "Updating dotbare ..."
 if git pull --rebase --stat origin master; then
   echo "dotbare updated successfully"
-  printf "Current dotbare version: %s\n" $(git describe --tags $(git rev-list --tags --max-count=1))
+  printf "Current dotbare version: %s\n" "$(git describe --tags $(git rev-list --tags --max-count=1))"
 else
   echo "Something went wrong, please try again or fire up a issue at https://github.com/kazhala/dotbare"
 fi
