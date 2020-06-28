@@ -1,0 +1,12 @@
+scripts/*
+!scripts/fadd
+!scripts/fbackup
+!scripts/fcheckout
+!scripts/fedit
+!scripts/finit
+!scripts/flog
+!scripts/freset
+!scripts/fstash
+!scripts/fstat
+!scripts/funtrack
+!scripts/fupgrade
