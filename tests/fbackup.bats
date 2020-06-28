@@ -76,5 +76,5 @@ select_file() {
   run select_file
   [ "${status}" -eq 1 ]
   [[ "${output}" =~ 'No such file or directory' ]]
-  [[ "${output}" =~ 'selectgitfile' ]]
+  [[ "${output}" =~ 'fbackup_select_file' ]]
 }

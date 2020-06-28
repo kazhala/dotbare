@@ -15,6 +15,7 @@
 export DOTBARE_DIR="${DOTBARE_DIR:-$HOME/.cfg/}"
 export DOTBARE_TREE="${DOTBARE_TREE:-$HOME}"
 export DOTBARE_BACKUP="${DOTBARE_BACKUP:-${XDG_DATA_HOME:-$HOME/.local/share}/dotbare}"
+export DOTBARE_VERSION="v1.1.0"
 
 export EDITOR="${EDITOR:-vim}"
 if [[ -z "${DOTBARE_KEY}" ]]; then

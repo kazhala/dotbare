@@ -44,7 +44,6 @@ reset() {
   fi
   run reset
   [ "${status}" -eq 129 ]
-  result=$(echo "${lines[0]}" | tr '`' "'")
-  [[ "${result}" =~ "error: unknown option 'commitshow'" ]]
   [[ "${output}" =~ "usage: git reset [--mixed | --soft | --hard | --merge | --keep] [-q] [<commit>]" ]]
+  [[ "${output}" =~ "flog_reset" ]]
 }

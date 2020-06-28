@@ -39,17 +39,17 @@ resume_track() {
 @test "funtrack untrack file" {
   run untrack_file
   [ "${status}" -eq 128 ]
-  [[ "${output}" =~ "fatal: pathspec '$HOME/selectgitfile' did not match any files" ]]
+  [[ "${output}" =~ "funtrack_file" ]]
 }
 
 @test "funtrack temp untrack" {
   run temp_untrack
   [ "${status}" -eq 128 ]
-  [[ "${output}" =~ "fatal: Unable to mark file selectgitfile" ]]
+  [[ "${output}" =~ "fatal: Unable to mark file funtrack_file" ]]
 }
 
 @test "funtrack resume track" {
   run resume_track
   [ "${status}" -eq 128 ]
-  [[ "${output}" =~ "fatal: Unable to mark file selectgitfile" ]]
+  [[ "${output}" =~ "fatal: Unable to mark file funtrack_file" ]]
 }

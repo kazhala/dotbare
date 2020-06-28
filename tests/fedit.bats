@@ -46,7 +46,7 @@ edit_files() {
   fi
   run edit_commits
   [ "${status}" -eq 128 ]
-  [ "${lines[0]}" = "fatal: invalid upstream 'commitdiff~'" ]
+  [[ "${output}" =~ "fedit_commits" ]]
 }
 
 @test "fedit edit files" {

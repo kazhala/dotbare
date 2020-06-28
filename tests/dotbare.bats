@@ -25,6 +25,7 @@ invalid_command() {
 }
 
 version() {
+  source "${BATS_TEST_DIRNAME}"/../helper/set_variable.sh
   "${BATS_TEST_DIRNAME}"/../dotbare --version
 }
 
@@ -35,11 +36,9 @@ version() {
 }
 
 @test "main version" {
-  cd "${BATS_TEST_DIRNAME}"/..
-  dotbare_version="$(git describe --tags $(git rev-list --tags --max-count=1))"
   run version
   [ "${status}" -eq 0 ]
-  [[ "${output}" = "Current dotbare version: ${dotbare_version}" ]]
+  [[ "${output}" =~ "Current dotbare version: ${DOTBARE_VERSION}" ]]
 }
 
 @test "main disable add --all" {

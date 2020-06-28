@@ -44,9 +44,8 @@ select_files() {
     skip
   fi
   run select_commit
-  result=$(echo "${lines[0]}" | tr '`' "'")
-  [[ "${result}" =~ "error: unknown option 'commitshow'" ]]
   [ "${status}" -eq 129 ]
+  [[ "${output}" =~ "freset_commit" ]]
 }
 
 @test "freset select files" {
@@ -55,5 +54,5 @@ select_files() {
   fi
   run select_files
   [ "${status}" -eq 128 ]
-  [[ "${lines[0]}" =~ "fatal: ambiguous argument '$HOME/modifiedfile': unknown revision or path not in the working tree" ]]
+  [[ "${output}" =~ "freset_file" ]]
 }

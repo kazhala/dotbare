@@ -38,10 +38,8 @@ cd "${mydir}/.." || exit
 echo "Updating dotbare ..."
 if git pull --rebase --stat origin master; then
   echo "dotbare updated successfully"
-  dotbare_version=$(git describe --tags "$(git rev-list --tags --max-count=1)")
-  printf "Current dotbare version: %s\n" "${dotbare_version}"
 else
-  echo "Something went wrong, please try again or fire up a issue at https://github.com/kazhala/dotbare"
+  echo "Something went wrong, please try again or fire up an issue at https://github.com/kazhala/dotbare"
 fi
 
 # reset autostack to original value

@@ -34,30 +34,28 @@ checkout_selected_file() {
   [ "${lines[0]}" = "Usage: dotbare fcheckout [-h] [-s] [-b] [-c] [-y] ..." ]
 }
 
-@test "fchekcout invalid option" {
+@test "fcheckout invalid option" {
   run invalid_option
   [ "${status}" -eq 1 ]
   [ "${lines[0]}" = "Invalid option: -p" ]
 }
 
-@test "fchekcout branch" {
+@test "fcheckout branch" {
   if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
     skip
   fi
   run checkout_branch
-  result=$(echo "${output}" | tr '`' "'")
   [ "${status}" -eq 129 ]
-  [[ "${result}" =~ "error: unknown option 'branch'" ]]
+  [[ "${output}" =~ "fcheckout_branch" ]]
 }
 
-@test "fchekcout commit" {
+@test "fcheckout commit" {
   if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
     skip
   fi
   run checkout_commit
-  result=$(echo "${lines[0]}" | tr '`' "'")
   [ "${status}" -eq 129 ]
-  [[ "${result}" =~ "error: unknown option 'commitshow'" ]]
+  [[ "${output}" =~ "fcheckout_commit" ]]
 }
 
 @test "fcheckout modified" {
@@ -66,7 +64,7 @@ checkout_selected_file() {
   fi
   run checkout_modified_file
   [ "${status}" -eq 1 ]
-  [[ "${lines[0]}" =~ "error: pathspec '$HOME/modifiedfile' did not match any file(s) known to git" ]]
+  [[ "${output}" =~ "fcheckout_modified" ]]
 }
 
 @test "fcheckout select" {
@@ -74,7 +72,7 @@ checkout_selected_file() {
     skip
   fi
   run checkout_selected_file
-  [[ "${lines[0]}" =~ "error: pathspec 'commitdiff' did not match any file(s) known to git" ]]
-  [[ "${lines[1]}" =~ "error: pathspec '$HOME/selectgitfile' did not match any file(s) known to git" ]]
+  [[ "${lines[0]}" =~ "fcheckout_select_commitdiff" ]]
+  [[ "${lines[1]}" =~ "fcheckout_select_gitfile" ]]
   [ "${status}" -eq 1 ]
 }
