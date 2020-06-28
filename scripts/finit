@@ -32,7 +32,7 @@ function usage() {
   echo -e "optional arguments:"
   echo -e "  -h, --help\t\tshow this help message and exit"
   echo -e "  -u URL, --url URL\tmigrate existing dotfiles from the git URL to current system"
-  echo -e "  -s, --submodule\t\tclone submodules after checkout"
+  echo -e "  -s, --submodule\tclone submodules after checkout"
   echo -e "  -y, --yes\t\tconfirm action by default and skip confirmation"
 }
 
