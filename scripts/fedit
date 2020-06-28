@@ -30,8 +30,9 @@ function usage() {
   echo -e "  -c, --commit\t\tedit commit using interactive rebase"
 }
 
-edit_type='all'
+edit_type="all"
 selected_files=()
+selected_commit=""
 
 while [[ "$#" -gt 0 ]]; do
   case "$1" in

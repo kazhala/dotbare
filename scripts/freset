@@ -42,6 +42,8 @@ function usage() {
 reset_option="--mixed"
 reset_type="modified"
 selected_files=()
+confirm=""
+selected_commit=""
 
 while [[ "$#" -gt 0 ]]; do
   case "$1" in

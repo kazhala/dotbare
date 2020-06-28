@@ -41,6 +41,9 @@ function usage() {
 
 action_type="modified"
 selected_files=()
+confirm=""
+selected_commit=""
+selected_branch=""
 
 while [[ "$#" -gt 0 ]]; do
   case "$1" in
