@@ -25,13 +25,13 @@ source "${mydir}"/../helper/git_query.sh
 
 function usage() {
   echo -e "Usage: dotbare fstash [-h] [-s] [-d] [-p] ...\n"
-  echo -e "save/apply/delect stash using fzf, also supports stashing individual file\n"
-  echo -e "Default: running fstash will apply the selected stash\n"
+  echo -e "View and manage stash interactively.\n"
+  echo -e "Default: list all stashes and apply the selected stash.\n"
   echo -e "optional arguments:"
-  echo -e "  -h, --help\t\tshow this help message and exit"
-  echo -e "  -s, --select\t\tselect modified files through fzf and stash them"
-  echo -e "  -d, --delete\t\tdelete the selected stash from stash list"
-  echo -e "  -p, --pop\t\tuse pop instead of apply when retrieving stash"
+  echo -e "  -h, --help\t\tshow this help message and exit."
+  echo -e "  -s, --select\t\tlist modified files and stash the selected files."
+  echo -e "  -d, --delete\t\tlist all stashes and delete the selected stash from stash list."
+  echo -e "  -p, --pop\t\tuse 'stash pop' instead of 'stash apply'."
 }
 
 stash_command="apply"

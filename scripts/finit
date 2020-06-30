@@ -23,17 +23,19 @@ source "${mydir}"/../helper/get_confirmation.sh
 
 function usage() {
   echo -e "Usage: dotbare finit [-h] [-y] [-s] [-u URL] ...\n"
-  echo -e "Init the git bare repository if doesn't exist"
+  echo -e "Init the git bare repository if doesn't exist or migrate existing dotfiles to current system."
   # shellcheck disable=SC2016
-  echo -e 'The bare repository will be initialised under $DOTBARE_DIR, default to $HOME/.cfg if not set'
+  echo -e 'The bare repository will be initialised under $DOTBARE_DIR, default to $HOME/.cfg if not set.'
   # shellcheck disable=SC2016
-  echo -e 'It will track $DOTBARE_TREE, default to $HOME if not set\n'
-  echo -e "Default: init the bare repository at $DOTBARE_DIR\n"
+  echo -e 'It will track $DOTBARE_TREE, default to $HOME if not set.\n'
+  echo -e "Migration example:"
+  echo -e "dotbare finit -u URL --submodule\n"
+  echo -e "Default: init the bare repository at $DOTBARE_DIR.\n"
   echo -e "optional arguments:"
-  echo -e "  -h, --help\t\tshow this help message and exit"
-  echo -e "  -u URL, --url URL\tmigrate existing dotfiles from the git URL to current system"
-  echo -e "  -s, --submodule\tclone submodules after checkout"
-  echo -e "  -y, --yes\t\tconfirm action by default and skip confirmation"
+  echo -e "  -h, --help\t\tshow this help message and exit."
+  echo -e "  -u URL, --url URL\tmigrate existing dotfiles from remote git repo to current system."
+  echo -e "  -s, --submodule\tclone submodules during migration."
+  echo -e "  -y, --yes\t\tacknowledge all actions that will be taken and skip confirmation."
 }
 
 remote_url=""

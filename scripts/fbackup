@@ -23,14 +23,14 @@ source "${mydir}"/../helper/git_query.sh
 
 function usage() {
   echo -e "Usage: dotbare fbackup [-h] [-m] [-s] [-p PATH] ...\n"
-  echo -e "Backup files to ${DOTBARE_BACKUP}"
-  echo -e "This is useful when untracking files or migrating on new machines\n"
-  echo -e "Default: backup every tracked files using cp to ${DOTBARE_BACKUP} directory\n"
+  echo -e "Backup files to ${DOTBARE_BACKUP}."
+  echo -e "This is useful when untracking files or migrating to new machines.\n"
+  echo -e "Default: backup all tracked files using cp command to ${DOTBARE_BACKUP} directory.\n"
   echo -e "optional arguments:"
-  echo -e "  -h, --help\t\tshow this help message and exit"
-  echo -e "  -s, --select\t\tselect individual file through fzf and backup"
-  echo -e "  -p PATH, --path PATH\tsepcify path of files to backup"
-  echo -e "  -m, --move\t\tuse mv command for backup instead of default cp"
+  echo -e "  -h, --help\t\tshow this help message and exit."
+  echo -e "  -s, --select\t\tlist all tracked files and only backup the selected files."
+  echo -e "  -p PATH, --path PATH\tsepcify path of files to backup."
+  echo -e "  -m, --move\t\tuse 'mv' instead of the default 'cp' command to backup."
 }
 
 #######################################

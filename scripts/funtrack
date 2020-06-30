@@ -24,8 +24,8 @@ source "${mydir}"/../helper/get_confirmation.sh
 
 function usage() {
   echo -e "Usage: dotbare funtrack [-h] [-t] [-r] [-y] ...\n"
-  echo -e "Untrack selected files from git\n"
-  echo -e "Default: launch fzf and the selected files will be untracked (using git rm --cached filename).\n"
+  echo -e "Untrack selected files from git.\n"
+  echo -e "Default: list all tracked files and permanently untrack the selected files (using git rm --cached filename).\n"
   echo -e "Files will be remove from index while keeping the file in your current system."
   echo -e "However, when your other computers pull down the changes, the untracked files will be deleted."
   echo -e "Make sure to run dotbare fbackup before pulling down the changes.\n"
@@ -33,10 +33,10 @@ function usage() {
   echo -e "untrack a file but keeping the files when other computers pull down the changes."
   echo -e "More information please refere to dotbare's github.\n"
   echo -e "optional arguments:"
-  echo -e "  -h, --help\t\tshow this help message and exit"
-  echo -e "  -t, --temp\t\ttemporarily ignore changes of the selected files"
-  echo -e "  -r, --resume\t\tresume tracking changes of the selected files"
-  echo -e "  -y, --yes\t\tconfirm action by default and skip confirmation"
+  echo -e "  -h, --help\t\tshow this help message and exit."
+  echo -e "  -t, --temp\t\tlist all tracked files and temporarily ignore changes of the selected files."
+  echo -e "  -r, --resume\t\tlist all tracked files and resume tracking changes of the selected files."
+  echo -e "  -y, --yes\t\tacknowledge all actions that will be taken and skip confirmation."
 }
 
 track_type="untrack"

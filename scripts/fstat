@@ -21,10 +21,10 @@ source "${mydir}"/../helper/git_query.sh
 
 function usage() {
   echo -e "Usage: dotbare fstat [-h] ...\n"
-  echo -e "Display interactive git status menu"
-  echo -e "Toggle file stage/unstage interactively\n"
+  echo -e "Display interactive git status menu."
+  echo -e "Toggle file stage/unstage interactively.\n"
   echo -e "optional arguments:"
-  echo -e "  -h, --help\t\tshow this help message and exit"
+  echo -e "  -h, --help\t\tshow this help message and exit."
 }
 
 while [[ "$#" -gt 0 ]]; do
