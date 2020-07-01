@@ -45,7 +45,6 @@ edit_files() {
     skip
   fi
   run edit_commits
-  [ "${status}" -eq 128 ]
   [[ "${output}" =~ "fedit_commits" ]]
 }
 
