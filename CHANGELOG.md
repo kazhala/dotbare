@@ -11,7 +11,7 @@ Noteble changes are documentated in this file.
 - Added support for handling files with spaces
 - Improved unittest with mocking
 - A more reliable `dotbare fupgrade` behavior
-- Added version flag for `dotbare`
+- Added version flag for `dotbare`, `dotbare --version` or `dotbare -v`
 
 ### Changed
 
