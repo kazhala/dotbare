@@ -41,8 +41,8 @@ function usage() {
 if [[ "$#" -eq 0 ]]; then
   find "${mydir}"/scripts/* -type f -print0 \
     | xargs -I __ -0 basename __ \
-    | fzf --no-multi --header='Available commands' --preview="dotbare {} -h" \
-    | xargs -I __ dotbare __ -h
+    | fzf --no-multi --header='Available commands' --preview="${mydir}/dotbare {} -h" \
+    | xargs -I __ "${mydir}"/dotbare __ -h
   exit 0
 fi
 
