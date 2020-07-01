@@ -5,16 +5,16 @@
 # @params
 # Globals
 #   ${mydir}: current directory of the script, used for imports
-#   ${action_type}: what type of git commands to use, branch, commit files, modified files
+#   ${action_type}: what type of git commands to use (branch|select|commit|modified)
 #   ${selected_branch}: selected_branch to switch
-#   ${selected_files}: selected_files to checkout to the version in HEAD
+#   ${selected_files}: selected_files to checkout
 #   ${selected_commit}: selected commit to checkout
 #   ${confirm}: confirm status of the user
 # Arguments
-#   -h: show help message
-#   -a: search all files instead of just the modified files
-#   -b: search branch and checkout branch
-#   -c: search commit and checkout commit
+#   -h|--help: show help message
+#   -s|--select: search all files instead of just the modified files
+#   -b|--branch: search branch and checkout branch
+#   -c|--commit: search commit and checkout commit
 
 set -e
 set -f
@@ -25,39 +25,50 @@ source "${mydir}"/../helper/get_confirmation.sh
 source "${mydir}"/../helper/git_query.sh
 
 function usage() {
-  echo -e "Usage: dotbare fcheckout [-h] [-a] [-b] [-c] ...\n"
-  echo -e "Checkout files/commit/branch using fzf\n"
-  echo -e "Default: checkout files back to HEAD (Reset changes back to HEAD)\n"
+  echo -e "Usage: dotbare fcheckout [-h] [-s] [-b] [-c] [-y] ...\n"
+  echo -e "Select files/commit/branch through fzf and checkout the selected objects."
+  echo -e "Files: checkout the version in HEAD or in a specific commit (reset files content back to the selected commit)."
+  echo -e "Branch: switch to the selected branch."
+  echo -e "Commit: switch to a specific commit.\n"
+  echo -e "Default: list all modified files and reset selected files back to HEAD.\n"
   echo -e "optional arguments:"
-  echo -e "  -h\t\tshow this help message and exit"
-  echo -e "  -a\t\tsearch all files and select a commit to checkout for selected files"
-  echo -e "  -b\t\tlist all branch and checkout/switch the selected branch"
-  echo -e "  -c\t\tlist all commits and checkout selected commit"
+  echo -e "  -h, --help\t\tshow this help message and exit."
+  echo -e "  -s, --select\t\tlist all tracked files and select a commit to checkout the selected files."
+  echo -e "  -b, --branch\t\tlist all branch and checkout/switch the selected branch."
+  echo -e "  -c, --commit\t\tlist all commits and checkout selected commit."
+  echo -e "  -y, --yes\t\tacknowledge all actions that will be taken and skip confirmation."
 }
 
 action_type="modified"
+selected_files=()
+confirm=""
+selected_commit=""
+selected_branch=""
 
-while getopts ":habcy" opt
-do
-  case "$opt" in
-    a)
-      action_type="allfiles"
+while [[ "$#" -gt 0 ]]; do
+  case "$1" in
+    -s|--select)
+      action_type="select"
+      shift
       ;;
-    b)
+    -b|--branch)
       action_type="branch"
+      shift
       ;;
-    c)
+    -c|--commit)
       action_type="commit"
+      shift
       ;;
-    y)
+    -y|--yes)
       confirm="y"
+      shift
       ;;
-    h)
+    -h|--help)
       usage
       exit 0
       ;;
     *)
-      echo "Invalid option: ${OPTARG}" >&2
+      echo "Invalid option: $1" >&2
       usage
       exit 1
       ;;
@@ -66,36 +77,35 @@ done
 
 if [[ "${action_type}" == "branch" ]]; then
   # checkout branch
-  selected_branch=$(get_branch 'Select a branch to checkout')
-  [[ -z "${selected_branch}" ]] && exit 0
+  selected_branch=$(get_branch 'select a branch to checkout')
+  [[ -z "${selected_branch}" ]] && exit 1
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout "${selected_branch}"
-  exit 0
 elif [[ "${action_type}" == "commit" ]]; then
   # checkout commit
-  selected_commit=$(get_commit 'Select a commit to checkout')
-  [[ -z "${selected_commit}" ]] && exit 0
+  selected_commit=$(get_commit 'select a commit to checkout')
+  [[ -z "${selected_commit}" ]] && exit 1
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout "${selected_commit}"
-  exit 0
-else
-  # checkout files (reset file changes back to HEAD)
-  if [[ "${action_type}" == "modified" ]]; then
-    selected_files=$(get_modified_file 'select a file to checkout version in HEAD' | tr '\n' ' ')
-    [[ -z "${selected_files}" ]] && exit 0
-    echo "(dryrun) dotbare checkout -- ${selected_files}"
-    [[ -z "${confirm}" ]] && confirm=$(get_confirmation "Confirm?")
-    [[ "${confirm}" != 'y' ]] && exit 1
-    # shellcheck disable=SC2086
-    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout -- ${selected_files}
-  elif [[ "${action_type}" == "allfiles" ]]; then
-    selected_files=$(get_git_file 'select a file to checkout' | tr '\n' ' ')
-    [[ -z "${selected_files}" ]] && exit 0
-    # continue select a commit and then checkout the file back to the selected commit
-    selected_commit=$(get_commit 'select the target commit' "${selected_files}")
-    [[ -z "${selected_commit}" ]] && exit 0
-    echo "(dryrun) dotbare checkout ${selected_commit} -- ${selected_files}"
-    [[ -z "${confirm}" ]] && confirm=$(get_confirmation "Confirm?")
-    [[ "${confirm}" != 'y' ]] && exit 0
-    # shellcheck disable=SC2086
-    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout "${selected_commit}" ${selected_files}
-  fi
+elif [[ "${action_type}" == "modified" ]]; then
+  # checkout modified file back to version in HEAD
+  while IFS= read -r line; do
+    selected_files+=("${line}")
+  done < <(get_modified_file 'select a file to checkout version in HEAD')
+  [[ "${#selected_files[@]}" -eq 0 ]] && exit 1
+  [[ -z "${confirm}" ]] && echo "(dryrun) dotbare checkout --" "${selected_files[@]}"
+  [[ -z "${confirm}" ]] && confirm=$(get_confirmation "Confirm?")
+  [[ "${confirm}" != 'y' ]] && exit 1
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout -- "${selected_files[@]}"
+elif [[ "${action_type}" == "select" ]]; then
+  # checkout selected files to a selected commit
+  while IFS= read -r line; do
+    selected_files+=("${line}")
+  done < <(get_git_file 'select a file to checkout')
+  [[ "${#selected_files[@]}" -eq 0 ]] && exit 1
+  # continue select a commit and then checkout the file back to the selected commit
+  selected_commit=$(get_commit 'select the target commit' "${selected_files[@]}")
+  [[ -z "${selected_commit}" ]] && exit 1
+  [[ -z "${confirm}" ]] && echo "(dryrun) dotbare checkout ${selected_commit} --" "${selected_files[@]}"
+  [[ -z "${confirm}" ]] && confirm=$(get_confirmation "Confirm?")
+  [[ "${confirm}" != 'y' ]] && exit 0
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout "${selected_commit}" "${selected_files[@]}"
 fi

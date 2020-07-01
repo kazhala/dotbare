@@ -1,6 +1,8 @@
 #!/usr/bin/env bats
 
-source "${BATS_TEST_DIRNAME}"/../helper/set_variable.sh
+setup() {
+  source "${BATS_TEST_DIRNAME}"/../helper/set_variable.sh
+}
 
 @test "env check env var" {
   [ "${DOTBARE_DIR}" = "$HOME/.cfg/" ]
@@ -11,4 +13,5 @@ source "${BATS_TEST_DIRNAME}"/../helper/set_variable.sh
 @test "env check fzf var" {
   [ -n "${DOTBARE_KEY}" ]
   [ -n "${FZF_DEFAULT_OPTS}" ]
+  [ -n "${DOTBARE_VERSION}" ]
 }

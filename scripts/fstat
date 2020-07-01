@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 #
 # interactive git status menu
-# allow staging ustaging actions
+# toggle stage and unstage
 #
 # @params
 # Globals
 #   ${mydir}: current directory of where the script is running
-#   ${selected_files}: selected file to stage or unstage
+#   ${selected_files}: raw selected file (with current git status prepend)
+#   ${selected_filenames}: bash array of names for the selected_files
 #   ${stage_file}: determine if current operation should be staging file or unstage
 # Arguments
-#   -h: show help message and exit
+#   -h|--help: show help message and exit
 
 set -e
 set -f
@@ -20,20 +21,20 @@ source "${mydir}"/../helper/git_query.sh
 
 function usage() {
   echo -e "Usage: dotbare fstat [-h] ...\n"
-  echo -e "Display interactive git status menu"
-  echo -e "Stage, unstage, interactively\n"
+  echo -e "Display interactive git status menu."
+  echo -e "Toggle file stage/unstage interactively.\n"
   echo -e "optional arguments:"
-  echo -e "  -h\t\tshow this help message and exit"
+  echo -e "  -h, --help\t\tshow this help message and exit."
 }
 
-while getopts ":h" opt; do
-  case "$opt" in
-    h)
+while [[ "$#" -gt 0 ]]; do
+  case "$1" in
+    -h|--help)
       usage
       exit 0
       ;;
     *)
-      echo "Invalid option: ${OPTARG}" >&2
+      echo "Invalid option: $1" >&2
       usage
       exit 1
       ;;
@@ -41,24 +42,43 @@ while getopts ":h" opt; do
 done
 
 while :; do
-  selected_files=$(get_modified_file "select a file" "all" "raw")
-  [[ -z "${selected_files}" ]] && break
+  # reset all variable and arrays for each loop
+  selected_files=()
+  selected_filenames=()
+  stage_file=""
+
+  while IFS= read -r line; do
+    selected_files+=("${line}")
+  done < <(get_modified_file "select files to stage/unstage" "all" "raw")
+  [[ "${#selected_files[@]}" -eq 0 ]] && break
+
   # check if current operation should stage file or unstage file
-  stage_file=$(echo "${selected_files}" | awk '{
+  # if any file start with M but has char immediately follow it, new changes are made, stage file
+  # if any file start with a space or tab, the file is not staged, stage file
+  # otherwise, we unstage
+  stage_file=$(printf '%s\n' "${selected_files[@]}" | awk '{
     if ($0 ~ /^[A-Za-z][A-Za-z].*$/) {
       print "stage"
     } else if ($0 ~ /^[ \t].*$/) {
       print "stage"
     }
   }')
-  selected_files=$(echo "${selected_files}" | awk -v home="${DOTBARE_TREE}" '{
-    print home "/" $2
-  }')
+
+  while IFS= read -r line; do
+    selected_filenames+=("${line}")
+  done < <(
+    printf '%s\n' "${selected_files[@]}" \
+      | awk -v home="${DOTBARE_TREE}" '{
+          $1=""
+          gsub(/^[ \t]/, "", $0)
+          gsub(/"/, "", $0)
+          print home "/" $0
+        }'
+  )
+
   if [[ -z "${stage_file}" ]]; then
-    # shellcheck disable=SC2086
-    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset --quiet HEAD ${selected_files}
+    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset --quiet HEAD "${selected_filenames[@]}"
   else
-    # shellcheck disable=SC2086
-    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" add ${selected_files}
+    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" add "${selected_filenames[@]}"
   fi
 done

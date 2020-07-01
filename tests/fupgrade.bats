@@ -1,13 +1,5 @@
 #!/usr/bin/env bats
 
-setup() {
-  export DOTBARE_CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-}
-
-teardown() {
-  git checkout "$DOTBARE_CURRENT_BRANCH"
-}
-
 help() {
   bash "${BATS_TEST_DIRNAME}"/../dotbare fupgrade -h
 }
@@ -29,11 +21,12 @@ upgrade() {
 @test "fupgrade invliad option" {
   run invalid_option
   [ "${status}" -eq 1 ]
-  [ "${lines[0]}" = "Invalid option: p" ]
+  [ "${lines[0]}" = "Invalid option: -p" ]
 }
 
 @test "fupgrade upgrade" {
+  skip
   run upgrade
   [ "${status}" -eq 0 ]
-  [ "${lines[0]}" = "Fetching latest changes ..." ]
+  [ "${lines[0]}" = "Updating dotbare ..." ]
 }

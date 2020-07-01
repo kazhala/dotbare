@@ -4,7 +4,7 @@
 #
 # @params
 # Globals
-#		${DOTBARE_DIR}: location of the bare repo
+#   ${DOTBARE_DIR}: location of the bare repo
 #   ${DOTBARE_TREE}: which folder is the bare repo tracking
 #   ${DOTBARE_BACKUP}: backup directory for all tracked files
 #   ${DOTBARE_KEY}: defualt key bindings
@@ -15,6 +15,7 @@
 export DOTBARE_DIR="${DOTBARE_DIR:-$HOME/.cfg/}"
 export DOTBARE_TREE="${DOTBARE_TREE:-$HOME}"
 export DOTBARE_BACKUP="${DOTBARE_BACKUP:-${XDG_DATA_HOME:-$HOME/.local/share}/dotbare}"
+export DOTBARE_VERSION="v1.2.0"
 
 export EDITOR="${EDITOR:-vim}"
 if [[ -z "${DOTBARE_KEY}" ]]; then

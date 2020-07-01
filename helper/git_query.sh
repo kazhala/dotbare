@@ -11,10 +11,13 @@
 #   the selected commit 6 char code
 #   e.g. b60b330
 #######################################
+# TODO: line33 "${files[*]}" cannot handle space in file names, but "${files[@]}" won't get properly
+# processed by git for whatever reason just in this preview situation but works every where else, HELP needed.
+# although this won't affect any real functionality or break the code, it will just print a error message in preview.
 function get_commit() {
   local header="${1:-select a commit}"
-  local files="$2"
-  if [[ -z "${files}" ]]; then
+  local files=("${@:2}")
+  if [[ "${#files[@]}" -eq 0 ]]; then
     /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
       log --oneline --color=always --decorate=short \
       | fzf --no-multi --header="${header}" \
@@ -29,7 +32,7 @@ function get_commit() {
       | fzf --no-multi --header="${header}" --preview "echo {} \
           | awk '{print \$1}' \
           | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
-              diff --color=always __ $files" \
+              diff --color=always __ ${files[*]}" \
       | awk '{print $1}'
   fi
 }
@@ -89,7 +92,7 @@ function get_git_file() {
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
     ls-files --full-name --directory "${DOTBARE_TREE}" \
     | fzf --header="${header}" \
-        --preview "head -50 ${DOTBARE_TREE}/{}" \
+        --preview "cat ${DOTBARE_TREE}/{}" \
     | awk -v home="${DOTBARE_TREE}" -v print_opt="${print_opt}" '{
         if (print_opt == "full") {
           print home "/" $0
@@ -138,12 +141,15 @@ function get_modified_file() {
         }
       }' \
     | fzf --header="${header}" --preview "echo {} \
-        | awk '{print \$2}' \
+        | awk '{sub(\$1 FS,\"\");print \$0}' \
         | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
             diff HEAD --color=always -- ${DOTBARE_TREE}/__" \
     | awk -v home="${DOTBARE_TREE}" -v format="${output_format}" '{
         if (format == "name") {
-          print home "/" $2
+          $1=""
+          gsub(/^[ \t]/, "", $0)
+          gsub(/"/, "", $0)
+          print home "/" $0
         } else {
           print $0
         }

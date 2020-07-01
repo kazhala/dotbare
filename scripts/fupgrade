@@ -2,37 +2,52 @@
 #
 # update dotbare to latest master
 
-set -e
 set -f
 
 mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 function usage() {
   echo -e "Usage: dotbare fupgrade [-h] ...\n"
-  echo -e "Update dotbare to the latest version\n"
+  echo -e "Upgrade dotbare to the latest master.\n"
   echo -e "optional arguments:"
-  echo -e "  -h\t\tshow this help message and exit"
+  echo -e "  -h, --help\t\tshow this help message and exit."
 }
 
-while getopts ":h" opt; do
-  case "$opt" in
-    h)
+while [[ "$#" -gt 0 ]]; do
+  case "$1" in
+    -h|--help)
       usage
       exit 0
       ;;
-    *) 
-      echo "Invalid option: ${OPTARG}" >&2
+    *)
+      echo "Invalid option: $1" >&2
       usage
       exit 1
       ;;
   esac
 done
 
+# rip from omz
+# auto stash on rebase
+resetAutoStash=$(git config --bool rebase.autoStash 2>&1)
+git config rebase.autoStash true
+
 # change directory to dotbare folder
-cd "${mydir}/.."
-echo "Fetching latest changes ..."
-git fetch
-git checkout master &> /dev/null
-git pull origin master
-echo "Done"
-exit 0
+cd "${mydir}/.." || exit
+
+echo "Updating dotbare ..."
+if git pull --rebase --stat origin master; then
+  echo "dotbare updated successfully"
+else
+  echo "Something went wrong, please try again or fire up an issue at https://github.com/kazhala/dotbare"
+fi
+
+# reset autostack to original value
+case "$resetAutoStash" in
+  "")
+    git config --unset rebase.autoStash
+    ;;
+  *)
+    git config rebase.autoStash "${resetAutoStash}"
+    ;;
+esac

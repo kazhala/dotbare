@@ -5,14 +5,14 @@
 # @params
 # Globals
 #   ${mydir}: current dir of the script
-#   ${track_type}: what method to use for untrack, untrack, update, retrack
-#   ${confirm}: use confirm status
-#   ${selected_files}: user selected_files for operation
+#   ${track_type}: determine method to use for untrack, possible values: untrack, temp, resume
+#   ${confirm}: user confirm status
+#   ${selected_files}: arrays of user selected_files for operation
 # Arguments
-#   -h: display help message and exit
-#   -s: temporarily untrack files
-#   -S: resume track of temp untracked files
-#   -y: confirm action by default and skip confirmation
+#   -h|--help: display help message and exit
+#   -t|--temp: temporarily untrack files
+#   -r|--resume: resume track of temp untracked files
+#   -y|--yes: confirm action by default and skip confirmation
 
 set -e
 set -f
@@ -23,82 +23,85 @@ source "${mydir}"/../helper/git_query.sh
 source "${mydir}"/../helper/get_confirmation.sh
 
 function usage() {
-  echo -e "Usage: dotbare funtrack [-h] [-s] [-S] ...\n"
-  echo -e "Untrack selected files from git\n"
-  echo -e "Default: the untrack will remove the file from index while"
-  echo -e "keeping the file in your current system (git rm --cached filename)"
-  echo -e "however, when your other computer pull down the changes, the file will be removed"
-  echo -e "make sure to run dotbare fbackup before pulling down the changes, alternativly"
-  echo -e "use the -s flag (git update-index --assume-unchanged [path])\n"
+  echo -e "Usage: dotbare funtrack [-h] [-t] [-r] [-y] ...\n"
+  echo -e "Untrack selected files from git.\n"
+  echo -e "Default: list all tracked files and permanently untrack the selected files (using git rm --cached filename).\n"
+  echo -e "Files will be remove from index while keeping the file in your current system."
+  echo -e "However, when your other computers pull down the changes, the untracked files will be deleted."
+  echo -e "Make sure to run dotbare fbackup before pulling down the changes.\n"
+  echo -e "Alternatively use the -t flag (using git update-index --assume-unchanged [path]) to temporarily"
+  echo -e "untrack a file but keeping the files when other computers pull down the changes."
+  echo -e "More information please refere to dotbare's github.\n"
   echo -e "optional arguments:"
-  echo -e "  -h\t\tshow this help message and exit"
-  echo -e "  -s\t\ttemporarily ignore changes of selected files"
-  echo -e "    \t\tuse -S flag to resume tracking changes of selected_files"
-  echo -e "  -S\t\tresume tracking changes of selected files"
-  echo -e "  -y\t\tconfirm action by default and skip confirmation"
+  echo -e "  -h, --help\t\tshow this help message and exit."
+  echo -e "  -t, --temp\t\tlist all tracked files and temporarily ignore changes of the selected files."
+  echo -e "  -r, --resume\t\tlist all tracked files and resume tracking changes of the selected files."
+  echo -e "  -y, --yes\t\tacknowledge all actions that will be taken and skip confirmation."
 }
 
 track_type="untrack"
+selected_files=()
+confirm=""
 
-while getopts ":hsSy" opt
-do
-  case "$opt" in
-    s)
-      track_type="update"
+while [[ "$#" -gt 0 ]]; do
+  case "$1" in
+    -t|--temp)
+      track_type="temp"
+      shift
       ;;
-    S)
+    -r|--resume)
       track_type="retrack"
+      shift
       ;;
-    y)
+    -y|--yes)
       confirm='y'
+      shift
       ;;
-    h)
+    -h|--help)
       usage
       exit 0
       ;;
     *)
-      echo "Invalid option: ${OPTARG}" >&2
+      echo "Invalid option: $1" >&2
       usage
       exit 1
       ;;
   esac
 done
 
-selected_files=$(get_git_file "select files to untrack" | tr "\n" " ")
-[[ -z "${selected_files}" ]] && exit 1
+while IFS= read -r line; do
+  selected_files+=("${line}")
+done < <(get_git_file "select files to untrack")
+[[ "${#selected_files[@]}" -eq 0 ]] && exit 1
 
-
-if [[ "${track_type}" == "update" ]]; then
-  echo "(dryrun) dotbare update-index --assume-unchanged ${selected_files}"
+if [[ "${track_type}" == "temp" ]]; then
+  [[ -z "${confirm}" ]] && echo "(dryrun) dotbare update-index --assume-unchanged" "${selected_files[@]}"
   [[ -z "${confirm}" ]] && confirm=$(get_confirmation "Files will be temporarily stop being tracked for changes, continue?")
   [[ "${confirm}" != 'y' ]] && exit 1
-  # shellcheck disable=SC2086
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" update-index --assume-unchanged ${selected_files}
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" update-index --assume-unchanged "${selected_files[@]}"
   echo -e " "
-  echo "Selected files are temporarily untracked by git, use -S to continue tracking changes."
-  echo "dotbare funtrack -s is not the recommanded way to untrack files, although it won't delete"
-  echo "the files on other machines, please refer to git update-index official"
-  echo "documentation for more information"
+  echo "Selected files are temporarily untracked by git, use dotbare funtrack -r to continue tracking changes."
+  echo "Although dotbare funtrack -t won't delete the files on other machines, it is not the recommended way to untrack files."
+  echo "dotbare funtrack -t is using git update-index --assume-unchanged under the hood"
+  echo "Please refer to git update-index official documentation for more details or visit dotbare's github page"
 elif [[ "${track_type}" == "retrack" ]]; then
-  echo "(dryrun) dotbare update-index --no-assume-unchanged ${selected_files}"
+  [[ -z "${confirm}" ]] && echo "(dryrun) dotbare update-index --no-assume-unchanged" "${selected_files[@]}"
   [[ -z "${confirm}" ]] && confirm=$(get_confirmation "Files will resume being tracked by git, continue?")
   [[ "${confirm}" != 'y' ]] && exit 1
-  # shellcheck disable=SC2086
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" update-index --no-assume-unchanged ${selected_files}
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" update-index --no-assume-unchanged "${selected_files[@]}"
   echo " "
-  echo "Selected files are being resumed for track by git."
-  echo "dotbare funtrack -s not the recommanded way to untrack files, although it won't delete"
-  echo "the files on other machines, please refer to git update-index official"
-  echo "documentation for more information"
+  echo "Selected files are being resumed for tracking by git."
+  echo "Although dotbare funtrack -t won't delete the files on other machines, it is not the recommended way to untrack files."
+  echo "dotbare funtrack -t is using git update-index --assume-unchanged under the hood"
+  echo "Please refer to git update-index official documentation for more details or visit dotbare's github page"
 else
-  echo "(dryrun) dotbare rm --cached ${selected_files}"
+  [[ -z "${confirm}" ]] && echo "(dryrun) dotbare rm --cached" "${selected_files[@]}"
   [[ -z "${confirm}" ]] && confirm=$(get_confirmation "Untrack the selected files?")
   [[ "${confirm}" != 'y' ]] && exit 1 
-  # shellcheck disable=SC2086
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" rm --cached ${selected_files}
+  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" rm --cached "${selected_files[@]}"
   echo -e " "
-  echo "Selected files are being untracked by git, make sure to run dotbare fbackup"
-  echo "on your other systems. When other system pull down this change, selected files"
-  echo "will be removed, this is the default behavior of git rm --cached, more information"
-  echo "refer to dotbare funtrack -h or README"
+  echo "Selected files are being untracked by git, make sure to run dotbare fbackup on your other systems."
+  echo "When other systems pull down this change, selected files will be deleted on other systems."
+  echo "This is the default behavior of git rm --cached."
+  echo "Please refer to git rm official documentation for more details or visit dotbare's github page"
 fi

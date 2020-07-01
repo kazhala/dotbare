@@ -5,7 +5,6 @@
 # @params
 # Globals
 #   ${mydir}: string, directory of the executing script, used for sourcing helpers
-#   ${action_command}: string, determine which script to call
 # Arguments
 #   action_command: sub commands dotbare should run
 #     General git command: log, status etc
@@ -17,54 +16,52 @@ mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "${mydir}"/helper/set_variable.sh
 
 function usage() {
-  echo -e "Usage: dotbare [-h] [COMMANDS] [OPTIONS] ...\n"
-  echo -e "Interactively manage dotfiles with the help of fzf and git bare repo"
-  echo -e "To see all dotbare specific COMMANDS, run dotbare without any arguments\n"
-  echo -e "dotbare is just a wrapper around git hence all git commands will function"
-  echo -e "normally, just replace git with dotbare (e.g. dotbare commit -m 'message')."
-  echo -e "dotbare added couple useful scripts starting with 'f' prefix to help you"
-  echo -e "manage your interact with your git bare repo a little easier with the help of fzf\n"
+  echo -e "Usage: dotbare [-h] [-v] [COMMANDS] [OPTIONS] ...\n"
+  echo -e "Interactively manage dotfiles with the help of fzf and git bare repository."
+  echo -e "To see all dotbare specific COMMANDS, run dotbare without any arguments.\n"
   echo -e "optional arguments:"
-  echo -e "  -h\t\tshow this help message and exit"
+  echo -e "  -h, --help\t\tshow this help message and exit."
+  echo -e "  -v, --version\t\tshow dotbare current version.\n"
   echo -e "Available commands:"
-  echo -e "  Any git commands, treat dotbare as git"
-  echo -e "  fadd      \t\tstage modified file interactively"
-  echo -e "  freset    \t\tunstage file or reset commit interactively"
-  echo -e "  funtrack  \t\tuntrack file interactively"
-  echo -e "  fstash    \t\tmanage stash interactively"
-  echo -e "  fcheckout \t\tcheckout branch/files/commits interactively"
-  echo -e "  fstat     \t\tstage/unstage interactively"
-  echo -e "  fedit     \t\tselect files/commits and edit interactively"
-  echo -e "  flog      \t\tmanage commits interactively"
-  echo -e "  fbackup   \t\tperform backup for tracked dotfiles"
-  echo -e "  fupgrade  \t\tupdate dotbare to the latest version"
-  echo -e "  finit     \t\tinitialise/migrate dotbare"
-  echo -e "  help      \t\tshow this help message and exit"
+  echo -e "  All git commands are available, treat dotbare as git."
+  echo -e "  fadd      \t\tstage files/directories interactively."
+  echo -e "  freset    \t\treset(unstage) files or commit interactively."
+  echo -e "  funtrack  \t\tuntrack files interactively."
+  echo -e "  fstash    \t\tmanage stash interactively."
+  echo -e "  fcheckout \t\tcheckout branch/files/commit interactively."
+  echo -e "  fstat     \t\tinteractive menu to toggle stage/unstage."
+  echo -e "  fedit     \t\tinteractively select files/commit and edit."
+  echo -e "  flog      \t\tmanage commits interactively."
+  echo -e "  fbackup   \t\tperform backup for tracked files."
+  echo -e "  fupgrade  \t\tupdate dotbare to the latest master."
+  echo -e "  finit     \t\tinitialise dotbare or migrate dotfiles to a new machine."
 }
 
 # if no argument, display all possible actions
-if [[ $# -eq 0 ]]; then
+if [[ "$#" -eq 0 ]]; then
   find "${mydir}"/scripts/* -type f -print0 \
     | xargs -I __ -0 basename __ \
-    | fzf --no-multi --header='Available commands' --preview="dotbare {} -h" \
-    | xargs -I __ dotbare __ -h
+    | fzf --no-multi --header='Available commands' --preview="${mydir}/dotbare {} -h" \
+    | xargs -I __ "${mydir}"/dotbare __ -h
   exit 0
 fi
 
-# shellcheck disable=SC2199
-[[ "$@" == 'add --all' ]] && \
+[[ "$*" == 'add --all' ]] && \
   echo 'If you intend to stage all modified file, run dotbare add -u' && \
   echo "dotbare disabled add --all option as this will stage every single file in ${DOTBARE_TREE}" && \
   exit 1
 
 case "$1" in
-  help|-h)
+  --help|-h)
     usage
+    exit 0
+    ;;
+  -v|--version)
+    echo "Current dotbare version: ${DOTBARE_VERSION}"
     exit 0
     ;;
   *)
     if [[ -x "${mydir}/scripts/$1" ]]; then
-      # run the scripts
       exec "${mydir}/scripts/$1" "${@:2}"
     fi
     ;;

@@ -1,3 +1,5 @@
+# shellcheck disable=SC2207
+
 mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 [[ :$PATH: != *:"${mydir}":* ]] && export PATH="$PATH:${mydir}"
 
@@ -17,16 +19,25 @@ _dotbare_completions()
           }
         }')
 
+    options=$(
+      "${mydir}"/dotbare -h \
+        | awk '{
+            if ($0 ~ /^  -.*/) {
+              gsub(/,/, " ", $0)
+              gsub(/^  /, "", $0)
+              gsub(/\t\t/, "    ", $0)
+              print $0
+            }
+          }'
+    )
+
     if [[ $curr == -* ]]; then
-      # shellcheck disable=SC2207
-      suggestions=($(compgen -W "-h" -- "${curr}"))
+      suggestions=($(compgen -W "${options}" -- "${curr}"))
     else
-      # shellcheck disable=SC2207
       suggestions=($(compgen -W "${subcommands}" -- "${curr}"))
     fi
 
   elif [[ "${COMP_WORDS[1]}" == "fbackup" && "${prev}" == '-p' ]]; then
-      # shellcheck disable=SC2207
       COMPREPLY=($(compgen -d -- "${curr}"))
       return
 
@@ -36,15 +47,17 @@ _dotbare_completions()
       fbackup)
         options=$("${mydir}"/dotbare fbackup -h \
           | awk -v selected="${selected[*]}" '{
+              gsub(/,/, " ", $0)
               if (selected ~ $1) {
                 next
-              } else if ($0 ~ /  -p PATH/) {
-                gsub(/^  -p PATH/, "-p  ", $0)
+              } else if ($0 ~ /^  -p PATH/) {
+                gsub(/^  -p PATH  --path PATH/, "-p", $0)
                 gsub(/\t/, "  ", $0)
                 print $0
-              } else if ($0 ~ /  -*/) {
+              } else if ($0 ~ /^  -*/) {
                 gsub(/^  /, "", $0)
                 gsub(/\t/, "  ", $0)
+                $2=""
                 print $0
               }
             }')
@@ -52,15 +65,17 @@ _dotbare_completions()
       finit)
         options=$("${mydir}"/dotbare finit -h \
           | awk -v selected="${selected[*]}" '{
+              gsub(/,/, " ", $0)
               if (selected ~ $1) {
                 next
-              } else if ($0 ~ /  -u URL/) {
-                gsub(/^  -u URL/, "-u  ", $0)
+              } else if ($0 ~ /^  -u URL/) {
+                gsub(/^  -u URL  --url URL/, "-u", $0)
                 gsub(/\t/, "  ", $0)
                 print $0
-              } else if ($0 ~ /  -*/) {
+              } else if ($0 ~ /^  -*/) {
                 gsub(/^  /, "", $0)
                 gsub(/\t/, "  ", $0)
+                $2=""
                 print $0
               }
             }')
@@ -68,22 +83,23 @@ _dotbare_completions()
       f*)
         options=$("${mydir}"/dotbare "${COMP_WORDS[1]}" -h \
           | awk -v selected="${selected[*]}" '{
+              gsub(/,/, " ", $0)
               if (selected ~ $1) {
                 next
-              } else if ($0 ~ /  -*/) {
+              } else if ($0 ~ /^  -*/) {
                 gsub(/^  /, "", $0)
                 gsub(/\t/, "  ", $0)
+                $2=""
                 print $0
               }
             }')
         ;;
     esac
-    # shellcheck disable=SC2207
     suggestions=($(compgen -W "${options}" -- "${curr}"))
   fi
 
   if [[ "${#suggestions[*]}" -eq 1 ]]; then
-    COMPREPLY=( "${suggestions[0]%% *}" )
+    COMPREPLY=("${suggestions[@]%% *}")
   else
     for i in "${!suggestions[@]}"; do
       suggestions[$i]="$(printf '%*s' "-$COLUMNS"  "${suggestions[$i]}")"

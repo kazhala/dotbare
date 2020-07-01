@@ -1,15 +1,13 @@
 #!/usr/bin/env bats
 
 setup() {
-  export confirm='y'
   export DOTBARE_DIR="$HOME/.local/share/dotbare_test/.cfg"
   export DOTBARE_TREE="$HOME/.local/share/dotbare_test"
 }
 
 teardown() {
-  unset confirm
-  if [[ "${DOTBARE_DIR}" == "$HOME/.local/share/dotbare_test/.cfg" ]] \
-    && [[ "${DOTBARE_TREE}" == "$HOME/.local/share/dotbare_test" ]]; then
+  if [[ "${DOTBARE_DIR}" == "$HOME/.local/share/dotbare_test/.cfg" ]] && \
+    [[ "${DOTBARE_TREE}" == "$HOME/.local/share/dotbare_test" ]]; then
     rm -rf "${DOTBARE_TREE}"
   fi
   unset DOTBARE_DIR
@@ -21,11 +19,15 @@ help() {
 }
 
 init() {
-  bash "${BATS_TEST_DIRNAME}"/../dotbare finit
+  bash "${BATS_TEST_DIRNAME}"/../dotbare finit --yes
 }
 
 migration() {
   bash "${BATS_TEST_DIRNAME}"/../dotbare finit -u https://github.com/kazhala/dotfiles.git
+}
+
+submodule() {
+  bash "${BATS_TEST_DIRNAME}"/../dotbare finit -u https://github.com/kazhala/dotfiles.git -s --submodule
 }
 
 @test "finit help" {
@@ -35,15 +37,25 @@ migration() {
 }
 
 @test "finit init dotbare" {
+  [[ -d "${DOTBARE_DIR}" ]] && rm -rf "${DOTBARE_DIR}"
   run init
   [ "${status}" -eq 0 ]
   run init
   [ "${status}" -eq 1 ]
-  [ "${lines[3]}" = "${DOTBARE_DIR} already exist" ]
+  [[ "${output}" =~ "${DOTBARE_DIR} already exist" ]]
 }
 
 @test "finit migration" {
   [[ -d "${DOTBARE_DIR}" ]] && rm -rf "${DOTBARE_DIR}"
   run migration
   [ "${status}" -eq 0 ]
+  [[ "${output}" =~ "Migration completed" ]]
+}
+
+@test "finit submodule" {
+  [[ -d "${DOTBARE_DIR}" ]] && rm -rf "${DOTBARE_DIR}"
+  run submodule
+  [ "${status}" -eq 0 ]
+  result=$(echo "${output}" | tr "\n" " ")
+  [[ "${result}" =~ "Cloning submodules ... Migration completed" ]]
 }

@@ -21,7 +21,7 @@ no_modify() {
 @test "fstat invalid option" {
   run invalid_option
   [ "${status}" -eq 1 ]
-  [ "${lines[0]}" = "Invalid option: p" ]
+  [ "${lines[0]}" = "Invalid option: -p" ]
 }
 
 @test "fstat run no modify file" {

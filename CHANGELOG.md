@@ -2,7 +2,32 @@
 
 Noteble changes are documentated in this file.
 
-## 1.0.0
+## 1.2.0
+
+### Added
+
+- `dotbare` now accept verbose type of argument e.g. `dotbare fadd --file` `dotbare fcheckout --branch`.
+  More information please refer to each commands help manual
+- Added support for handling files with spaces
+- Improved unittest with mocking
+- A more reliable `dotbare fupgrade` behavior
+- Added version flag for `dotbare`, `dotbare --version` or `dotbare -v`
+
+### Changed
+
+- `dotbare fcheckout -a` has now been renamed to `dotbare fcheckout -s` or `dotbare fcheckout --select`
+- `dotbare fstash -f` has now been renamed to `dotbare fstash -s` or `dotbare fstash --select`
+- `dotbare funtrack -s` has now been renamed to `dotbare funtrack -t` or `dotbare funtrack --temp`
+- `dotbare funtrack -S` has now been renamed to `dotbare funtrack -r` or `dotbare funtrack --resume`
+- dryrun information no longer will display if `-y` or `--yes` flag has been passed
+
+### Removed
+
+- Removed `-a` flag of `dotbare freset`. It's not working as intended because I misunderstand it, the intended
+  behavior is actually achieved by `dotbare fcheckout -a`, use `dotbare fcheckout -a` instead.
+  (Edit: `dotbare fcheckout -a` is now `dotbare fcheckout -s` or `dotbare fcheckout --select`)
+
+## 1.1.0
 
 ### Added
 
@@ -21,3 +46,5 @@ Noteble changes are documentated in this file.
 
 - Removed global .gitignore manipulation during migration, not needed. Added .gitignore tips to README and
   let user handle it
+
+## 1.0.0
