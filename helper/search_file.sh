@@ -10,8 +10,8 @@
 #   A user selected file path
 #######################################
 function search_file() {
-  local search_type="$1"
-  local mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+  local search_type="$1" mydir
+  mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
   if [[ "${search_type}" == "f" ]]; then
     find . -maxdepth 1 -type f | sed "s|\./||g" | fzf --multi --preview "${mydir}/preview.sh {}"
   elif [[ "${search_type}" == "d" ]]; then

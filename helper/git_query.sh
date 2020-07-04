@@ -87,9 +87,10 @@ function get_branch() {
 #   e.g.$HOME/.config/nvim/init.vim
 #######################################
 function get_git_file() {
-  local mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+  local mydir
   local header="${1:-select tracked file}"
   local print_opt="${2:-full}"
+  mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
   set_fzf_multi "$3"
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
     ls-files --full-name --directory "${DOTBARE_TREE}" \
