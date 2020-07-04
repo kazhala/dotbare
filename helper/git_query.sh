@@ -4,6 +4,7 @@
 
 #######################################
 # let user select a commit interactively
+# credit to forgit for the git log format
 # Arguments:
 #   $1: the helper message to display in the fzf header
 #   $2: files to show diff against HEAD
@@ -19,7 +20,7 @@ function get_commit() {
   local files=("${@:2}")
   if [[ "${#files[@]}" -eq 0 ]]; then
     /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
-      log --oneline --color=always --decorate=short \
+      log --color=always --format='%C(auto)%h%d %s %C(black)%C(bold)%cr' \
       | fzf --no-multi --header="${header}" \
           --preview "echo {} \
           | awk '{print \$1}' \
@@ -86,13 +87,14 @@ function get_branch() {
 #   e.g.$HOME/.config/nvim/init.vim
 #######################################
 function get_git_file() {
+  local mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
   local header="${1:-select tracked file}"
   local print_opt="${2:-full}"
   set_fzf_multi "$3"
   /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
     ls-files --full-name --directory "${DOTBARE_TREE}" \
     | fzf --header="${header}" \
-        --preview "cat ${DOTBARE_TREE}/{}" \
+        --preview "${mydir}/../helper/preview.sh ${DOTBARE_TREE}/{}" \
     | awk -v home="${DOTBARE_TREE}" -v print_opt="${print_opt}" '{
         if (print_opt == "full") {
           print home "/" $0
