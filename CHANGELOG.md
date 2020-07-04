@@ -10,6 +10,8 @@ Noteble changes are documentated in this file.
 - Custom preview ENV (DOTBARE_PREVIEW)
   Note: has to be this format `export DOTBARE_PREVIEW='cat {}'`, the `{}` is
   used for fzf to subsitute for the filepath.
+- Added support for external diff tools like "diff-so-fancy" or "delta"
+  This is optional, only takes effect if installed and set as `git config core.pager`
 
 ## 1.2.0 (01/07/2020)
 

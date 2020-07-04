@@ -25,7 +25,8 @@ function get_commit() {
           --preview "echo {} \
           | awk '{print \$1}' \
           | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
-              show --color=always  __" \
+              show --color=always  __ \
+          | ${DOTBARE_DIFF_PAGER}" \
       | awk '{print $1}'
   else
     /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
@@ -33,7 +34,8 @@ function get_commit() {
       | fzf --no-multi --header="${header}" --preview "echo {} \
           | awk '{print \$1}' \
           | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
-              diff --color=always __ ${files[*]}" \
+              diff --color=always __ ${files[*]} \
+          | ${DOTBARE_DIFF_PAGER}" \
       | awk '{print $1}'
   fi
 }
@@ -146,7 +148,8 @@ function get_modified_file() {
     | fzf --header="${header}" --preview "echo {} \
         | awk '{sub(\$1 FS,\"\");print \$0}' \
         | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
-            diff HEAD --color=always -- ${DOTBARE_TREE}/__" \
+            diff HEAD --color=always -- ${DOTBARE_TREE}/__ \
+        | ${DOTBARE_DIFF_PAGER}" \
     | awk -v home="${DOTBARE_TREE}" -v format="${output_format}" '{
         if (format == "name") {
           $1=""
@@ -179,7 +182,8 @@ function get_stash() {
             print \$1
           }' \
         | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
-            show -p __ --color=always" \
+            stash show -p __ --color=always \
+        | ${DOTBARE_DIFF_PAGER}" \
     | awk '{
         gsub(/:/, "", $1)
         print $1
