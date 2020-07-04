@@ -2,7 +2,16 @@
 
 Noteble changes are documentated in this file.
 
-## 1.2.0
+## dev
+
+### Added
+
+- dynamic preview (detect bats, hightlight etc)
+- Custom preview ENV (DOTBARE_PREVIEW)
+  Note: has to be this format `export DOTBARE_PREVIEW='cat {}'`, the `{}` is
+  used for fzf to subsitute for the filepath.
+
+## 1.2.0 (01/07/2020)
 
 ### Added
 
@@ -27,7 +36,7 @@ Noteble changes are documentated in this file.
   behavior is actually achieved by `dotbare fcheckout -a`, use `dotbare fcheckout -a` instead.
   (Edit: `dotbare fcheckout -a` is now `dotbare fcheckout -s` or `dotbare fcheckout --select`)
 
-## 1.1.0
+## 1.1.0 (28/06/2020)
 
 ### Added
 
@@ -47,4 +56,4 @@ Noteble changes are documentated in this file.
 - Removed global .gitignore manipulation during migration, not needed. Added .gitignore tips to README and
   let user handle it
 
-## 1.0.0
+## 1.0.0 (20/05/2020)

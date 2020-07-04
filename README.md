@@ -338,7 +338,7 @@ within your dotfile directory.
 
 ```sh
 # Default
-DOTBARE_DIR="$HOME/.cfg"
+export DOTBARE_DIR="$HOME/.cfg"
 ```
 
 ### DOTBARE_TREE
@@ -350,7 +350,7 @@ set this variable to point to the folder containing your dotfiles.
 
 ```sh
 # Default
-DOTBARE_TREE="$HOME"
+export DOTBARE_TREE="$HOME"
 ```
 
 ### DOTBARE_BACKUP
@@ -364,7 +364,7 @@ automatically backup conflicted files to this location.
 # Default
 # 2. If XDG_DATA_HOME exist, use XDG_DATA_HOME/dotbare
 # 3. otherwise, use $HOME/.local/share/dotbare
-DOTBARE_BACKUP="${XDG_DATA_HOME:-$HOME/.local/share}/dotbare"
+export DOTBARE_BACKUP="${XDG_DATA_HOME:-$HOME/.local/share}/dotbare"
 ```
 
 ### EDITOR
@@ -374,7 +374,7 @@ which editor to use when running `dotbare fedit`.
 
 ```sh
 # Default
-EDITOR="vim"
+export EDITOR="vim"
 ```
 
 ### DOTBARE_KEY
@@ -384,7 +384,7 @@ to set [here](https://github.com/junegunn/fzf/blob/97a725fbd0e54cbc07e4d72661ea2
 
 ```sh
 # Default
-DOTBARE_KEY="
+export DOTBARE_KEY="
   --bind=alt-a:toggle-all       # toggle all selection
   --bind=alt-j:jump             # label jump mode, sort of like vim-easymotion
   --bind=alt-0:top              # set cursor back to top
