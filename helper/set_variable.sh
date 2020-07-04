@@ -16,7 +16,8 @@ export DOTBARE_DIR="${DOTBARE_DIR:-$HOME/.cfg/}"
 export DOTBARE_TREE="${DOTBARE_TREE:-$HOME}"
 export DOTBARE_BACKUP="${DOTBARE_BACKUP:-${XDG_DATA_HOME:-$HOME/.local/share}/dotbare}"
 export DOTBARE_VERSION="v1.2.0"
-export DOTBARE_DIFF_PAGER=$(git config core.pager || echo 'cat')
+
+export DOTBARE_DIFF_PAGER="${DOTBARE_DIFF_PAGER:-$(git config core.pager || echo 'cat')}"
 
 export EDITOR="${EDITOR:-vim}"
 if [[ -z "${DOTBARE_KEY}" ]]; then
