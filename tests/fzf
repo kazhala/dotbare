@@ -48,7 +48,7 @@ elif [[ "$*" =~ "--no-multi --header=commit --flog_reset" ]]; then
 elif [[ "$*" =~ '--header=select a commit' ]] && [[ "$*" =~ "show --color" ]]; then
   # dotbare flog --reset -y -- "./flog.bats" @test "flog reset"
   echo "--flog_reset"
-elif [[ "$*" =~ "--header=select files to untrack" ]] && [[ "$*" =~ "cat ${DOTBARE_TREE}/{}" ]]; then
+elif [[ "$*" =~ "--header=select files to untrack" ]] && [[ "$*" =~ "preview.sh ${DOTBARE_TREE}/{}" ]]; then
   # dotbare funtrack -- "./funtrack.bats" @test "funtrack untrack file"
   echo "funtrack_file"
 elif [[ "$*" =~ '--header=select files to add to a stash' ]] && [[ "$*" =~ "diff HEAD --color=always" ]]; then
