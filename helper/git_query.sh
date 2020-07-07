@@ -19,21 +19,21 @@ function get_commit() {
   local header="${1:-select a commit}"
   local files=("${@:2}")
   if [[ "${#files[@]}" -eq 0 ]]; then
-    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
+    git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
       log --color=always --format='%C(auto)%h%d %s %C(black)%C(bold)%cr' \
       | fzf --no-multi --header="${header}" \
           --preview "echo {} \
           | awk '{print \$1}' \
-          | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
+          | xargs -I __ git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
               show --color=always  __ \
           | ${DOTBARE_DIFF_PAGER}" \
       | awk '{print $1}'
   else
-    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
+    git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
       log --oneline --color=always --decorate=short \
       | fzf --no-multi --header="${header}" --preview "echo {} \
           | awk '{print \$1}' \
-          | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
+          | xargs -I __ git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
               diff --color=always __ ${files[*]} \
           | ${DOTBARE_DIFF_PAGER}" \
       | awk '{print $1}'
@@ -50,7 +50,7 @@ function get_commit() {
 #######################################
 function get_branch() {
   local header="${1:-select a branch}"
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" branch -a \
+  git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" branch -a \
     | awk '{
         if ($0 ~ /\*.*\(HEAD.*/) {
           gsub(/\* /, "", $0)
@@ -74,7 +74,7 @@ function get_branch() {
             print \$0
           }
         }' \
-      | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
+      | xargs -I __ git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
           log --color=always --color=always --format='%C(auto)%h%d %s %C(black)%C(bold)%cr' __" 
 }
 
@@ -94,7 +94,7 @@ function get_git_file() {
   local print_opt="${2:-full}"
   mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
   set_fzf_multi "$3"
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
+  git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
     ls-files --full-name --directory "${DOTBARE_TREE}" \
     | fzf --header="${header}" \
         --preview "${mydir}/../helper/preview.sh ${DOTBARE_TREE}/{}" \
@@ -130,7 +130,7 @@ function get_modified_file() {
   local display_mode="${2:-all}"
   local output_format="${3:-name}"
   set_fzf_multi "$4"
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
+  git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
     status --porcelain \
     | awk -v display_mode="${display_mode}" '{
         if ($0 ~ /^[A-Za-z][A-Za-z].*$/) {
@@ -147,7 +147,7 @@ function get_modified_file() {
       }' \
     | fzf --header="${header}" --preview "echo {} \
         | awk '{sub(\$1 FS,\"\");print \$0}' \
-        | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
+        | xargs -I __ git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
             diff HEAD --color=always -- ${DOTBARE_TREE}/__ \
         | ${DOTBARE_DIFF_PAGER}" \
     | awk -v home="${DOTBARE_TREE}" -v format="${output_format}" '{
@@ -174,14 +174,14 @@ function get_modified_file() {
 function get_stash() {
   local header="${1:-select a stash}"
   set_fzf_multi "$2"
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
+  git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
     stash list \
     | fzf --header="${header}" --preview "echo {} \
         | awk '{
             gsub(/:/, \"\", \$1)
             print \$1
           }' \
-        | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
+        | xargs -I __ git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
             stash show -p __ --color=always \
         | ${DOTBARE_DIFF_PAGER}" \
     | awk '{

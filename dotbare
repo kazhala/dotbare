@@ -67,4 +67,4 @@ case "$1" in
     ;;
 esac
 
-/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" "$@"
+git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" "$@"
