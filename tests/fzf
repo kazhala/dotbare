@@ -36,9 +36,12 @@ elif [[ "$*" =~ "--header=select a commit to rename --no-multi" ]] && [[ "$*" =~
 elif [[ "$*" =~ "--header=select tracked files to edit" ]]; then
   # dotbare fedit -- "./fedit.bats" @test "fedit edit files"
   exit
-elif [[ "$*" =~ '--no-multi --header=select the target commit for HEAD' ]] && [[ "$*" =~ "show --color" ]]; then
+elif [[ "$*" =~ '--header=select the target commit for HEAD --no-multi' ]] && [[ "$*" =~ "show --color" ]]; then
   # dotbare freset --commit -y -- "./freset.bats" @test "freset select commit"
-  echo "--freset_commit"
+  echo "freset_commit"
+elif [[ "$*" =~ "--header=select files to unstage" ]] && [[ "$*" =~ "diff HEAD --color=always" ]]; then
+  # dotbare freset -- "./freset.bats" @test "freset select files"
+  echo "-- freset_file"
 elif [[ "$*" =~ "--no-multi --header=commit --flog_reset" ]]; then
   # dotbare flog -- "./flog.bats" @test "flog checkout routing"
   echo "exit"
@@ -57,9 +60,6 @@ elif [[ "$*" =~ '--header=select stash to delete' ]] && [[ "$*" =~ "show -p __ -
 elif [[ "$*" =~ '--header=select stash to apply' ]] && [[ "$*" =~ "show -p __ --color=always" ]]; then
   # dotbare fstash -- "./fstash.bats" @test "fstash apply stash"
   echo "fstash_apply"
-elif [[ "$*" =~ "--header=select files to unstage" ]] && [[ "$*" =~ "diff HEAD --color=always" ]]; then
-  # dotbare freset -- "./freset.bats" @test "freset select files"
-  echo "-- freset_file"
 else
   echo "$@"
 fi

@@ -80,11 +80,11 @@ if [[ "${reset_type}" == "commit" ]]; then
   [[ -z "${selected_commit}" ]] && exit 1
   [[ -z "${confirm}" ]] && confirm=$(get_confirmation "Reset HEAD to ${selected_commit} ${reset_option}?")
   [[ "${confirm}" != 'y' ]] && exit 1
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset "${selected_commit}" "${reset_option}"
+  git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset "${selected_commit}" "${reset_option}"
 else
   while IFS= read -r line; do
     selected_files+=("${line}")
   done < <(get_modified_file 'select files to unstage' 'staged')
   [[ "${#selected_files[@]}" -eq 0 ]] && exit 1
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset "${selected_files[@]}"
+  git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset "${selected_files[@]}"
 fi
