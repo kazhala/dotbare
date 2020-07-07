@@ -39,7 +39,7 @@ function usage() {
 function stage_file() {
   local files=("$@")
   [[ "${#files[@]}" -eq 0 ]] && exit 1
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" add "${files[@]}"
+  git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" add "${files[@]}"
 }
 
 stage_type="modified"
