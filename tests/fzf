@@ -14,7 +14,7 @@ elif [[ "$*" =~ '--multi --preview' ]] && [[ "$*" =~ "preview.sh {}" ]]; then
   echo "fadd_stage_file"
 elif [[ "$*" =~ '--header=select files to stage' ]] && [[ "$*" =~ "diff HEAD --color=always" ]]; then
   # dotbare fadd -- "./fadd.bats" @test "fadd stage modified files"
-  echo "fadd_stage_modified"
+  echo "-- fadd_stage_modified"
 elif [[ "$*" =~ "--no-multi --header=select a branch to checkout" ]]; then
   # dotbare fcheckout --branch -- "./fcheckout.bats" @test "fcheckout branch"
   echo "fcheckout_branch"

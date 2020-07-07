@@ -67,7 +67,7 @@ no_argument() {
 @test "main git command" {
   run normal_git
   [ "${status}" -eq 0 ]
-  [[ "${output}" =~ "--git-dir=$DOTBARE_DIR --work-tree=$DOTBARE_TREE add -h" ]]
+  [[ "${output}" =~ "add -h" ]]
 }
 
 @test "main invliad command" {
