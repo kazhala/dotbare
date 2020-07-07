@@ -89,7 +89,7 @@ cd "${DOTBARE_TREE}"
 if [[ "${backup_type}" == 'select' ]]; then
   selected_files=$(get_git_file "select files to backup" "raw")
 else
-  selected_files=$(/usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
+  selected_files=$(git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
     ls-files --full-name --directory "${DOTBARE_TREE}")
 fi
 
