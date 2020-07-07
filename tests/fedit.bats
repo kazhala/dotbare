@@ -41,15 +41,14 @@ edit_files() {
 }
 
 @test "fedit edit commits" {
-  if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
-    skip
-  fi
   run edit_commits
+  [[ "${output}" =~ "rebase -i" ]]
   [[ "${output}" =~ "fedit_commits" ]]
 }
 
 @test "fedit edit files" {
   run edit_files
+  # to avoid actually invoking vim, the fzf mock file exit without pringting anything
+  # when detecting the correct flag called with fzf
   [ "${status}" -eq 1 ]
-  [ -z "${output}" ]
 }

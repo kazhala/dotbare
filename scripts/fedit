@@ -59,7 +59,7 @@ done
 if [[ "${edit_type}" == "commit" ]]; then
   selected_commit=$(get_commit "select a commit to rename")
   [[ -z "${selected_commit}" ]] && exit 1
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" rebase -i "${selected_commit}"~
+  git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" rebase -i "${selected_commit}"~
 else
   while IFS= read -r line; do
     selected_files+=("${line}")
