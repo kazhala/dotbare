@@ -21,7 +21,7 @@ function get_commit() {
   if [[ "${#files[@]}" -eq 0 ]]; then
     git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
       log --color=always --format='%C(auto)%h%d %s %C(black)%C(bold)%cr' \
-      | fzf --no-multi --header="${header}" \
+      | fzf --header="${header}" --no-multi \
           --preview "echo {} \
           | awk '{print \$1}' \
           | xargs -I __ git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
@@ -31,7 +31,7 @@ function get_commit() {
   else
     git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
       log --oneline --color=always --decorate=short \
-      | fzf --no-multi --header="${header}" --preview "echo {} \
+      | fzf --header="${header}" --no-multi --preview "echo {} \
           | awk '{print \$1}' \
           | xargs -I __ git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
               diff --color=always __ ${files[*]} \

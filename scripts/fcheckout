@@ -79,12 +79,12 @@ if [[ "${action_type}" == "branch" ]]; then
   # checkout branch
   selected_branch=$(get_branch 'select a branch to checkout')
   [[ -z "${selected_branch}" ]] && exit 1
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout "${selected_branch}"
+  git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout "${selected_branch}"
 elif [[ "${action_type}" == "commit" ]]; then
   # checkout commit
   selected_commit=$(get_commit 'select a commit to checkout')
   [[ -z "${selected_commit}" ]] && exit 1
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout "${selected_commit}"
+  git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout "${selected_commit}"
 elif [[ "${action_type}" == "modified" ]]; then
   # checkout modified file back to version in HEAD
   while IFS= read -r line; do
@@ -94,7 +94,7 @@ elif [[ "${action_type}" == "modified" ]]; then
   [[ -z "${confirm}" ]] && echo "(dryrun) dotbare checkout --" "${selected_files[@]}"
   [[ -z "${confirm}" ]] && confirm=$(get_confirmation "Confirm?")
   [[ "${confirm}" != 'y' ]] && exit 1
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout -- "${selected_files[@]}"
+  git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout -- "${selected_files[@]}"
 elif [[ "${action_type}" == "select" ]]; then
   # checkout selected files to a selected commit
   while IFS= read -r line; do
@@ -107,5 +107,5 @@ elif [[ "${action_type}" == "select" ]]; then
   [[ -z "${confirm}" ]] && echo "(dryrun) dotbare checkout ${selected_commit} --" "${selected_files[@]}"
   [[ -z "${confirm}" ]] && confirm=$(get_confirmation "Confirm?")
   [[ "${confirm}" != 'y' ]] && exit 0
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout "${selected_commit}" "${selected_files[@]}"
+  git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" checkout "${selected_commit}" "${selected_files[@]}"
 fi

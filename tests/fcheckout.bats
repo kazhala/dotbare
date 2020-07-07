@@ -41,38 +41,26 @@ checkout_selected_file() {
 }
 
 @test "fcheckout branch" {
-  if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
-    skip
-  fi
   run checkout_branch
-  [ "${status}" -eq 129 ]
-  [[ "${output}" =~ "fcheckout_branch" ]]
+  [[ "${output}" =~ "checkout" ]]
+  [[ "${output}" =~ "--no-multi --header=select a branch to checkout" ]]
 }
 
 @test "fcheckout commit" {
-  if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
-    skip
-  fi
   run checkout_commit
-  [ "${status}" -eq 129 ]
-  [[ "${output}" =~ "fcheckout_commit" ]]
+  [[ "${output}" =~ "checkout --header=select" ]]
 }
 
 @test "fcheckout modified" {
-  if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
-    skip
-  fi
   run checkout_modified_file
-  [ "${status}" -eq 1 ]
-  [[ "${output}" =~ "fcheckout_modified" ]]
+  [[ "${output}" =~ "checkout" ]]
+  [[ "${output}" =~ "file to checkout version in HEAD" ]]
+  [[ "${output}" =~ "diff HEAD --color=always" ]]
 }
 
 @test "fcheckout select" {
-  if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
-    skip
-  fi
   run checkout_selected_file
-  [[ "${lines[0]}" =~ "fcheckout_select_commitdiff" ]]
-  [[ "${lines[1]}" =~ "fcheckout_select_gitfile" ]]
-  [ "${status}" -eq 1 ]
+  [[ "${output}" =~ "checkout" ]]
+  [[ "${output}" =~ "--header=select a file to checkout" ]]
+  [[ "${output}" =~ "preview.sh" ]]
 }
