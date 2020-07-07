@@ -75,7 +75,7 @@ function get_branch() {
           }
         }' \
       | xargs -I __ /usr/bin/git --git-dir=${DOTBARE_DIR} --work-tree=${DOTBARE_TREE} \
-          log --oneline --graph --color=always --decorate=short __"
+          log --color=always --color=always --format='%C(auto)%h%d %s %C(black)%C(bold)%cr' __" 
 }
 
 #######################################

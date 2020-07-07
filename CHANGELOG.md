@@ -12,6 +12,7 @@ Noteble changes are documentated in this file.
   used for fzf to subsitute for the filepath.
 - Added support for external diff tools like "diff-so-fancy" or "delta"
   This is optional, only takes effect if installed and set as `git config core.pager`
+  Also configurable through DOTBARE_DIFF_PAGER
 
 ## 1.2.0 (01/07/2020)
 
