@@ -39,6 +39,9 @@ elif [[ "$*" =~ "--header=select tracked files to edit" ]]; then
 elif [[ "$*" =~ '--no-multi --header=select the target commit for HEAD' ]] && [[ "$*" =~ "show --color" ]]; then
   # dotbare freset --commit -y -- "./freset.bats" @test "freset select commit"
   echo "--freset_commit"
+elif [[ "$*" =~ "--no-multi --header=commit --flog_reset" ]]; then
+  # dotbare flog -- "./flog.bats" @test "flog checkout routing"
+  echo "exit"
 elif [[ "$*" =~ '--header=select a commit' ]] && [[ "$*" =~ "show --color" ]]; then
   # dotbare flog --reset -y -- "./flog.bats" @test "flog reset"
   echo "--flog_reset"
@@ -57,9 +60,6 @@ elif [[ "$*" =~ '--header=select stash to apply' ]] && [[ "$*" =~ "show -p __ --
 elif [[ "$*" =~ "--header=select files to unstage" ]] && [[ "$*" =~ "diff HEAD --color=always" ]]; then
   # dotbare freset -- "./freset.bats" @test "freset select files"
   echo "-- freset_file"
-elif [[ "$*" =~ "--no-multi --header=commit --flog_reset" ]]; then
-  # dotbare flog -- "./flog.bats" @test "flog checkout routing"
-  echo "exit"
 else
   echo "$@"
 fi
