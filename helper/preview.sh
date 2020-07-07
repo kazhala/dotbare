@@ -45,14 +45,14 @@ function display_preview() {
 
   if [[ -z "${preview_first}" ]] || [[ -z "${preview_center}" ]] || [[ -z "${preview_last}" ]]; then
     if [[ -z "${DOTBARE_PREVIEW}" ]] && command -v bat > /dev/null; then
-      bat --style="${BAT_STYLE:-plain}" --color=always --pager=never "${preview_file}"
+      bat --color=always --pager=never "${preview_file}"
       exit $?
     fi
     eval "${preview_cmd}" 2> /dev/null
     exit 0
   else
     if [ -z "${DOTBARE_PREVIEW}" ] && command -v bat > /dev/null; then
-      bat --style="${BAT_STYLE:-plain}" --color=always --pager=never \
+      bat --color=always --pager=never \
           --line-range="${preview_first}":"${preview_last}" --highlight-line="${preview_center}" "${preview_file}"
       exit $?
     fi
