@@ -42,25 +42,23 @@ checkout_selected_file() {
 
 @test "fcheckout branch" {
   run checkout_branch
-  [[ "${output}" =~ "checkout" ]]
-  [[ "${output}" =~ "--no-multi --header=select a branch to checkout" ]]
+  [[ "${output}" =~ "checkout fcheckout_branch" ]]
 }
 
 @test "fcheckout commit" {
   run checkout_commit
-  [[ "${output}" =~ "checkout --header=select" ]]
+  [[ "${output}" =~ "checkout fcheckout_commit" ]]
 }
 
 @test "fcheckout modified" {
   run checkout_modified_file
   [[ "${output}" =~ "checkout" ]]
-  [[ "${output}" =~ "file to checkout version in HEAD" ]]
-  [[ "${output}" =~ "diff HEAD --color=always" ]]
+  [[ "${output}" =~ "fcheckout_modified" ]]
 }
 
 @test "fcheckout select" {
   run checkout_selected_file
   [[ "${output}" =~ "checkout" ]]
-  [[ "${output}" =~ "--header=select a file to checkout" ]]
-  [[ "${output}" =~ "preview.sh" ]]
+  [[ "${output}" =~ "fcheckout_select_gitfile" ]]
+  [[ "${output}" =~ "fcheckout_select_commitdiff" ]]
 }

@@ -47,18 +47,16 @@ stage_modified_file() {
 
 @test "fadd stage selected file" {
   run stage_selected_file
-  [[ "${output}" =~ "add --multi --preview" ]]
-  [[ "${output}" =~ "preview.sh {}" ]]
+  [[ "${output}" =~ "add fadd_stage_file" ]]
 }
 
 @test "fadd stage selected dir" {
   run stage_selected_dir
-  [[ "${output}" =~ "add --multi --preview tree -L 1 -C --dirsfirst {}" ]]
+  [[ "${output}" =~ "add fadd_stage_dir" ]]
 }
 
 @test "fadd stage modified file" {
   run stage_modified_file
   [[ "${output}" =~ "add" ]]
-  [[ "${output}" =~ "files to stage --preview echo {}" ]]
-  [[ "${output}" =~ "diff HEAD --color=always" ]]
+  [[ "${output}" =~ "fadd_stage_modified" ]]
 }
