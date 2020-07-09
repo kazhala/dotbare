@@ -6,13 +6,13 @@ Noteble changes are documentated in this file.
 
 ### Added
 
-- dynamic preview (detect bats, hightlight etc)
-- Custom preview ENV (DOTBARE_PREVIEW)
-  Note: has to be this format `export DOTBARE_PREVIEW='cat {}'`, the `{}` is
-  used for fzf to subsitute for the filepath.
-- Added support for external diff tools like "diff-so-fancy" or "delta"
+- dynamic preview function, detect bats, hightlight etc to provide syntax hightlighting when previewing files.
+- Custom preview ENV variable (DOTBARE_PREVIEW)
+  Note: has to be this format `export DOTBARE_PREVIEW='cat -n {}'`, the `{}` is
+  used in preview functions to subsitute for the filepath.
+- Added support for fancy diff tools like "diff-so-fancy" or "delta"
   This is optional, only takes effect if installed and set as `git config core.pager`
-  Also configurable through DOTBARE_DIFF_PAGER
+  Also configurable through DOTBARE_DIFF_PAGER, these are documentated in the README.
 
 ## 1.2.0 (01/07/2020)
 
