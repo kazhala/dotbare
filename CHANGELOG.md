@@ -2,7 +2,7 @@
 
 Noteble changes are documentated in this file.
 
-## dev
+## 1.2.1 (09/07/2020)
 
 ### Added
 
