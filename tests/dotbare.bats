@@ -17,6 +17,7 @@ routing2() {
 }
 
 normal_git() {
+  export PATH="${BATS_TEST_DIRNAME}:$PATH"
   "${BATS_TEST_DIRNAME}"/../dotbare add -h
 }
 
@@ -25,8 +26,12 @@ invalid_command() {
 }
 
 version() {
-  source "${BATS_TEST_DIRNAME}"/../helper/set_variable.sh
   "${BATS_TEST_DIRNAME}"/../dotbare --version
+}
+
+no_argument() {
+  export PATH="${BATS_TEST_DIRNAME}:$PATH"
+  "${BATS_TEST_DIRNAME}"/../dotbare
 }
 
 @test "main help" {
@@ -61,10 +66,16 @@ version() {
 
 @test "main git command" {
   run normal_git
-  [ "${status}" -eq 129 ]
+  [ "${status}" -eq 0 ]
+  [[ "${output}" =~ "add -h" ]]
 }
 
 @test "main invliad command" {
   run invalid_command
   [ "${status}" -eq 1 ]
+}
+
+@test "main no argument" {
+  run no_argument
+  [[ "${output}" =~ "Available commands" ]]
 }

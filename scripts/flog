@@ -59,7 +59,7 @@ function draw_menu() {
     menu="${menu}checkout: checkout the selected commit\n"
     menu="${menu}exit: quit dotbare flog"
     message=$(
-      /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
+      git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
       log --format=%B -n 1 "${selected_commit}"
     )
     header="commit ${selected_commit}: ${message}"
@@ -130,19 +130,19 @@ fi
 
 case "${selected_action}" in
   revert)
-    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
+    git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
     revert "${selected_commit}"
     ;;
   reset)
-    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
+    git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
     reset "${selected_commit}"
     ;;
   edit)
-    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
+    git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
     rebase -i "${selected_commit}"~
     ;;
   checkout)
-    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
+    git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
     checkout "${selected_commit}"
     ;;
   exit)

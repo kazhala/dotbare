@@ -38,18 +38,16 @@ stash_apply() {
 
 @test "fstash stash select file" {
   run stash_file
-  [ "${status}" -eq 1 ]
+  [[ "${output}" =~ "stash" ]]
   [[ "${output}" =~ "fstash_select" ]]
 }
 
 @test "fstash stash delete" {
   run stash_delete
-  [ "${status}" -eq 1 ]
-  [[ "${output}" =~ "fstash_delete" ]]
+  [[ "${output}" =~ "stash drop fstash_delete" ]]
 }
 
 @test "fstash apply stash" {
   run stash_apply
-  [ "${status}" -eq 1 ]
-  [[ "${output}" =~ "fstash_apply" ]]
+  [[ "${output}" =~ "stash apply fstash_apply" ]]
 }

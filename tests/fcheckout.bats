@@ -41,38 +41,24 @@ checkout_selected_file() {
 }
 
 @test "fcheckout branch" {
-  if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
-    skip
-  fi
   run checkout_branch
-  [ "${status}" -eq 129 ]
-  [[ "${output}" =~ "fcheckout_branch" ]]
+  [[ "${output}" =~ "checkout fcheckout_branch" ]]
 }
 
 @test "fcheckout commit" {
-  if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
-    skip
-  fi
   run checkout_commit
-  [ "${status}" -eq 129 ]
-  [[ "${output}" =~ "fcheckout_commit" ]]
+  [[ "${output}" =~ "checkout fcheckout_commit" ]]
 }
 
 @test "fcheckout modified" {
-  if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
-    skip
-  fi
   run checkout_modified_file
-  [ "${status}" -eq 1 ]
+  [[ "${output}" =~ "checkout" ]]
   [[ "${output}" =~ "fcheckout_modified" ]]
 }
 
 @test "fcheckout select" {
-  if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
-    skip
-  fi
   run checkout_selected_file
-  [[ "${lines[0]}" =~ "fcheckout_select_commitdiff" ]]
-  [[ "${lines[1]}" =~ "fcheckout_select_gitfile" ]]
-  [ "${status}" -eq 1 ]
+  [[ "${output}" =~ "checkout" ]]
+  [[ "${output}" =~ "fcheckout_select_gitfile" ]]
+  [[ "${output}" =~ "fcheckout_select_commitdiff" ]]
 }

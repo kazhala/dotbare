@@ -77,8 +77,8 @@ while :; do
   )
 
   if [[ -z "${stage_file}" ]]; then
-    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset --quiet HEAD "${selected_filenames[@]}"
+    git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" reset --quiet HEAD "${selected_filenames[@]}"
   else
-    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" add "${selected_filenames[@]}"
+    git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" add "${selected_filenames[@]}"
   fi
 done

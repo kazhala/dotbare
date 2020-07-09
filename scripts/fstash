@@ -74,7 +74,7 @@ if [[ "${stash_command}" == "select" ]]; then
     selected_files+=("${line}")
   done < <(get_modified_file "select files to add to a stash")
   [[ "${#selected_files[@]}" -eq 0 ]] && exit 1
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" stash -- "${selected_files[@]}"
+  git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" stash -- "${selected_files[@]}"
 elif [[ "${stash_command}" == "delete" ]]; then
   selected_stash=$(get_stash "select stash to delete")
   [[ -z "${selected_stash}" ]] && exit 1
@@ -85,7 +85,7 @@ elif [[ "${stash_command}" == "delete" ]]; then
   [[ -z "${confirm}" ]] && confirm=$(get_confirmation)
   [[ "${confirm}" != 'y' ]] && exit 1
   while IFS= read -r line; do
-    /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" stash drop "${line}"
+    git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" stash drop "${line}"
   done <<< "${selected_stash}"
 else
   selected_stash=$(get_stash "select stash to apply" "true")
@@ -93,5 +93,5 @@ else
   [[ -z "${confirm}" ]] && echo "(dryrun) ${stash_command} ${selected_stash}"
   [[ -z "${confirm}" ]] && confirm=$(get_confirmation)
   [[ "${confirm}" != 'y' ]] && exit 1
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" stash "${stash_command}" "${selected_stash}"
+  git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" stash "${stash_command}" "${selected_stash}"
 fi

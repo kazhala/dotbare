@@ -40,19 +40,12 @@ select_files() {
 }
 
 @test "freset select commit" {
-  if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
-    skip
-  fi
   run select_commit
-  [ "${status}" -eq 129 ]
-  [[ "${output}" =~ "freset_commit" ]]
+  [[ "${output}" =~ "reset freset_commit --mixed" ]]
 }
 
 @test "freset select files" {
-  if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
-    skip
-  fi
   run select_files
-  [ "${status}" -eq 128 ]
+  [[ "${output}" =~ "reset" ]]
   [[ "${output}" =~ "freset_file" ]]
 }

@@ -32,14 +32,10 @@ move_file() {
   bash "${BATS_TEST_DIRNAME}"/../dotbare fbackup --path bats_test.txt -m
 }
 
-select_file() {
-  export PATH="${BATS_TEST_DIRNAME}:$PATH"
-  bash "${BATS_TEST_DIRNAME}"/../dotbare fbackup --select
-}
-
 @test "fbackup help" {
   run help
   [ "${status}" -eq 0 ]
+  [ "${lines[0]}" = "Usage: dotbare fbackup [-h] [-m] [-s] [-p PATH] ..." ]
 }
 
 @test "fbackup invalid option" {
@@ -70,11 +66,4 @@ select_file() {
   [ "${status}" -eq 0 ]
   [ -f "${DOTBARE_BACKUP}"/bats_test.txt ]
   [ ! -f "${BATS_TEST_DIRNAME}"/bats_test.txt ]
-}
-
-@test "fbackup select file" {
-  run select_file
-  [ "${status}" -eq 1 ]
-  [[ "${output}" =~ 'No such file or directory' ]]
-  [[ "${output}" =~ 'fbackup_select_file' ]]
 }

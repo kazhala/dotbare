@@ -30,20 +30,12 @@ reset() {
   [ "${lines[0]}" = "Invalid option: -p" ]
 }
 
-@test "flog check routing" {
-  if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
-    skip
-  fi
+@test "flog menu" {
   run menu
   [ "${status}" -eq 0 ]
 }
 
 @test "flog reset" {
-  if ! "${BATS_TEST_DIRNAME}"/../dotbare log &>/dev/null; then
-    skip
-  fi
   run reset
-  [ "${status}" -eq 129 ]
-  [[ "${output}" =~ "usage: git reset [--mixed | --soft | --hard | --merge | --keep] [-q] [<commit>]" ]]
-  [[ "${output}" =~ "flog_reset" ]]
+  [[ "${output}" =~ "reset --flog_reset" ]]
 }

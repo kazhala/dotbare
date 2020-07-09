@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#
+# This script is for mocking git during unit test,
+# used to mock all the git calls.
+#
+# usage:
+#   export PATH="${BATS_TEST_DIRNAME}:$PATH"
+
+echo "$@"

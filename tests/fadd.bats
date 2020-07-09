@@ -47,18 +47,16 @@ stage_modified_file() {
 
 @test "fadd stage selected file" {
   run stage_selected_file
-  [ "${status}" -eq 128 ]
-  [[ "${output}" =~ "fadd_stage_file" ]]
+  [[ "${output}" =~ "add fadd_stage_file" ]]
 }
 
 @test "fadd stage selected dir" {
   run stage_selected_dir
-  [ "${status}" -eq 128 ]
-  [[ "${output}" =~ "fadd_stage_dir" ]]
+  [[ "${output}" =~ "add fadd_stage_dir" ]]
 }
 
 @test "fadd stage modified file" {
   run stage_modified_file
-  [ "${status}" -eq 128 ]
-  [[ "${output}" =~ "fadd_add_modified" ]]
+  [[ "${output}" =~ "add" ]]
+  [[ "${output}" =~ "fadd_stage_modified" ]]
 }

@@ -2,7 +2,19 @@
 
 Noteble changes are documentated in this file.
 
-## 1.2.0
+## dev
+
+### Added
+
+- dynamic preview function, detect bats, hightlight etc to provide syntax hightlighting when previewing files.
+- Custom preview ENV variable (DOTBARE_PREVIEW)
+  Note: has to be this format `export DOTBARE_PREVIEW='cat -n {}'`, the `{}` is
+  used in preview functions to subsitute for the filepath.
+- Added support for fancy diff tools like "diff-so-fancy" or "delta"
+  This is optional, only takes effect if installed and set as `git config core.pager`
+  Also configurable through DOTBARE_DIFF_PAGER, these are documentated in the README.
+
+## 1.2.0 (01/07/2020)
 
 ### Added
 
@@ -27,7 +39,7 @@ Noteble changes are documentated in this file.
   behavior is actually achieved by `dotbare fcheckout -a`, use `dotbare fcheckout -a` instead.
   (Edit: `dotbare fcheckout -a` is now `dotbare fcheckout -s` or `dotbare fcheckout --select`)
 
-## 1.1.0
+## 1.1.0 (28/06/2020)
 
 ### Added
 
@@ -47,4 +59,4 @@ Noteble changes are documentated in this file.
 - Removed global .gitignore manipulation during migration, not needed. Added .gitignore tips to README and
   let user handle it
 
-## 1.0.0
+## 1.0.0 (20/05/2020)

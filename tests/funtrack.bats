@@ -38,18 +38,18 @@ resume_track() {
 
 @test "funtrack untrack file" {
   run untrack_file
-  [ "${status}" -eq 128 ]
+  [[ "${output}" =~ "rm --cached" ]]
   [[ "${output}" =~ "funtrack_file" ]]
 }
 
 @test "funtrack temp untrack" {
   run temp_untrack
-  [ "${status}" -eq 128 ]
-  [[ "${output}" =~ "fatal: Unable to mark file funtrack_file" ]]
+  [[ "${output}" =~ "update-index --assume-unchanged" ]]
+  [[ "${output}" =~ "funtrack_file" ]]
 }
 
 @test "funtrack resume track" {
   run resume_track
-  [ "${status}" -eq 128 ]
-  [[ "${output}" =~ "fatal: Unable to mark file funtrack_file" ]]
+  [[ "${output}" =~ "update-index --no-assume-unchanged" ]]
+  [[ "${output}" =~ "funtrack_file" ]]
 }

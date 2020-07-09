@@ -78,7 +78,7 @@ if [[ "${track_type}" == "temp" ]]; then
   [[ -z "${confirm}" ]] && echo "(dryrun) dotbare update-index --assume-unchanged" "${selected_files[@]}"
   [[ -z "${confirm}" ]] && confirm=$(get_confirmation "Files will be temporarily stop being tracked for changes, continue?")
   [[ "${confirm}" != 'y' ]] && exit 1
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" update-index --assume-unchanged "${selected_files[@]}"
+  git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" update-index --assume-unchanged "${selected_files[@]}"
   echo -e " "
   echo "Selected files are temporarily untracked by git, use dotbare funtrack -r to continue tracking changes."
   echo "Although dotbare funtrack -t won't delete the files on other machines, it is not the recommended way to untrack files."
@@ -88,7 +88,7 @@ elif [[ "${track_type}" == "retrack" ]]; then
   [[ -z "${confirm}" ]] && echo "(dryrun) dotbare update-index --no-assume-unchanged" "${selected_files[@]}"
   [[ -z "${confirm}" ]] && confirm=$(get_confirmation "Files will resume being tracked by git, continue?")
   [[ "${confirm}" != 'y' ]] && exit 1
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" update-index --no-assume-unchanged "${selected_files[@]}"
+  git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" update-index --no-assume-unchanged "${selected_files[@]}"
   echo " "
   echo "Selected files are being resumed for tracking by git."
   echo "Although dotbare funtrack -t won't delete the files on other machines, it is not the recommended way to untrack files."
@@ -98,7 +98,7 @@ else
   [[ -z "${confirm}" ]] && echo "(dryrun) dotbare rm --cached" "${selected_files[@]}"
   [[ -z "${confirm}" ]] && confirm=$(get_confirmation "Untrack the selected files?")
   [[ "${confirm}" != 'y' ]] && exit 1 
-  /usr/bin/git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" rm --cached "${selected_files[@]}"
+  git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" rm --cached "${selected_files[@]}"
   echo -e " "
   echo "Selected files are being untracked by git, make sure to run dotbare fbackup on your other systems."
   echo "When other systems pull down this change, selected files will be deleted on other systems."
