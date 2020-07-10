@@ -89,9 +89,10 @@ else
   [[ ! -d "${DOTBARE_TREE}" ]] && mkdir -p "${DOTBARE_TREE}"
   cd "${DOTBARE_TREE}"
   git clone --bare "${remote_url}" "${DOTBARE_DIR}"
-  if ! git --git-dir "${DOTBARE_DIR}" --work-tree "${DOTBARE_TREE}" checkout 2> /dev/null; then
-    echo "File checkout failed"
-    echo "Backing up pre-existing dotfiles ..."
+
+  set +e
+  while ! git --git-dir "${DOTBARE_DIR}" --work-tree "${DOTBARE_TREE}" checkout 2> /dev/null; do
+    echo "Resolving conflicts ..."
     git --git-dir "${DOTBARE_DIR}" --work-tree "${DOTBARE_TREE}" checkout 2>&1 \
       | awk '{
           if ($0 ~ /[\t].*/) {
@@ -99,10 +100,14 @@ else
             print $0
           }
         }' \
-      | xargs -I __ "${mydir}"/fbackup -p __ -m
-    echo "dotfiles backup succeeded, checkout continue"
-    git --git-dir "${DOTBARE_DIR}" --work-tree "${DOTBARE_TREE}" checkout
-  fi
+      | xargs -I __ "${mydir}"/fbackup -p __ -m 2> /dev/null
+    if git --git-dir "${DOTBARE_DIR}" --work-tree "${DOTBARE_TREE}" checkout 2> /dev/null; then
+      echo "All conflicts resolved"
+      break
+    fi
+  done
+  set -e
+
   git --git-dir "${DOTBARE_DIR}" --work-tree "${DOTBARE_TREE}" \
     config --local status.showUntrackedFiles no
   echo "File checkout succeeded"

@@ -45,7 +45,10 @@ function dotbare_backup() {
   while IFS= read -r line; do
     dir_name=$(dirname "${line}")
     [[ ! -d "${DOTBARE_BACKUP}/${dir_name}" ]] && mkdir -p "${DOTBARE_BACKUP}/${dir_name}"
-    command "${action_command}" -v "${line}" "${DOTBARE_BACKUP}/${line}"
+    command "${action_command}" "${line}" "${DOTBARE_BACKUP}/${line}"
+    # Purposly didn't use the -v flag above because in finit, error message were
+    # directed to /dev/null but the move info will still be printed, causing confusion.
+    echo "${line} -> ${DOTBARE_BACKUP}/${line}"
   done <<< "${selected_files}"
   exit 0
 }
