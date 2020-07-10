@@ -2,6 +2,13 @@
 
 Noteble changes are documentated in this file.
 
+## dev
+
+### Fixed
+
+- Fixed the dotbare crash when migrating a dotfile repo with over 100 files [#12](https://github.com/kazhala/dotbare/issues/12)
+- Fixed dotbare fbackup crash when using cp command on symlink
+
 ## 1.2.1 (09/07/2020)
 
 ### Added
