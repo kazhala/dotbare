@@ -46,11 +46,13 @@ function dotbare_backup() {
     dir_name=$(dirname "${line}")
     [[ ! -d "${DOTBARE_BACKUP}/${dir_name}" ]] && mkdir -p "${DOTBARE_BACKUP}/${dir_name}"
     [[ "${action_command}" == "cp" ]] \
-      && "${action_command}" -a "${line}" "${DOTBARE_BACKUP}/${line}" \
-      || "${action_command}" "${line}" "${DOTBARE_BACKUP}/${line}"
-    # Purposly didn't use the -v flag above because in finit, error message were
-    # directed to /dev/null but the move info will still be printed, causing confusion.
-    echo "${line} -> ${DOTBARE_BACKUP}/${line}"
+      && cp -av "${line}" "${DOTBARE_BACKUP}/${line}" \
+      && continue
+    # Purposly didn't use the -v flag because in finit, error message were
+    # directed to /dev/null but the cp/mv info will still be printed, causing confusion.
+    [[ "${action_command}" == "mv" ]] \
+      && mv "${line}" "${DOTBARE_BACKUP}/${line}" \
+      && echo "${line} -> ${DOTBARE_BACKUP}/${line}"
   done <<< "${selected_files}"
   exit 0
 }
