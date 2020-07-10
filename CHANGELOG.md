@@ -2,7 +2,7 @@
 
 Noteble changes are documentated in this file.
 
-## dev
+## 1.2.2 (11/07/2020)
 
 ### Fixed
 

@@ -238,9 +238,6 @@ you will do your normal migration steps and then do the above steps.
 
 ##### Complete migration
 
-**NOTE**: There's an open [issue](https://github.com/kazhala/dotbare/issues/12) where if you have more than 100 dotfiles
-tracked, this method would cause a crash during migration. Please don't use this method before the issue get resolved.
-
 While bare method is great and easy, I recommend keeping your current symlink/GNU stow setup and integrate it with `dotbare` instead of a migration.
 If you are really happy with `dotbare`, as long as your remote repository resembles the structure of your home holder
 (reference what I mean in my [repo](https://github.com/kazhala/dotfiles.git)), simply run the command below.
