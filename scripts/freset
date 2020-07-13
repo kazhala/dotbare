@@ -33,7 +33,7 @@ function usage() {
   echo -e "Default: unstage the selected files.\n"
   echo -e "optional arguments:"
   echo -e "  -h, --help\t\tshow this help message and exit."
-  echo -e "  -c, --commit\t\treset commit to certain commit, default --mixed flag, reset HEAD to certain commit put all changes into modified state."
+  echo -e "  -c, --commit\t\treset HEAD to certain commit, default --mixed flag, reset HEAD to certain commit put all changes into modified state."
   echo -e "  -S, --soft\t\treset commit using --soft flag, reset HEAD to certain commit without modify working tree."
   echo -e "  -H, --hard\t\treset commit using --hard flag, reset HEAD to certain commit discard all changes from the working tree."
   echo -e "  -y, --yes\t\tacknowledge all actions that will be taken and skip confirmation."
