@@ -418,7 +418,7 @@ Leave a star :)
 
 - [x] Improve unit test with mocking
 - [x] Support submodules during migration
-- [ ] Command line completion for dotbare in zsh
+- [x] Command line completion for dotbare in zsh
 - [x] Command line completion for dotbare in bash
 - [ ] Command line completion for git commands
 - [ ] Man page

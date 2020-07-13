@@ -42,67 +42,67 @@ __dotbare_completion() {
         fadd)
           _arguments \
             '(- : *)'{-h,--help}'[show help information]' \
-            '(-f --file -d --dir)'{-f,--file}'[select files from PWD and stage]' \
-            '(-d --dir -f --file)'{-d,--dir}'[select directory from PWD and stage]' \
+            '(-f --file -d --dir -h --help)'{-f,--file}'[select files from PWD and stage]' \
+            '(-d --dir -f --file -h --help)'{-d,--dir}'[select directory from PWD and stage]' \
             && ret=0
         ;;
         fbackup)
           _arguments \
             '(- : *)'{-h,--help}'[show help information]' \
-            '(-s --select -p --path)'{-s,--select}'[select tracked files to backup]' \
-            '(-p --path -s --select)'{-p,--path}'[sepcify path of files to backup]:filename:_files' \
-            '(-m --move)'{-m,--move}'[use mv cmd instead of cp cmd]' \
+            '(-s --select -p --path -h --help)'{-s,--select}'[select tracked files to backup]' \
+            '(-p --path -s --select -h --help)'{-p,--path}'[sepcify path of files to backup]:filename:_files' \
+            '(-m --move -h --help)'{-m,--move}'[use mv cmd instead of cp cmd]' \
             && ret=0
           ;;
         fcheckout)
           _arguments \
             '(- : *)'{-h,--help}'[show help information]' \
-            '(-s --select -b --branch -c --commit)'{-s,--select}'[select files and then checkout them in selected commits]' \
-            '(-b --branch -s --select -c --commit)'{-b,--branch}'[checkout branch]' \
-            '(-c --commit -b --branch -s --select)'{-c,--commit}'[checkout commit]' \
-            '(-y --yes)'{-y,--yes}'[acknowledge all actions and skip confirmation]' \
+            '(-s --select -b --branch -c --commit -h --help)'{-s,--select}'[select files and then checkout them in selected commits]' \
+            '(-b --branch -s --select -c --commit -h --help)'{-b,--branch}'[checkout branch]' \
+            '(-c --commit -b --branch -s --select -h --help)'{-c,--commit}'[checkout commit]' \
+            '(-y --yes -h --help)'{-y,--yes}'[acknowledge all actions and skip confirmation]' \
             && ret=0
           ;;
         fedit)
           _arguments \
             '(- : *)'{-h,--help}'[show help information]' \
-            '(-m --modified -c --commit)'{-m,--modified}'[edit modified files]' \
-            '(-c --commit -m --modified)'{-c,--commit}'[edit commits]' \
+            '(-m --modified -c --commit -h --help)'{-m,--modified}'[edit modified files]' \
+            '(-c --commit -m --modified -h --help)'{-c,--commit}'[edit commits]' \
             && ret=0
           ;;
         finit)
           _arguments \
             '(- : *)'{-h,--help}'[show help information]' \
-            '(-u --url)'{-u,--url}'[migrate remote dotfiles to current system]: :->url' \
-            '(-s --submodule)'{-s,--submodule}'[clone submodules during migration]' \
-            '(-y --yes)'{-y,--yes}'[acknowledge all actions and skip confirmation]' \
+            '(-u --url -h --help)'{-u,--url}'[migrate remote dotfiles to current system]: :->url' \
+            '(-s --submodule -h --help)'{-s,--submodule}'[clone submodules during migration]' \
+            '(-y --yes -h --help)'{-y,--yes}'[acknowledge all actions and skip confirmation]' \
             && ret=0
           ;;
         flog)
           _arguments \
             '(- : *)'{-h,--help}'[show help information]' \
-            '(-r --revert -R --reset -e --edit -c --checkout)'{-r,--revert}'[revert the selected commit and skip action menu]' \
-            '(-r --revert -R --reset -e --edit -c --checkout)'{-R,--reset}'[reset the selected commit and skip action menu]' \
-            '(-r --revert -R --reset -e --edit -c --checkout)'{-e,--edit}'[edit the selected commit and skip action menu]' \
-            '(-r --revert -R --reset -e --edit -c --checkout)'{-c,--checkout}'[checkout the selected commit and skip action menu]' \
-            '(-y --yes)'{-y,--yes}'[acknowledge all actions and skip confirmation]' \
+            '(-r --revert -R --reset -e --edit -c --checkout -h --help)'{-r,--revert}'[revert the selected commit and skip action menu]' \
+            '(-r --revert -R --reset -e --edit -c --checkout -h --help)'{-R,--reset}'[reset the selected commit and skip action menu]' \
+            '(-r --revert -R --reset -e --edit -c --checkout -h --help)'{-e,--edit}'[edit the selected commit and skip action menu]' \
+            '(-r --revert -R --reset -e --edit -c --checkout -h --help)'{-c,--checkout}'[checkout the selected commit and skip action menu]' \
+            '(-y --yes -h --help)'{-y,--yes}'[acknowledge all actions and skip confirmation]' \
             && ret=0
           ;;
         freset)
           _arguments \
             '(- : *)'{-h,--help}'[show help information]' \
-            '(-c --commit)'{-c,--commit}'[reset HEAD to certain commit]' \
-            '(-S --soft -H --hard)'{-S,--soft}'[reset commit using --soft flag]' \
-            '(-H --hard -S --soft)'{-H,--hard}'[reset commit using --hard flag]' \
-            '(-y --yes)'{-y,--yes}'[acknowledge all actions and skip confirmation]' \
+            '(-c --commit -h --help)'{-c,--commit}'[reset HEAD to certain commit]' \
+            '(-S --soft -H --hard -h --help)'{-S,--soft}'[reset commit using --soft flag]' \
+            '(-H --hard -S --soft -h --help)'{-H,--hard}'[reset commit using --hard flag]' \
+            '(-y --yes -h --help)'{-y,--yes}'[acknowledge all actions and skip confirmation]' \
             && ret=0
           ;;
         fstash)
           _arguments \
             '(- : *)'{-h,--help}'[show help information]' \
-            '(-s --select -d --delete -p --pop)'{-s,--select}'[list modified files and stash the selected files]' \
-            '(-s --select -d --delete -p --pop)'{-d,--delete}'[list stash and delete the selected stash]' \
-            '(-s --select -d --delete -p --pop)'{-p,--pop}'[use "stash pop" instead of "stash apply"]' \
+            '(-s --select -d --delete -p --pop -h --help)'{-s,--select}'[list modified files and stash the selected files]' \
+            '(-s --select -d --delete -p --pop -h --help)'{-d,--delete}'[list stash and delete the selected stash]' \
+            '(-s --select -d --delete -p --pop -h --help)'{-p,--pop}'[use "stash pop" instead of "stash apply"]' \
             && ret=0
           ;;
         fstat)
@@ -113,9 +113,9 @@ __dotbare_completion() {
         funtrack)
           _arguments \
             '(- : *)'{-h,--help}'[show help information]' \
-            '(-t --temp -r --resume)'{-t,--temp}'[temporarily ignore changes of the selected files]' \
-            '(-t --temp -r --resume)'{-r,--resume}'[resume tracking changes of the selected files]' \
-            '(-y --yes)'{-y,--yes}'[acknowledge all actions and skip confirmation]' \
+            '(-t --temp -r --resume -h --help)'{-t,--temp}'[temporarily ignore changes of the selected files]' \
+            '(-t --temp -r --resume -h --help)'{-r,--resume}'[resume tracking changes of the selected files]' \
+            '(-y --yes -h --help)'{-y,--yes}'[acknowledge all actions and skip confirmation]' \
             && ret=0
           ;;
         fupgrade)
@@ -124,6 +124,7 @@ __dotbare_completion() {
             && ret=0
           ;;
       esac
+      ;;
   esac
 
   return "${ret}";
