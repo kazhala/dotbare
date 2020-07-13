@@ -1,12 +1,12 @@
 0="${${ZERO:-${0:#$ZSH_ARGZERO}}:-${(%):-%N}}"
-local _path="${0:h}"
+_path="${0:h}"
 
 if [[ -z "${path[(r)$_path]}" ]]; then
-    path+=( "$_path" )
+  path+=( "${_path}" )
 fi
 
-function __dotbare_completion {
-  local context state state_descr line
+__dotbare_completion() {
+  local state line
   local -A opt_args
   ret=1
 
@@ -19,21 +19,21 @@ function __dotbare_completion {
 
   case "${state}" in
     cmds)
-       local subcommands
-       subcommands=(
-        'fadd:Stage files'
-        'fbackup:Backup files'
-        'fcheckout:Checkout file/branch/commit'
-        'fedit:Edit files'
-        'finit:Init/migrate dotbare'
-        'flog:Interactive log viewer'
-        'freset:Reset files/commit'
-        'fstash:Stage management'
-        'fstat:Toggle stage/unstage of files'
-        'funtrack:Untrack files'
-        'fupgrade:Update dotbare'
-       )
-      _describe -t commands 'command' subcommands \
+      local subcommands
+      subcommands=(
+        'fadd:stage files'
+        'fbackup:backup files'
+        'fcheckout:checkout file/branch/commit'
+        'fedit:edit files'
+        'finit:init/migrate dotbare'
+        'flog:interactive log viewer'
+        'freset:reset files/commit'
+        'fstash:stage management'
+        'fstat:toggle stage/unstage of files'
+        'funtrack:untrack files'
+        'fupgrade:update dotbare'
+      )
+      _describe 'command' subcommands \
         && ret=0
       ;;
     options)
@@ -128,12 +128,12 @@ function __dotbare_completion {
   return "${ret}";
 }
 
-function _dotbare_completion_cmd() {
+_dotbare_completion_cmd() {
   local compdef_name="${1:-dotbare}"
   compdef __dotbare_completion "${compdef_name}"
 }
 
-function _dotbare_completion_git() {
+_dotbare_completion_git() {
   local compdef_name="${1:-dotbare}"
   compdef "${compdef_name}"=git
 }

@@ -22,5 +22,7 @@ done < <(
 
 shellcheck -e SC1090 "${scripts[@]}"
 shellcheck -e SC1090 --shell=bash "dotbare.plugin.bash"
+# \shellcheck does not have zsh support yet, hence using bash for now
+shellcheck -e SC2034 --shell=bash "dotbare.plugin.zsh"
 
 exit $?
