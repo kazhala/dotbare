@@ -6,9 +6,10 @@ if [[ -z "${path[(r)$_path]}" ]]; then
 fi
 
 __dotbare_completion() {
-  local state line
+  local context state state_descr line ret curcontext
   local -A opt_args
   ret=1
+  curcontext="${curcontext}"
 
   _arguments -C \
     '(- : *)'{-h,--help}'[show help information]' \
