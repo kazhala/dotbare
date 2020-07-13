@@ -3,7 +3,7 @@
 mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 [[ :$PATH: != *:"${mydir}":* ]] && export PATH="$PATH:${mydir}"
 
-_dotbare_completions()
+function _dotbare_completions()
 {
   local IFS=$'\n' subcommands curr prev options selected suggestions
   curr="${COMP_WORDS[$COMP_CWORD]}"

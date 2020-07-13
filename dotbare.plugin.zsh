@@ -5,7 +5,7 @@ if [[ -z "${path[(r)$_path]}" ]]; then
     path+=( "$_path" )
 fi
 
-function _dotbare_completion_cmd {
+function __dotbare_completion {
   local context state state_descr line
   local -A opt_args
   ret=1
@@ -39,37 +39,88 @@ function _dotbare_completion_cmd {
     options)
       case "${line[1]}" in
         fadd)
-          __dotbare_complete_fadd
+          _arguments \
+            '(- : *)'{-h,--help}'[show help information]' \
+            '(-f --file -d --dir)'{-f,--file}'[select files from PWD and stage]' \
+            '(-d --dir -f --file)'{-d,--dir}'[select directory from PWD and stage]' \
+            && ret=0
         ;;
         fbackup)
-          __dotbare_complete_fbackup
+          _arguments \
+            '(- : *)'{-h,--help}'[show help information]' \
+            '(-s --select -p --path)'{-s,--select}'[select tracked files to backup]' \
+            '(-p --path -s --select)'{-p,--path}'[sepcify path of files to backup]:filename:_files' \
+            '(-m --move)'{-m,--move}'[use mv cmd instead of cp cmd]' \
+            && ret=0
           ;;
         fcheckout)
-          __dotbare_complete_fcheckout
+          _arguments \
+            '(- : *)'{-h,--help}'[show help information]' \
+            '(-s --select -b --branch -c --commit)'{-s,--select}'[select files and then checkout them in selected commits]' \
+            '(-b --branch -s --select -c --commit)'{-b,--branch}'[checkout branch]' \
+            '(-c --commit -b --branch -s --select)'{-c,--commit}'[checkout commit]' \
+            '(-y --yes)'{-y,--yes}'[acknowledge all actions and skip confirmation]' \
+            && ret=0
           ;;
         fedit)
-          __dotbare_complete_fedit
+          _arguments \
+            '(- : *)'{-h,--help}'[show help information]' \
+            '(-m --modified -c --commit)'{-m,--modified}'[edit modified files]' \
+            '(-c --commit -m --modified)'{-c,--commit}'[edit commits]' \
+            && ret=0
           ;;
         finit)
-          __dotbare_complete_finit
+          _arguments \
+            '(- : *)'{-h,--help}'[show help information]' \
+            '(-u --url)'{-u,--url}'[migrate remote dotfiles to current system]: :->url' \
+            '(-s --submodule)'{-s,--submodule}'[clone submodules during migration]' \
+            '(-y --yes)'{-y,--yes}'[acknowledge all actions and skip confirmation]' \
+            && ret=0
           ;;
         flog)
-          __dotbare_complete_flog
+          _arguments \
+            '(- : *)'{-h,--help}'[show help information]' \
+            '(-r --revert -R --reset -e --edit -c --checkout)'{-r,--revert}'[revert the selected commit and skip action menu]' \
+            '(-r --revert -R --reset -e --edit -c --checkout)'{-R,--reset}'[reset the selected commit and skip action menu]' \
+            '(-r --revert -R --reset -e --edit -c --checkout)'{-e,--edit}'[edit the selected commit and skip action menu]' \
+            '(-r --revert -R --reset -e --edit -c --checkout)'{-c,--checkout}'[checkout the selected commit and skip action menu]' \
+            '(-y --yes)'{-y,--yes}'[acknowledge all actions and skip confirmation]' \
+            && ret=0
           ;;
         freset)
-          __dotbare_complete_freset
+          _arguments \
+            '(- : *)'{-h,--help}'[show help information]' \
+            '(-c --commit)'{-c,--commit}'[reset HEAD to certain commit]' \
+            '(-S --soft -H --hard)'{-S,--soft}'[reset commit using --soft flag]' \
+            '(-H --hard -S --soft)'{-H,--hard}'[reset commit using --hard flag]' \
+            '(-y --yes)'{-y,--yes}'[acknowledge all actions and skip confirmation]' \
+            && ret=0
           ;;
         fstash)
-          __dotbare_complete_fstash
+          _arguments \
+            '(- : *)'{-h,--help}'[show help information]' \
+            '(-s --select -d --delete -p --pop)'{-s,--select}'[list modified files and stash the selected files]' \
+            '(-s --select -d --delete -p --pop)'{-d,--delete}'[list stash and delete the selected stash]' \
+            '(-s --select -d --delete -p --pop)'{-p,--pop}'[use "stash pop" instead of "stash apply"]' \
+            && ret=0
           ;;
         fstat)
-          __dotbare_complete_fstat
+          _arguments \
+            '(- : *)'{-h,--help}'[show help information]' \
+            && ret=0
           ;;
         funtrack)
-          __dotbare_complete_funtrack
+          _arguments \
+            '(- : *)'{-h,--help}'[show help information]' \
+            '(-t --temp -r --resume)'{-t,--temp}'[temporarily ignore changes of the selected files]' \
+            '(-t --temp -r --resume)'{-r,--resume}'[resume tracking changes of the selected files]' \
+            '(-y --yes)'{-y,--yes}'[acknowledge all actions and skip confirmation]' \
+            && ret=0
           ;;
         fupgrade)
-          __dotbare_complete_fsimple
+          _arguments \
+            '(- : *)'{-h,--help}'[show help information]' \
+            && ret=0
           ;;
       esac
   esac
@@ -77,123 +128,12 @@ function _dotbare_completion_cmd {
   return "${ret}";
 }
 
-function __dotbare_complete_fadd() {
-  local context state state_descr line
-  typeset -A opt_args
-  ret=1
-  _arguments \
-    '(- : *)'{-h,--help}'[show help information]' \
-    '(-f --file -d --dir)'{-f,--file}'[select files from PWD and stage]' \
-    '(-d --dir -f --file)'{-d,--dir}'[select directory from PWD and stage]' \
-    && ret=0
+function _dotbare_completion_cmd() {
+  local compdef_name="${1:-dotbare}"
+  compdef __dotbare_completion "${compdef_name}"
 }
 
-function __dotbare_complete_fbackup() {
-  local context state state_descr line
-  typeset -A opt_args
-  ret=1
-  _arguments \
-    '(- : *)'{-h,--help}'[show help information]' \
-    '(-s --select -p --path)'{-s,--select}'[select tracked files to backup]' \
-    '(-p --path -s --select)'{-p,--path}'[sepcify path of files to backup]:filename:_files' \
-    '(-m --move)'{-m,--move}'[use mv cmd instead of cp cmd]' \
-    && ret=0
+function _dotbare_completion_git() {
+  local compdef_name="${1:-dotbare}"
+  compdef "${compdef_name}"=git
 }
-
-function __dotbare_complete_fcheckout() {
-  local context state state_descr line
-  typeset -A opt_args
-  ret=1
-  _arguments \
-    '(- : *)'{-h,--help}'[show help information]' \
-    '(-s --select -b --branch -c --commit)'{-s,--select}'[select files and then checkout them in selected commits]' \
-    '(-b --branch -s --select -c --commit)'{-b,--branch}'[checkout branch]' \
-    '(-c --commit -b --branch -s --select)'{-c,--commit}'[checkout commit]' \
-    '(-y --yes)'{-y,--yes}'[acknowledge all actions and skip confirmation]' \
-    && ret=0
-}
-
-function __dotbare_complete_fedit() {
-  local context state state_descr line
-  typeset -A opt_args
-  ret=1
-  _arguments \
-    '(- : *)'{-h,--help}'[show help information]' \
-    '(-m --modified -c --commit)'{-m,--modified}'[edit modified files]' \
-    '(-c --commit -m --modified)'{-c,--commit}'[edit commits]' \
-    && ret=0
-}
-
-function __dotbare_complete_finit() {
-  local context state state_descr line
-  typeset -A opt_args
-  ret=1
-  _arguments \
-    '(- : *)'{-h,--help}'[show help information]' \
-    '(-u --url)'{-u,--url}'[migrate remote dotfiles to current system]: :->url' \
-    '(-s --submodule)'{-s,--submodule}'[clone submodules during migration]' \
-    '(-y --yes)'{-y,--yes}'[acknowledge all actions and skip confirmation]' \
-    && ret=0
-}
-
-function __dotbare_complete_flog() {
-  local context state state_descr line
-  typeset -A opt_args
-  ret=1
-  _arguments \
-    '(- : *)'{-h,--help}'[show help information]' \
-    '(-r --revert -R --reset -e --edit -c --checkout)'{-r,--revert}'[revert the selected commit and skip action menu]' \
-    '(-r --revert -R --reset -e --edit -c --checkout)'{-R,--reset}'[reset the selected commit and skip action menu]' \
-    '(-r --revert -R --reset -e --edit -c --checkout)'{-e,--edit}'[edit the selected commit and skip action menu]' \
-    '(-r --revert -R --reset -e --edit -c --checkout)'{-c,--checkout}'[checkout the selected commit and skip action menu]' \
-    '(-y --yes)'{-y,--yes}'[acknowledge all actions and skip confirmation]' \
-    && ret=0
-}
-
-function __dotbare_complete_freset() {
-  local context state state_descr line
-  typeset -A opt_args
-  ret=1
-  _arguments \
-    '(- : *)'{-h,--help}'[show help information]' \
-    '(-c --commit)'{-c,--commit}'[reset HEAD to certain commit]' \
-    '(-S --soft -H --hard)'{-S,--soft}'[reset commit using --soft flag]' \
-    '(-H --hard -S --soft)'{-H,--hard}'[reset commit using --hard flag]' \
-    '(-y --yes)'{-y,--yes}'[acknowledge all actions and skip confirmation]' \
-    && ret=0
-}
-
-function __dotbare_complete_fstash() {
-  local context state state_descr line
-  typeset -A opt_args
-  ret=1
-  _arguments \
-    '(- : *)'{-h,--help}'[show help information]' \
-    '(-s --select -d --delete -p --pop)'{-s,--select}'[list modified files and stash the selected files]' \
-    '(-s --select -d --delete -p --pop)'{-d,--delete}'[list stash and delete the selected stash]' \
-    '(-s --select -d --delete -p --pop)'{-p,--pop}'[use "stash pop" instead of "stash apply"]' \
-    && ret=0
-}
-
-function __dotbare_complete_fsimple() {
-  local context state state_descr line
-  typeset -A opt_args
-  ret=1
-  _arguments \
-    '(- : *)'{-h,--help}'[show help information]' \
-    && ret=0
-}
-
-function __dotbare_complete_funtrack() {
-  local context state state_descr line
-  typeset -A opt_args
-  ret=1
-  _arguments \
-    '(- : *)'{-h,--help}'[show help information]' \
-    '(-t --temp -r --resume)'{-t,--temp}'[temporarily ignore changes of the selected files]' \
-    '(-t --temp -r --resume)'{-r,--resume}'[resume tracking changes of the selected files]' \
-    '(-y --yes)'{-y,--yes}'[acknowledge all actions and skip confirmation]' \
-    && ret=0
-}
-
-compdef _dotbare_completion_cmd dotbare
