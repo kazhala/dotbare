@@ -2,6 +2,13 @@
 
 Noteble changes are documentated in this file.
 
+## dev
+
+### Added
+
+- zsh completion for dotbare commands
+- zsh completion for git commands
+
 ## 1.2.2 (11/07/2020)
 
 ### Fixed
