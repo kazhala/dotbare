@@ -26,6 +26,7 @@ __dotbare_completion() {
         'fbackup:backup files'
         'fcheckout:checkout file/branch/commit'
         'fedit:edit files'
+        'fgrep:grep within tracked files'
         'finit:init/migrate dotbare'
         'flog:interactive log viewer'
         'freset:reset files/commit'
@@ -68,6 +69,11 @@ __dotbare_completion() {
             '(- : *)'{-h,--help}'[show help information]' \
             '(-m --modified -c --commit -h --help)'{-m,--modified}'[edit modified files]' \
             '(-c --commit -m --modified -h --help)'{-c,--commit}'[edit commits]' \
+            && ret=0
+          ;;
+        fgrep)
+          _arguments \
+            '(- : *)'{-h,--help}'[show help information]' \
             && ret=0
           ;;
         finit)
