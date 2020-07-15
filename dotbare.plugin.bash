@@ -5,7 +5,7 @@ mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 __dotbare_completion()
 {
-  local IFS=$'\n' subcommands curr prev options selected suggestions
+  local IFS=$'\n' subcommands curr prev options suggestions
   curr="${COMP_WORDS[$COMP_CWORD]}"
   prev="${COMP_WORDS[$COMP_CWORD-1]}"
 

@@ -203,7 +203,7 @@ function get_stash() {
 function grep_lines() {
   local header="${1:-select lines to edit}"
   set_fzf_multi "$2"
-  cd "${DOTBARE_TREE}"
+  cd "${DOTBARE_TREE}" || exit
   git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
     grep --line-number -- . \
     | fzf --delimiter : --nth 3.. --header="${header}" \
