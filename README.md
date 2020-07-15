@@ -27,7 +27,13 @@ You could find out how git bare repository could be used for managing dotfiles [
 Or a [video](https://www.youtube.com/watch?v=tBoLDpTWVOM&t=288s) explanation that helped me to get started. If you are currently
 using a symlink/GNU stow setup, checkout how to integrate `dotbare` with them [here](#migrating-from-a-generic-symlink-setup-or-gnu-stow).
 
-![Demo](https://user-images.githubusercontent.com/43941510/86587894-e33f5180-bfcd-11ea-87a9-da28bb103710.png)
+Select and edit tracked dotfiles.
+![fedit](https://user-images.githubusercontent.com/43941510/87491096-8f4a0200-c68a-11ea-894a-4a8c43a67c4d.png)
+Stage and unstage dotfiles.
+![fstat](https://user-images.githubusercontent.com/43941510/87491114-9a9d2d80-c68a-11ea-9cb8-e0decdc3bd91.png)
+Interactive log viewer.
+![flog](https://user-images.githubusercontent.com/43941510/87491120-a12ba500-c68a-11ea-9231-3eebad7a1695.png)
+For more capabilities and commands, please checkout `dotbare` [wiki](https://github.com/kazhala/dotbare/wiki/Commands).
 
 ## Why
 
@@ -383,12 +389,13 @@ export DOTBARE_DIFF_PAGER="delta --diff-so-fancy --line-numbers"
 
 ## Usage
 
-A full list of `dotbare` commands and their usage are documented in **[wiki](https://github.com/kazhala/dotbare/wiki/Commands)**.
+All usage and commands are documented in **[wiki](https://github.com/kazhala/dotbare/wiki/Commands)** as they are getting
+quite long.
 
-## Custom Scripts
-
-Detailed explanation of how to create custom scripts and the API of `dotbare` helper functions
-is documented over in **[wiki](https://github.com/kazhala/dotbare/wiki/Custom-Scripts)**.
+- [Commands](https://github.com/kazhala/dotbare/wiki/Commands)
+- [Completion](https://github.com/kazhala/dotbare/wiki/Completion)
+- [Custom Scripts and API](https://github.com/kazhala/dotbare/wiki/Custom-Scripts)
+- [Tips and Tricks](https://github.com/kazhala/dotbare/wiki/Tips-and-Tricks)
 
 ## Changes
 
@@ -413,16 +420,6 @@ I've only been scripting for a few months and are still learning many new things
 and please fire up issues if something went wrong.
 
 Leave a star :)
-
-## Coming up
-
-- [x] Improve unit test with mocking
-- [x] Support submodules during migration
-- [x] Command line completion for dotbare in zsh
-- [x] Command line completion for dotbare in bash
-- [ ] Command line completion for git commands
-- [ ] Man page
-- [x] Installation method
 
 ## Background
 

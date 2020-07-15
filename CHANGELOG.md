@@ -8,6 +8,7 @@ Noteble changes are documentated in this file.
 
 - zsh completion for dotbare commands
 - zsh completion for git commands
+- bash completion for git commands
 
 ## 1.2.2 (11/07/2020)
 
