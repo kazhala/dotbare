@@ -35,7 +35,7 @@ elif [[ "$*" =~ "--header=select a commit to rename --no-multi" ]] && [[ "$*" =~
   echo "fedit_commits"
 elif [[ "$*" =~ "--header=select tracked files to edit" ]]; then
   # dotbare fedit -- "./fedit.bats" @test "fedit edit files"
-  exit
+  echo "fedit_files"
 elif [[ "$*" =~ '--header=select the target commit for HEAD --no-multi' ]] && [[ "$*" =~ "show --color" ]]; then
   # dotbare freset --commit -y -- "./freset.bats" @test "freset select commit"
   echo "freset_commit"
@@ -60,6 +60,9 @@ elif [[ "$*" =~ '--header=select stash to delete' ]] && [[ "$*" =~ "show -p __ -
 elif [[ "$*" =~ '--header=select stash to apply' ]] && [[ "$*" =~ "show -p __ --color=always" ]]; then
   # dotbare fstash -- "./fstash.bats" @test "fstash apply stash"
   echo "fstash_apply"
+elif [[ "$*" =~ '--delimiter : --nth 3..' ]]; then
+  # dotbare fgrep -- "./fgrep.bats" @test "fgrep edit lines"
+  echo "fgrep_lines"
 else
   echo "$@"
 fi

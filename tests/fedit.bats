@@ -20,6 +20,7 @@ edit_commits() {
 
 edit_files() {
   export PATH="${BATS_TEST_DIRNAME}:$PATH"
+  export EDITOR="echo"
   bash "${BATS_TEST_DIRNAME}"/../dotbare fedit
 }
 
@@ -48,7 +49,5 @@ edit_files() {
 
 @test "fedit edit files" {
   run edit_files
-  # to avoid actually invoking vim, the fzf mock file exit without pringting anything
-  # when detecting the correct flag called with fzf
-  [ "${status}" -eq 1 ]
+  [[ "${output}" =~ "fedit_files" ]]
 }

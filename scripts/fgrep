@@ -17,7 +17,7 @@ source "${mydir}"/../helper/set_variable.sh
 source "${mydir}"/../helper/git_query.sh
 
 function usage() {
-  echo -e "Usage: dotbare fedit [-h] ...
+  echo -e "Usage: dotbare fgrep [-h] ...
   
 Grep words within tracked files and select to edit them through fzf.
 
