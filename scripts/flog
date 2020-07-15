@@ -25,17 +25,20 @@ source "${mydir}"/../helper/git_query.sh
 source "${mydir}"/../helper/get_confirmation.sh
 
 function usage() {
-  echo -e "Usage: dotbare flog [-h] [-r] [-R] [-e] [-c] [-y] ...\n"
-  echo -e "Interactive log viewer with action menu."
-  echo -e "Action menu contains options including revert|reset|edit|checkout|exit.\n"
-  echo -e "Default: list all commits and prompt a menu to select action to perform.\n"
-  echo -e "optional arguments:"
-  echo -e "  -h, --help\t\tshow this help message and exit."
-  echo -e "  -r, --revert\t\trevert the selected commit and skip action menu."
-  echo -e "  -R, --reset\t\treset HEAD back to selected commit and skip action menu."
-  echo -e "  -e, --edit\t\tedit selected commit through interactive rebase and skip action menu."
-  echo -e "  -c, --checkout\tcheckout selected commit and skip action menu."
-  echo -e "  -y, --yes\t\tacknowledge all actions that will be taken and skip confirmation."
+  echo -e "Usage: dotbare flog [-h] [-r] [-R] [-e] [-c] [-y] ...
+
+Interactive log viewer with action menu.
+Action menu contains options including revert|reset|edit|checkout|exit.
+
+Default: list all commits and prompt a menu to select action to perform.
+
+Optional arguments:
+  -h, --help\t\tshow this help message and exit.
+  -r, --revert\t\trevert the selected commit and skip action menu.
+  -R, --reset\t\treset HEAD back to selected commit and skip action menu.
+  -e, --edit\t\tedit selected commit through interactive rebase and skip action menu.
+  -c, --checkout\tcheckout selected commit and skip action menu.
+  -y, --yes\t\tacknowledge all actions that will be taken and skip confirmation."
 }
 
 #######################################

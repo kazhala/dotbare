@@ -27,16 +27,19 @@ source "${mydir}"/../helper/get_confirmation.sh
 source "${mydir}"/../helper/git_query.sh
 
 function usage() {
-  echo -e "Usage: dotbare freset [-h] [-c] [-S] [-H] [-y] ...\n"
-  echo -e "Reset(unstage) the selected staged files."
-  echo -e "Reset the HEAD to certain commits by using -c flag.\n"
-  echo -e "Default: unstage the selected files.\n"
-  echo -e "optional arguments:"
-  echo -e "  -h, --help\t\tshow this help message and exit."
-  echo -e "  -c, --commit\t\treset HEAD to certain commit, default --mixed flag, reset HEAD to certain commit put all changes into modified state."
-  echo -e "  -S, --soft\t\treset commit using --soft flag, reset HEAD to certain commit without modify working tree."
-  echo -e "  -H, --hard\t\treset commit using --hard flag, reset HEAD to certain commit discard all changes from the working tree."
-  echo -e "  -y, --yes\t\tacknowledge all actions that will be taken and skip confirmation."
+  echo -e "Usage: dotbare freset [-h] [-c] [-S] [-H] [-y] ...
+
+Reset(unstage) the selected staged files.
+Reset the HEAD to certain commits by using -c flag.
+
+Default: unstage the selected files.
+
+Optional arguments:
+  -h, --help\t\tshow this help message and exit.
+  -c, --commit\t\treset HEAD to certain commit, default --mixed flag, reset HEAD to certain commit put all changes into modified state.
+  -S, --soft\t\treset commit using --soft flag, reset HEAD to certain commit without modify working tree.
+  -H, --hard\t\treset commit using --hard flag, reset HEAD to certain commit discard all changes from the working tree.
+  -y, --yes\t\tacknowledge all actions that will be taken and skip confirmation."
 }
 
 reset_option="--mixed"

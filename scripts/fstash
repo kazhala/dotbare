@@ -24,14 +24,17 @@ source "${mydir}"/../helper/get_confirmation.sh
 source "${mydir}"/../helper/git_query.sh
 
 function usage() {
-  echo -e "Usage: dotbare fstash [-h] [-s] [-d] [-p] ...\n"
-  echo -e "View and manage stash interactively.\n"
-  echo -e "Default: list all stashes and apply the selected stash.\n"
-  echo -e "optional arguments:"
-  echo -e "  -h, --help\t\tshow this help message and exit."
-  echo -e "  -s, --select\t\tlist modified files and stash the selected files."
-  echo -e "  -d, --delete\t\tlist all stashes and delete the selected stash from stash list."
-  echo -e "  -p, --pop\t\tuse 'stash pop' instead of 'stash apply'."
+  echo -e "Usage: dotbare fstash [-h] [-s] [-d] [-p] ...
+
+View and manage stash interactively.
+
+Default: list all stashes and apply the selected stash.
+
+Optional arguments:
+  -h, --help\t\tshow this help message and exit.
+  -s, --select\t\tlist modified files and stash the selected files.
+  -d, --delete\t\tlist all stashes and delete the selected stash from stash list.
+  -p, --pop\t\tuse 'stash pop' instead of 'stash apply'."
 }
 
 stash_command="apply"

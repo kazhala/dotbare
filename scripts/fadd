@@ -21,14 +21,17 @@ source "${mydir}"/../helper/set_variable.sh
 source "${mydir}"/../helper/git_query.sh
 
 function usage() {
-  echo -e "Usage: dotbare fadd [-h] [-f] [-d] ...\n"
-  echo -e "Select files/directories or modified files through fzf."
-  echo -e "Stage the selected file to the dotfile gitbare repo.\n"
-  echo -e "Default: list all modified files and stage the selected files.\n"
-  echo -e "optional arguments:"
-  echo -e "  -h, --help\t\tshow this help message and exit."
-  echo -e "  -f, --file\t\tselect files in current directory and stage the selected files."
-  echo -e "  -d, --dir\t\tselect folders in current directory and stage the selected folders."
+  echo -e "Usage: dotbare fadd [-h] [-f] [-d] ...
+
+Select files/directories or modified files through fzf.
+Stage the selected file to the dotfile gitbare repo.
+
+Default: list all modified files and stage the selected files.
+
+Optional arguments:
+  -h, --help\t\tshow this help message and exit.
+  -f, --file\t\tselect files in current directory and stage the selected files.
+  -d, --dir\t\tselect folders in current directory and stage the selected folders."
 }
 
 #######################################
