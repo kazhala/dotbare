@@ -28,6 +28,7 @@ __dotbare_completion()
               gsub(/,/, " ", $0)
               gsub(/^  /, "", $0)
               gsub(/\t\t/, "    ", $0)
+              $2=""
               print $0
             }
           }'
@@ -81,7 +82,6 @@ __dotbare_completion()
     COMPREPLY=("${suggestions[@]}")
   fi
 }
-complete -F _dotbare_completions dotbare
 
 _dotbare_completion_cmd() {
   local complete_name="${1:-dotbare}"
