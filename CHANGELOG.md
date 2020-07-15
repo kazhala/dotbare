@@ -9,6 +9,16 @@ Noteble changes are documentated in this file.
 - zsh completion for dotbare commands
 - zsh completion for git commands
 - bash completion for git commands
+- fgrep: grep words within tracked dotfiles and edit them through EDITOR
+  More info will be documentated in wiki.
+
+### Changed
+
+- Changed how help messages are printed to reduce some calls
+
+### Fixed
+
+- bash completion awk panic on version 4.0+ bash on MacOS
 
 ## 1.2.2 (11/07/2020)
 
