@@ -189,3 +189,26 @@ function get_stash() {
         print $1
       }'
 }
+
+#######################################
+# Using git grep to find word within
+# all tracked files in the bare repo.
+# Arguments:
+#   $1: the help message to display in header
+#   $2: if exists, don't do multi select, only allow single selection
+# Outputs:
+#   the selected file name with it's line number and line, seperated by ":"
+#   e.g. .bash_profile:1:echo hello
+#######################################
+function grep_lines() {
+  local header="${1:-select lines to edit}"
+  set_fzf_multi "$2"
+  cd "${DOTBARE_TREE}"
+  git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
+    grep --line-number -- . \
+    | fzf --delimiter : --nth 3.. --header="${header}" \
+        --preview "${mydir}/../helper/preview.sh ${DOTBARE_TREE}/{}" \
+    | awk -F ":" -v home="${DOTBARE_TREE}" '{
+        print home "/" $1 ":" $2
+      }'
+}

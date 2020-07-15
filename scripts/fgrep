@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+#
+# Grep for words within all dotfiles
+#
+# @params
+# Globals
+#   mydir: path to this current script
+#   selected_lines: selected lines to edit
+# Arguments
+#   -h|--help: show help message and exit
+
+set -e
+set -f
+
+mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source "${mydir}"/../helper/set_variable.sh
+source "${mydir}"/../helper/git_query.sh
+
+function usage() {
+  echo -e "Usage: dotbare fedit [-h] ...
+  
+Grep words within tracked files and select to edit them through fzf.
+
+Optional arguments:
+  -h, --help\t\tshow this help message and exit."
+}
+
+selected_lines=()
+
+while [[ "$#" -gt 0 ]]; do
+  case "$1" in
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Invalid option: $1" >&2
+      usage
+      exit 1
+      ;;
+  esac
+done
+
+while IFS= read -r line; do
+  case "${EDITOR}" in
+    vim|nvim|nano)
+      # line number = "${line##*:}"
+      # file name = "${line%%:*}"
+      selected_lines+=(+"${line##*:}" "${line%%:*}")
+      ;;
+    *)
+      selected_lines+=("${line}")
+      ;;
+  esac
+done < <(grep_lines)
+
+[[ "${#selected_lines[@]}" -eq 0 ]] && exit 1
+
+"${EDITOR}" "${selected_lines[@]}"
