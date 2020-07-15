@@ -47,14 +47,11 @@ __dotbare_completion()
     return
 
   elif [[ "${prev}" != "-h" && "${prev}" != "--help" ]]; then
-    selected=("${COMP_WORDS[@]:1}")
     options=$(
       "${mydir}"/dotbare "${COMP_WORDS[1]}" -h \
-        | awk -v selected="${selected[*]}" '{
+        | awk '{
             gsub(/,/, " ", $0)
-            if (selected ~ $1) {
-              next
-            } else if ($0 ~ /^  -p PATH/) {
+            if ($0 ~ /^  -p PATH/) {
               gsub(/^  -p PATH  --path PATH/, "-p", $0)
               gsub(/\t/, "  ", $0)
               print $0
