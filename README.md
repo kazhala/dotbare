@@ -410,7 +410,7 @@ Latest changes are documented in CHANGELOG.md. View the upcoming changes in the 
 ## Testing
 
 `dotbare` is unit tested using [bats](https://github.com/bats-core/bats-core). Mock tests are implemented using PATH override method.
-This is documented in a dedicated README in tests folder for better readability and extensibility.
+This is documented [here] for better readability and extensibility.
 
 Not all functions have 100% coverage and lots of user interaction cannot be effectively tested, please fire up issues if something went wrong.
 
