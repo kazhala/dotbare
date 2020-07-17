@@ -76,3 +76,7 @@ Just make sure you have thoroughly tested manually and pass shellcheck.
 
 If you are interested, checkout [here] to see how the unit test are implemented and
 use current unit tests as reference.
+
+## Finally
+
+Thanks for your interest in improving `dotbare`!
