@@ -410,7 +410,7 @@ Latest changes are documented in CHANGELOG.md. View the upcoming changes in the 
 ## Testing
 
 `dotbare` is unit tested using [bats](https://github.com/bats-core/bats-core). Mock tests are implemented using PATH override method.
-This is documented [here] for better readability and extensibility.
+This is documented [here](https://github.com/kazhala/dotbare/blob/master/tests/README.md) for better readability and extensibility.
 
 Not all functions have 100% coverage and lots of user interaction cannot be effectively tested, please fire up issues if something went wrong.
 
@@ -419,7 +419,7 @@ you could checkout my cloudformation [template](https://github.com/kazhala/AWSCl
 
 ## Contributing
 
-Checkout out [CONTRIBUTING.md] to see how you could contribute to `dotbare`. PRs are
+Checkout out [CONTRIBUTING.md](https://github.com/kazhala/dotbare/blob/master/CONTRIBUTING.md) to see how you could contribute to `dotbare`. PRs are
 welcome and I'm happy to improve/extend `dotbare`'s functionality.
 
 Don't forget to leave a star :)

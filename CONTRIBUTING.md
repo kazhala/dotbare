@@ -74,7 +74,7 @@ There is no requirements for the changes to be unit tested, bash unit test is na
 
 Just make sure you have thoroughly tested manually and pass shellcheck.
 
-If you are interested, checkout [here] to see how the unit test are implemented and
+If you are interested, checkout [here](https://github.com/kazhala/dotbare/blob/master/tests/README.md) to see how the unit test are implemented and
 use current unit tests as reference.
 
 ## Finally

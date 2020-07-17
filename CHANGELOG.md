@@ -10,7 +10,7 @@ Noteble changes are documentated in this file.
 - zsh completion for git commands
 - bash completion for git commands
 - fgrep: grep words within tracked dotfiles and edit them through EDITOR
-  More info will be documentated in wiki.
+  More info is documented in wiki.
 
 ### Changed
 
