@@ -27,7 +27,13 @@ You could find out how git bare repository could be used for managing dotfiles [
 Or a [video](https://www.youtube.com/watch?v=tBoLDpTWVOM&t=288s) explanation that helped me to get started. If you are currently
 using a symlink/GNU stow setup, checkout how to integrate `dotbare` with them [here](#migrating-from-a-generic-symlink-setup-or-gnu-stow).
 
-![Demo](https://user-images.githubusercontent.com/43941510/86587894-e33f5180-bfcd-11ea-87a9-da28bb103710.png)
+Select and edit tracked dotfiles.
+![fedit](https://user-images.githubusercontent.com/43941510/87669391-37f28180-c7b1-11ea-907d-3b26f363a279.png)
+Stage and unstage dotfiles.
+![fstat](https://user-images.githubusercontent.com/43941510/87669408-43de4380-c7b1-11ea-8a31-fc702eb69804.png)
+Interactive log viewer.
+![flog](https://user-images.githubusercontent.com/43941510/87669399-3e80f900-c7b1-11ea-9bfa-5db31c4307c3.png)
+For more capabilities and commands, checkout [wiki](https://github.com/kazhala/dotbare/wiki/Commands).
 
 ## Why
 
@@ -42,15 +48,17 @@ to another system as you will have to manually resolve all the git checkout issu
 
 `dotbare` solves the above problems by providing a series of scripts starts with a prefix f
 (e.g. `dotbare fadd`, `dotbare flog` etc) that will enable a interactive experience by processing
-all the git information and display it through fzf. `dotbare` also comes with the ability to integrate with
-GNU stow or any symlink set up as long as you are using git. It is easy to migrate to any system
-with minimal set up required.
+all the git information and display it through fzf. In addition, `dotbare` also comes with command line completion
+that you could choose to either to complete `git` commands or `dotbare` commands.
+`dotbare` also comes with the ability to integrate with GNU stow or any symlink set up as long as you are using git.
+It is easy to migrate to any system with minimal set up required.
 
 ## Install
 
 ### zsh
 
-`dotbare` should work with any zsh plugin manager, below is only demonstration.
+`dotbare` should work with any zsh plugin manager, below is only demonstration. Checkout [wiki](https://github.com/kazhala/dotbare/wiki/Completion#zsh)
+about how to enable completion for zsh.
 
 #### zinit
 
@@ -94,8 +102,9 @@ antigen bundle kazhala/dotbare
 
 ### bash
 
-`dotbare` comes with a `dotbare.plugin.bash` which will enable both bash command line
-completion for dotbare commands and adding dotbare to your PATH.
+`dotbare` comes with a `dotbare.plugin.bash` which contains the command line completion
+function for both `git` and `dotbare`, checkout [wiki](https://github.com/kazhala/dotbare/wiki/Completion#bash)
+about how to enable it.
 
 - Clone the repository (change ~/.dotbare to the location of your preference).
 
@@ -135,25 +144,26 @@ completion for dotbare commands and adding dotbare to your PATH.
 
 ### Dependencies
 
-- Required dependency
+You will need git on the system for obvious reasons..and because `dotbare` is written in bash,
+it will require you to have bash in the system (You don't need to run bash, just need to be in the system).
 
-  - git
-  - [fzf](https://github.com/junegunn/fzf)
-  - bash(You don't need to run bash, but dotbare does require you have bash in your system)
+#### Required dependency
 
-- Optional dependency
+- [fzf](https://github.com/junegunn/fzf)
 
-  - [tree](https://linux.die.net/man/1/tree) (Provide a directory tree view when finding directory)
+#### Optional dependency
 
-    ```sh
-    # if you are on macos
-    brew install tree
-    ```
+- [tree](https://linux.die.net/man/1/tree) (Provide a directory tree view when finding directory)
 
-  - [bat](https://github.com/sharkdp/bat), [highlight](http://www.andre-simon.de/doku/highlight/en/highlight.php), [coderay](https://github.com/rubychan/coderay)
-    or [rougify](https://github.com/rouge-ruby/rouge) (Syntax highlighting when previewing files)
-  - [delta](https://github.com/dandavison/delta), [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy)
-    or any diff tools of your choice (Fancy git diff preview like in the screen shot)
+  ```sh
+  # if you are on macos
+  brew install tree
+  ```
+
+- [bat](https://github.com/sharkdp/bat) or [highlight](http://www.andre-simon.de/doku/highlight/en/highlight.php) or [coderay](https://github.com/rubychan/coderay)
+  or [rougify](https://github.com/rouge-ruby/rouge) (Syntax highlighting when previewing files, otherwise cat will be used)
+- [delta](https://github.com/dandavison/delta) or [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy)
+  or any diff tools of your choice (Fancy git diff preview like in the screen shot)
 
 ### Setup
 
@@ -356,6 +366,8 @@ fzf behavior from your normal system fzf settings.
 ```sh
 # By default this variable is not set
 # More settings checkout fzf man page and their wiki
+# Example: if you want your preview window for dotbare to be bigger
+export DOTBARE_FZF_DEFAULT_OPTS="--preview-window=right:65%"
 ```
 
 ### DOTBARE_PREVIEW
@@ -367,6 +379,7 @@ you have a specific preference or if you want extra flags/settings. Reference [h
 ```sh
 # By default this value is not set, dotbare uses a fall back method to determine which command to use.
 # Make sure to have "{}" included when customizing it, the preview script substitute "{}" for actual filename.
+# Example: enable line number for cat command
 export DOTBARE_PREVIEW="cat -n {}"
 ```
 
@@ -374,7 +387,7 @@ export DOTBARE_PREVIEW="cat -n {}"
 
 This variable controls the diff output pager in previews like `dotbare flog`, `dotbare fadd` etc. It will read the value
 of `git config core.pager` to determine the pager to use. If you have a specific preference for `dotbare` or have not set
-the global pager, you could use this variable to customize the diff preview.
+the global pager in git config, you could use this variable to customize the diff preview.
 
 ```sh
 # By default this value uses fall back (git config core.pager -> cat)
@@ -383,12 +396,12 @@ export DOTBARE_DIFF_PAGER="delta --diff-so-fancy --line-numbers"
 
 ## Usage
 
-A full list of `dotbare` commands and their usage are documented in **[wiki](https://github.com/kazhala/dotbare/wiki/Commands)**.
+All usage and commands are documented in **[wiki](https://github.com/kazhala/dotbare/wiki/Commands)**.
 
-## Custom Scripts
-
-Detailed explanation of how to create custom scripts and the API of `dotbare` helper functions
-is documented over in **[wiki](https://github.com/kazhala/dotbare/wiki/Custom-Scripts)**.
+- [Commands](https://github.com/kazhala/dotbare/wiki/Commands)
+- [Completion](https://github.com/kazhala/dotbare/wiki/Completion)
+- [Custom Scripts and API](https://github.com/kazhala/dotbare/wiki/Custom-Scripts)
+- [Tips and Tricks](https://github.com/kazhala/dotbare/wiki/Tips-and-Tricks)
 
 ## Changes
 
@@ -397,7 +410,7 @@ Latest changes are documented in CHANGELOG.md. View the upcoming changes in the 
 ## Testing
 
 `dotbare` is unit tested using [bats](https://github.com/bats-core/bats-core). Mock tests are implemented using PATH override method.
-This documented in a dedicated README in tests folder for more readability and extensibility.
+This is documented [here](https://github.com/kazhala/dotbare/blob/master/tests/README.md) for better readability and extensibility.
 
 Not all functions have 100% coverage and lots of user interaction cannot be effectively tested, please fire up issues if something went wrong.
 
@@ -406,23 +419,10 @@ you could checkout my cloudformation [template](https://github.com/kazhala/AWSCl
 
 ## Contributing
 
-> A CONTRIBUTING.md is coming.
+Checkout out [CONTRIBUTING.md](https://github.com/kazhala/dotbare/blob/master/CONTRIBUTING.md) to see how you could contribute to `dotbare`. PRs are
+welcome and I'm happy to improve/extend `dotbare`'s functionality.
 
-Please help me out by pointing out things that I could improve.
-I've only been scripting for a few months and are still learning many new things every day. PR are always welcome
-and please fire up issues if something went wrong.
-
-Leave a star :)
-
-## Coming up
-
-- [x] Improve unit test with mocking
-- [x] Support submodules during migration
-- [ ] Command line completion for dotbare in zsh
-- [x] Command line completion for dotbare in bash
-- [ ] Command line completion for git commands
-- [ ] Man page
-- [x] Installation method
+Don't forget to leave a star :)
 
 ## Background
 
@@ -433,7 +433,7 @@ for it. I hope you find it useful and enjoy it, thanks!
 ## Credit
 
 - credit to [forgit](https://github.com/wfxr/forgit) for inspiration.
-- credit to [fzf](https://github.com/junegunn/fzf) for fzf.
+- credit to [fzf](https://github.com/junegunn/fzf) for fzf and the preview script from fzf.vim.
 - credit to [OMZ](https://github.com/ohmyzsh/ohmyzsh) for upgrading method.
 - credit to [this](https://www.atlassian.com/git/tutorials/dotfiles) post for step by step guide of setting up git bare repo.
 - credit to [this](https://www.youtube.com/watch?v=tBoLDpTWVOM&t=288s) video for introducing git bare repo.

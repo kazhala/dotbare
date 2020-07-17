@@ -7,10 +7,12 @@ set -f
 mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 function usage() {
-  echo -e "Usage: dotbare fupgrade [-h] ...\n"
-  echo -e "Upgrade dotbare to the latest master.\n"
-  echo -e "optional arguments:"
-  echo -e "  -h, --help\t\tshow this help message and exit."
+  echo -e "Usage: dotbare fupgrade [-h] ...
+
+Upgrade dotbare to the latest master.
+
+Optional arguments:
+  -h, --help\t\tshow this help message and exit."
 }
 
 while [[ "$#" -gt 0 ]]; do

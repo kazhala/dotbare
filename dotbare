@@ -16,25 +16,29 @@ mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "${mydir}"/helper/set_variable.sh
 
 function usage() {
-  echo -e "Usage: dotbare [-h] [-v] [COMMANDS] [OPTIONS] ...\n"
-  echo -e "Interactively manage dotfiles with the help of fzf and git bare repository."
-  echo -e "To see all dotbare specific COMMANDS, run dotbare without any arguments.\n"
-  echo -e "optional arguments:"
-  echo -e "  -h, --help\t\tshow this help message and exit."
-  echo -e "  -v, --version\t\tshow dotbare current version.\n"
-  echo -e "Available commands:"
-  echo -e "  All git commands are available, treat dotbare as git."
-  echo -e "  fadd      \t\tstage files/directories interactively."
-  echo -e "  freset    \t\treset(unstage) files or commit interactively."
-  echo -e "  funtrack  \t\tuntrack files interactively."
-  echo -e "  fstash    \t\tmanage stash interactively."
-  echo -e "  fcheckout \t\tcheckout branch/files/commit interactively."
-  echo -e "  fstat     \t\tinteractive menu to toggle stage/unstage."
-  echo -e "  fedit     \t\tinteractively select files/commit and edit."
-  echo -e "  flog      \t\tmanage commits interactively."
-  echo -e "  fbackup   \t\tperform backup for tracked files."
-  echo -e "  fupgrade  \t\tupdate dotbare to the latest master."
-  echo -e "  finit     \t\tinitialise dotbare or migrate dotfiles to a new machine."
+  echo -e "Usage: dotbare [-h] [-v] [COMMANDS] [OPTIONS] ...
+
+Interactively manage dotfiles with the help of fzf and git bare repository.
+To see all dotbare specific COMMANDS, run dotbare without any arguments.
+
+Optional arguments:
+  -h, --help\t\tshow this help message and exit.
+  -v, --version\t\tshow dotbare current version.
+
+Available commands:
+  All git commands are available, treat dotbare as git.
+  fadd      \t\tstage files/directories interactively.
+  fbackup   \t\tperform backup for tracked files.
+  fcheckout \t\tcheckout branch/files/commit interactively.
+  fedit     \t\tinteractively select files/commit and edit.
+  fgrep     \t\tgrep within tracked files.
+  finit     \t\tinitialise dotbare or migrate dotfiles to a new machine.
+  flog      \t\tmanage commits interactively.
+  freset    \t\treset(unstage) files or commit interactively.
+  fstash    \t\tmanage stash interactively.
+  fstat     \t\tinteractive menu to toggle stage/unstage.
+  funtrack  \t\tuntrack files interactively.
+  fupgrade  \t\tupdate dotbare to the latest master."
 }
 
 # if no argument, display all possible actions

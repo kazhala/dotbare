@@ -10,3 +10,4 @@ scripts/*
 !scripts/fstat
 !scripts/funtrack
 !scripts/fupgrade
+!scripts/fgrep

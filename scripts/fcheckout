@@ -25,18 +25,21 @@ source "${mydir}"/../helper/get_confirmation.sh
 source "${mydir}"/../helper/git_query.sh
 
 function usage() {
-  echo -e "Usage: dotbare fcheckout [-h] [-s] [-b] [-c] [-y] ...\n"
-  echo -e "Select files/commit/branch through fzf and checkout the selected objects."
-  echo -e "Files: checkout the version in HEAD or in a specific commit (reset files content back to the selected commit)."
-  echo -e "Branch: switch to the selected branch."
-  echo -e "Commit: switch to a specific commit.\n"
-  echo -e "Default: list all modified files and reset selected files back to HEAD.\n"
-  echo -e "optional arguments:"
-  echo -e "  -h, --help\t\tshow this help message and exit."
-  echo -e "  -s, --select\t\tlist all tracked files and select a commit to checkout the selected files."
-  echo -e "  -b, --branch\t\tlist all branch and checkout/switch the selected branch."
-  echo -e "  -c, --commit\t\tlist all commits and checkout selected commit."
-  echo -e "  -y, --yes\t\tacknowledge all actions that will be taken and skip confirmation."
+  echo -e "Usage: dotbare fcheckout [-h] [-s] [-b] [-c] [-y] ...
+
+Select files/commit/branch through fzf and checkout the selected objects.
+Files: checkout the version in HEAD or in a specific commit (reset files content back to the selected commit).
+Branch: switch to the selected branch.
+Commit: switch to a specific commit.
+
+Default: list all modified files and reset selected files back to HEAD.
+
+Optional arguments:
+  -h, --help\t\tshow this help message and exit.
+  -s, --select\t\tlist all tracked files and select a commit to checkout the selected files.
+  -b, --branch\t\tlist all branch and checkout/switch the selected branch.
+  -c, --commit\t\tlist all commits and checkout selected commit.
+  -y, --yes\t\tacknowledge all actions that will be taken and skip confirmation."
 }
 
 action_type="modified"

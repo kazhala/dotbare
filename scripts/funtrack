@@ -23,20 +23,25 @@ source "${mydir}"/../helper/git_query.sh
 source "${mydir}"/../helper/get_confirmation.sh
 
 function usage() {
-  echo -e "Usage: dotbare funtrack [-h] [-t] [-r] [-y] ...\n"
-  echo -e "Untrack selected files from git.\n"
-  echo -e "Default: list all tracked files and permanently untrack the selected files (using git rm --cached filename).\n"
-  echo -e "Files will be remove from index while keeping the file in your current system."
-  echo -e "However, when your other computers pull down the changes, the untracked files will be deleted."
-  echo -e "Make sure to run dotbare fbackup before pulling down the changes.\n"
-  echo -e "Alternatively use the -t flag (using git update-index --assume-unchanged [path]) to temporarily"
-  echo -e "untrack a file but keeping the files when other computers pull down the changes."
-  echo -e "More information please refere to dotbare's github.\n"
-  echo -e "optional arguments:"
-  echo -e "  -h, --help\t\tshow this help message and exit."
-  echo -e "  -t, --temp\t\tlist all tracked files and temporarily ignore changes of the selected files."
-  echo -e "  -r, --resume\t\tlist all tracked files and resume tracking changes of the selected files."
-  echo -e "  -y, --yes\t\tacknowledge all actions that will be taken and skip confirmation."
+  echo -e "Usage: dotbare funtrack [-h] [-t] [-r] [-y] ...
+
+Untrack selected files from git.
+
+Default: list all tracked files and permanently untrack the selected files (using git rm --cached filename).
+
+Files will be remove from index while keeping the file in your current system.
+However, when your other computers pull down the changes, the untracked files will be deleted.
+Make sure to run dotbare fbackup before pulling down the changes.
+
+Alternatively use the -t flag (using git update-index --assume-unchanged [path]) to temporarily
+untrack a file but keeping the files when other computers pull down the changes.
+More information please refere to dotbare's github.
+
+Optional arguments:
+  -h, --help\t\tshow this help message and exit.
+  -t, --temp\t\tlist all tracked files and temporarily ignore changes of the selected files.
+  -r, --resume\t\tlist all tracked files and resume tracking changes of the selected files.
+  -y, --yes\t\tacknowledge all actions that will be taken and skip confirmation."
 }
 
 track_type="untrack"

@@ -21,13 +21,16 @@ source "${mydir}"/../helper/set_variable.sh
 source "${mydir}"/../helper/git_query.sh
 
 function usage() {
-  echo -e "Usage: dotbare fedit [-h] [-m] [-c] ...\n"
-  echo -e "Select files/commits through fzf and edit selected files/commits in EDITOR.\n"
-  echo -e "Default: list all tracked dotfiles and edit the selected files.\n"
-  echo -e "optional arguments:"
-  echo -e "  -h, --help\t\tshow this help message and exit."
-  echo -e "  -m, --modified\tonly list and edit selected modified files."
-  echo -e "  -c, --commit\t\tlist commit and edit the selected commit through interactive rebase."
+  echo -e "Usage: dotbare fedit [-h] [-m] [-c] ...
+
+Select files/commits through fzf and edit selected files/commits in EDITOR.
+
+Default: list all tracked dotfiles and edit the selected files.
+
+Optional arguments:
+  -h, --help\t\tshow this help message and exit.
+  -m, --modified\tonly list and edit selected modified files.
+  -c, --commit\t\tlist commit and edit the selected commit through interactive rebase."
 }
 
 edit_type="all"
