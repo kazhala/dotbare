@@ -92,7 +92,7 @@ elif [[ "${action_type}" == "modified" ]]; then
   # checkout modified file back to version in HEAD
   while IFS= read -r line; do
     selected_files+=("${line}")
-  done < <(get_modified_file 'select a file to checkout version in HEAD')
+  done < <(get_modified_file 'select files to checkout version in HEAD')
   [[ "${#selected_files[@]}" -eq 0 ]] && exit 1
   [[ -z "${confirm}" ]] && echo "(dryrun) dotbare checkout --" "${selected_files[@]}"
   [[ -z "${confirm}" ]] && confirm=$(get_confirmation "Confirm?")
@@ -102,7 +102,7 @@ elif [[ "${action_type}" == "select" ]]; then
   # checkout selected files to a selected commit
   while IFS= read -r line; do
     selected_files+=("${line}")
-  done < <(get_git_file 'select a file to checkout')
+  done < <(get_git_file 'select files to checkout to previous commit')
   [[ "${#selected_files[@]}" -eq 0 ]] && exit 1
   # continue select a commit and then checkout the file back to the selected commit
   selected_commit=$(get_commit 'select the target commit' "${selected_files[@]}")
