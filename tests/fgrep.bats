@@ -28,5 +28,5 @@ edit_lines() {
 
 @test "fgrep edit lines" {
   run edit_lines
-  [[ "${output}" =~ "fgrep_lines" ]]
+  [[ "${output}" =~ "fgrep_words" ]]
 }

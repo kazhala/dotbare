@@ -19,7 +19,7 @@ source "${mydir}"/../helper/git_query.sh
 function usage() {
   echo -e "Usage: dotbare fgrep [-h] ...
 
-Grep words within tracked files and select to edit them through fzf.
+Grep words within tracked files and select to edit matches.
 
 Optional arguments:
   -h, --help\t\tshow this help message and exit."
@@ -52,7 +52,7 @@ while IFS= read -r line; do
       selected_lines+=("${line}")
       ;;
   esac
-done < <(grep_lines)
+done < <(grep_words)
 
 [[ "${#selected_lines[@]}" -eq 0 ]] && exit 1
 

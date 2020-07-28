@@ -200,8 +200,8 @@ function get_stash() {
 #   the selected file name with it's line number and line, seperated by ":"
 #   e.g. .bash_profile:1:echo hello
 #######################################
-function grep_lines() {
-  local header="${1:-select lines to edit}"
+function grep_words() {
+  local header="${1:-select matches to edit}"
   set_fzf_multi "$2"
   cd "${DOTBARE_TREE}" || exit
   git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
