@@ -5,7 +5,7 @@ mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 __dotbare_completion()
 {
-  local IFS=$'\n' subcommands curr prev options suggestions
+  local IFS=$'\n' subcommands curr prev options verbose_options suggestions
   curr="${COMP_WORDS[$COMP_CWORD]}"
   prev="${COMP_WORDS[$COMP_CWORD-1]}"
 
@@ -20,7 +20,6 @@ __dotbare_completion()
             }
           }'
     )
-
     options=$(
       "${mydir}"/dotbare -h \
         | awk '{
@@ -33,8 +32,10 @@ __dotbare_completion()
             }
           }'
     )
-
-    if [[ "${curr}" == -* ]]; then
+    verbose_options=$("${mydir}"/dotbare -h | awk '$0 ~ /^  -.*/ {print $2}')
+    if [[ "${curr}" == --* ]]; then
+      suggestions=($(compgen -W "${verbose_options}" -- "${curr}"))
+    elif [[ "${curr}" == -* ]]; then
       suggestions=($(compgen -W "${options}" -- "${curr}"))
     else
       suggestions=($(compgen -W "${subcommands}" -- "${curr}"))
@@ -45,10 +46,23 @@ __dotbare_completion()
     return
   elif [[ "${COMP_WORDS[1]}" == "finit" && "${prev}" == "-u" ]]; then
     return
-
+  elif [[ "${curr}" == --* && "${prev}" != "-h" && "${prev}" != "--help" ]]; then
+    verbose_options=$(
+      "${mydir}"/dotbare "${COMP_WORDS[1]}" -h 2> /dev/null \
+        | awk '{
+            if ($0 ~ /^  -p PATH/) {
+              print "--path"
+            } else if ($0 ~ /^  -u URL/) {
+              print "--url"
+            } else if ($0 ~ /^  -*/) {
+              print $2
+            }
+          }'
+    )
+    suggestions=($(compgen -W "${verbose_options}" -- "${curr}"))
   elif [[ "${prev}" != "-h" && "${prev}" != "--help" ]]; then
     options=$(
-      "${mydir}"/dotbare "${COMP_WORDS[1]}" -h \
+      "${mydir}"/dotbare "${COMP_WORDS[1]}" -h 2> /dev/null \
         | awk '{
             gsub(/,/, " ", $0)
             if ($0 ~ /^  -p PATH/) {
