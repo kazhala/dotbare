@@ -21,22 +21,22 @@ elif [[ "$*" =~ "--no-multi --header=select a branch to checkout" ]]; then
 elif [[ "$*" =~ "--header=select a commit to checkout" ]] && [[ "$*" =~ "show --color" ]]; then
   # dotbare fcheckout --c -- "./fcheckout.bats" @test "fcheckout commit"
   echo "fcheckout_commit"
-elif [[ "$*" =~ "--header=select a file to checkout version in HEAD" ]] && [[ "$*" =~ "diff HEAD --color=always" ]]; then
+elif [[ "$*" =~ "--header=select files to checkout version in HEAD" ]] && [[ "$*" =~ "diff HEAD --color=always" ]]; then
   # dotbare fcheckout -y -- "./fcheckout.bats" @test "fcheckout modified"
   echo "-- fcheckout_modified"
 elif [[ "$*" =~ '--header=select the target commit' ]] && [[ "$*" =~ "diff --color" ]]; then
   # dotbare fcheckout --yes -s -- "./fcheckout.bats" @test "fcheckout select"
   echo "fcheckout_select_commitdiff"
-elif [[ "$*" =~ '--header=select a file to checkout' ]] && [[ "$*" =~ "preview.sh ${DOTBARE_TREE}/{}" ]]; then
+elif [[ "$*" =~ '--header=select files to checkout' ]] && [[ "$*" =~ "preview.sh ${DOTBARE_TREE}/{}" ]]; then
   # dotbare fcheckout --yes -s -- "./fcheckout.bats" @test "fcheckout select"
   echo "fcheckout_select_gitfile"
-elif [[ "$*" =~ "--header=select a commit to rename --no-multi" ]] && [[ "$*" =~ "show --color=always" ]]; then
+elif [[ "$*" =~ "--header=select a commit to edit --no-multi" ]] && [[ "$*" =~ "show --color=always" ]]; then
   # dotbare fedit --commit -- "./fedit.bats" @test "fedit edit commits"
   echo "fedit_commits"
-elif [[ "$*" =~ "--header=select tracked files to edit" ]]; then
+elif [[ "$*" =~ "--header=select files to edit" ]]; then
   # dotbare fedit -- "./fedit.bats" @test "fedit edit files"
   echo "fedit_files"
-elif [[ "$*" =~ '--header=select the target commit for HEAD --no-multi' ]] && [[ "$*" =~ "show --color" ]]; then
+elif [[ "$*" =~ '--header=select the target commit --no-multi' ]] && [[ "$*" =~ "show --color" ]]; then
   # dotbare freset --commit -y -- "./freset.bats" @test "freset select commit"
   echo "freset_commit"
 elif [[ "$*" =~ "--header=select files to unstage" ]] && [[ "$*" =~ "diff HEAD --color=always" ]]; then
