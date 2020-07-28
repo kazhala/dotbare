@@ -2,6 +2,17 @@
 
 Noteble changes are documentated in this file.
 
+## dev
+
+### Added
+
+- Hide preview window on small window (when \$COLUMNS less than 80)
+  - If using default keybinds, use `alt-t` to re-open the preview
+
+### CHANGED
+
+- Update the fzf header to make more sense, some wording issues
+
 ## 1.2.3 (17/07/2020)
 
 ### Added
@@ -10,7 +21,7 @@ Noteble changes are documentated in this file.
 - zsh completion for git commands
 - bash completion for git commands
 - fgrep: grep words within tracked dotfiles and edit them through EDITOR
-  More info is documented in wiki.
+  - More info is documented in wiki
 
 ### Changed
 
@@ -33,11 +44,11 @@ Noteble changes are documentated in this file.
 
 - dynamic preview function, detect bats, hightlight etc to provide syntax hightlighting when previewing files.
 - Custom preview ENV variable (DOTBARE_PREVIEW)
-  Note: has to be this format `export DOTBARE_PREVIEW='cat -n {}'`, the `{}` is
-  used in preview functions to subsitute for the filepath.
+  - Note: has to be this format `export DOTBARE_PREVIEW='cat -n {}'`, the `{}` is
+    used in preview functions to subsitute for the filepath.
 - Added support for fancy diff tools like "diff-so-fancy" or "delta"
-  This is optional, only takes effect if installed and set as `git config core.pager`
-  Also configurable through DOTBARE_DIFF_PAGER, these are documentated in the README.
+  - This is optional, only takes effect if installed and set as `git config core.pager`
+  - Also configurable through DOTBARE_DIFF_PAGER, these are documentated in the README.
 
 ## 1.2.0 (01/07/2020)
 
