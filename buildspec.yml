@@ -4,6 +4,8 @@ env:
   parameter-store:
     LOGIN_PASSWORD: /dotbare/dockerpassword
     LOGIN_USERNAME: /dotbare/dockerusername
+  exported-variables:
+    COLUMNS: 80
 
 phases:
   install:

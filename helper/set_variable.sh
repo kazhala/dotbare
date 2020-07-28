@@ -41,7 +41,8 @@ FZF_DEFAULT_OPTS="
   $DOTBARE_KEY
 "
 
-COLUMNS=$(stty size < /dev/tty | cut -d' ' -f2)
+[[ -z "${COLUMNS}" ]] \
+  && COLUMNS=$(stty size < /dev/tty | cut -d' ' -f2)
 [[ "${COLUMNS}" -lt 80 ]] \
   && FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --preview-window=hidden"
 
