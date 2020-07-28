@@ -21,7 +21,7 @@ export DOTBARE_DIFF_PAGER="${DOTBARE_DIFF_PAGER:-$(git config core.pager || echo
 
 export EDITOR="${EDITOR:-vim}"
 if [[ -z "${DOTBARE_KEY}" ]]; then
-  export DOTBARE_KEY="
+  DOTBARE_KEY="
     --bind=alt-a:toggle-all
     --bind=alt-w:jump
     --bind=alt-0:top
@@ -32,7 +32,7 @@ fi
 
 [[ -z "${FZF_DEFAULT_OPTS}" ]] && export FZF_DEFAULT_OPTS='--cycle'
 
-export FZF_DEFAULT_OPTS="
+FZF_DEFAULT_OPTS="
   $FZF_DEFAULT_OPTS
   --ansi
   --cycle
@@ -40,6 +40,10 @@ export FZF_DEFAULT_OPTS="
   $DOTBARE_FZF_DEFAULT_OPTS
   $DOTBARE_KEY
 "
+
+COLUMNS=$(stty size < /dev/tty | cut -d' ' -f2)
+[[ "${COLUMNS}" -lt 80 ]] \
+  && FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --preview-window=hidden"
 
 #######################################
 # determine to set multi selection or not
