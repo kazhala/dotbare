@@ -17,7 +17,7 @@ phases:
       - 'echo $LOGIN_PASSWORD | docker login --username $LOGIN_USERNAME --password-stdin'
   build:
     commands:
-      - echo Checking script compliance
+      - echo Checking script compliance ...
       - ./tests/shellcheck.sh
       - echo Building docker url image ...
       - docker image build --build-arg MIGRATE=url -t kazhala/dotbare:testurl -f tests/Dockerfile .
@@ -28,8 +28,10 @@ phases:
       - echo Running bats unittest ...
       - docker container run -i --rm --name dotbare kazhala/dotbare:testbare
       - echo Building docker image ...
-      - docker image build -t kazhala/dotbare:latest .
+      - DOTBARE_VERSION=$(./dotbare --version | awk -F ": v" '{print $2}')
+      - docker image build -t kazhala/dotbare:latest -t kazhala/fzfaws:$DOTBARE_VERSION .
   post_build:
     commands:
       - echo Deploying docker image ...
       - docker image push kazhala/dotbare:latest
+      - docker image push kazhala/dotbare:$DOTBARE_VERSION
