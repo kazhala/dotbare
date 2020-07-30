@@ -83,7 +83,15 @@ case "$1" in
       DOTBARE_TREE=$(git rev-parse --show-toplevel)
       DOTBARE_DIR="${DOTBARE_TREE}/.git"
       shift
-      execute_dotbare "$@"
+      case "$1" in
+        fbackup|finit|fupgrade)
+          echo "dotbare $1 is not supported when using dotbare as a generic fuzzy git tool"
+          exit 1
+          ;;
+        *)
+          execute_dotbare "$@"
+          ;;
+      esac
     else
       echo "Not in a git directory"
       exit 1
