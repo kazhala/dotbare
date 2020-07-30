@@ -9,6 +9,9 @@ Noteble changes are documentated in this file.
 - hide preview window on small window (when \$COLUMNS less than 80)
   - If using default keybinds, use `alt-t` to re-open the preview
 - verbose flag completion for bash
+- `dotbare` can now be used as a generic fuzzy git tool, using `-g` or `--git flag`
+  - Sort of like a replacement for `forgit`, bascially just dynamiclly switching
+    `DOTBARE_DIR` and `DOTBARE_TREE` to the current git directory.
 
 ### CHANGED
 
