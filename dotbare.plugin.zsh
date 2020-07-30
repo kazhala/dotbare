@@ -14,6 +14,7 @@ __dotbare_completion() {
   _arguments -C \
     '(- : *)'{-h,--help}'[show help information]' \
     '(- : *)'{-v,--version}'[display dotbare version]' \
+    '(-g --git)'{-g,--git}'[use dotbare as a generic fuzzy git tool and operate in current git directory]' \
     '1:cmds:->cmds' \
     '*::options:->options' \
     && ret=0

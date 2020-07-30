@@ -41,6 +41,59 @@ __dotbare_completion()
       suggestions=($(compgen -W "${subcommands}" -- "${curr}"))
     fi
 
+  elif [[ "${COMP_CWORD}" -eq 2 && "${prev}" == "-g" || "${prev}" == "--git" ]]; then
+    subcommands=$(
+      "${mydir}"/dotbare -h \
+        | awk '{
+            if ($0 ~ /^  f.*/) {
+              if ($0 ~ /^  f(backup|init|upgrade).*/) {
+                next
+              }
+              gsub(/^  /, "", $0)
+              gsub(/\t\t/, "    ", $0)
+              print $0
+            }
+          }'
+    )
+    suggestions=($(compgen -W "${subcommands}" -- "${curr}"))
+
+  elif [[ "${COMP_WORDS[1]}" == "-g" || "${COMP_WORDS[1]}" == "--git" ]] && [[ "${COMP_CWORD}" -gt 2 ]]; then
+    if [[ "${curr}" == --* && "${prev}" != "-h" && "${prev}" != "--help" ]]; then
+      verbose_options=$(
+        "${mydir}"/dotbare "${COMP_WORDS[2]}" -h 2> /dev/null \
+          | awk '{
+              if ($0 ~ /^  -p PATH/) {
+                next
+              } else if ($0 ~ /^  -u URL/) {
+                next
+              } else if ($0 ~ /^  -*/) {
+                print $2
+              }
+            }'
+      )
+      suggestions=($(compgen -W "${verbose_options}" -- "${curr}"))
+    elif [[ "${prev}" != "-h" && "${prev}" != "--help" ]]; then
+      options=$(
+        "${mydir}"/dotbare "${COMP_WORDS[2]}" -h 2> /dev/null \
+          | awk '{
+              gsub(/,/, " ", $0)
+              if ($0 ~ /^  -p PATH/) {
+                next
+              } else if ($0 ~ /^  -u URL/) {
+                next
+              } else if ($0 ~ /^  -*/) {
+                gsub(/^  /, "", $0)
+                gsub(/\t/, "  ", $0)
+                $2=""
+                print $0
+              }
+            }'
+      )
+      suggestions=($(compgen -W "${options}" -- "${curr}"))
+    else
+      return
+    fi
+
   elif [[ "${COMP_WORDS[1]}" == "fbackup" && "${prev}" == "-p" ]]; then
     COMPREPLY=($(compgen -d -- "${curr}"))
     return
