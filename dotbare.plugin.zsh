@@ -75,6 +75,8 @@ __dotbare_completion() {
         fgrep)
           _arguments \
             '(- : *)'{-h,--help}'[show help information]' \
+            '(-f --full -c --col)'{-f,--full}'[include all columns during fzf search, as if using "--col 1"]' \
+            '(-f --full -c --col)'{-c,--col}'[specify a column number to start searching in fzf]: :->cols' \
             && ret=0
           ;;
         finit)

@@ -94,10 +94,10 @@ __dotbare_completion()
       return
     fi
 
-  elif [[ "${COMP_WORDS[1]}" == "fbackup" && "${prev}" == "-p" ]]; then
+  elif [[ "${COMP_WORDS[1]}" == "fbackup" ]] && [[ "${prev}" == "-p" || "${prev}" == "--path" ]]; then
     COMPREPLY=($(compgen -d -- "${curr}"))
     return
-  elif [[ "${COMP_WORDS[1]}" == "finit" && "${prev}" == "-u" ]]; then
+  elif [[ "${COMP_WORDS[1]}" == "finit" ]] && [[ "${prev}" == "-u" || "${prev}" == "--url" ]]; then
     return
   elif [[ "${curr}" == --* && "${prev}" != "-h" && "${prev}" != "--help" ]]; then
     verbose_options=$(
@@ -107,6 +107,8 @@ __dotbare_completion()
               print "--path"
             } else if ($0 ~ /^  -u URL/) {
               print "--url"
+            } else if ($0 ~ /^  -c COL/) {
+              print "--col"
             } else if ($0 ~ /^  -*/) {
               print $2
             }
@@ -124,6 +126,10 @@ __dotbare_completion()
               print $0
             } else if ($0 ~ /^  -u URL/) {
               gsub(/^  -u URL  --url URL/, "-u", $0)
+              gsub(/\t/, "  ", $0)
+              print $0
+            } else if ($0 ~ /^  -c COL/) {
+              gsub(/^  -c COL  --col COL/, "-c", $0)
               gsub(/\t/, "  ", $0)
               print $0
             } else if ($0 ~ /^  -*/) {
