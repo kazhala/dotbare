@@ -202,11 +202,12 @@ function get_stash() {
 #######################################
 function grep_words() {
   local header="${1:-select matches to edit}"
+  local delimiter="${2:-3}"
   set_fzf_multi "$2"
   cd "${DOTBARE_TREE}" || exit
   git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" \
     grep --line-number -- . \
-    | fzf --delimiter : --nth 3.. --header="${header}" \
+    | fzf --delimiter : --nth "${delimiter}".. --header="${header}" \
         --preview "${mydir}/../helper/preview.sh ${DOTBARE_TREE}/{}" \
     | awk -F ":" -v home="${DOTBARE_TREE}" '{
         print home "/" $1 ":" $2

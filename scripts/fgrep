@@ -26,9 +26,19 @@ Optional arguments:
 }
 
 selected_lines=()
+fzf_search_delimiter=3
 
 while [[ "$#" -gt 0 ]]; do
   case "$1" in
+    -d|--delimiter)
+      fzf_search_delimiter="$2"
+      shift
+      shift
+      ;;
+    -f|--full)
+      fzf_search_delimiter=1
+      shift
+      ;;
     -h|--help)
       usage
       exit 0
@@ -52,7 +62,7 @@ while IFS= read -r line; do
       selected_lines+=("${line}")
       ;;
   esac
-done < <(grep_words)
+done < <(grep_words "select matches to edit" "${fzf_search_delimiter}")
 
 [[ "${#selected_lines[@]}" -eq 0 ]] && exit 1
 
