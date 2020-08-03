@@ -14,10 +14,32 @@ edit_lines() {
   bash "${BATS_TEST_DIRNAME}"/../dotbare fgrep
 }
 
+full_deli() {
+  export PATH="${BATS_TEST_DIRNAME}:$PATH"
+  export EDITOR="echo"
+  bash "${BATS_TEST_DIRNAME}"/../dotbare fgrep --full
+}
+
+option_deli() {
+  export PATH="${BATS_TEST_DIRNAME}:$PATH"
+  export EDITOR="echo"
+  bash "${BATS_TEST_DIRNAME}"/../dotbare fgrep --col 2
+}
+
+@test "fgrep option delimiter" {
+  run option_deli
+  [[ "${output}" =~ "--nth 2.. --header=select matches to edit" ]]
+}
+
+@test "fgrep full delimiter" {
+  run full_deli
+  [[ "${output}" =~ "--nth 1.. --header=select matches to edit" ]]
+}
+
 @test "fgrep help" {
   run help
   [ "${status}" -eq 0 ]
-  [ "${lines[0]}" = "Usage: dotbare fgrep [-h] ..." ]
+  [ "${lines[0]}" = "Usage: dotbare fgrep [-h] [-c] [-f] ..." ]
 }
 
 @test "fgrep invalid option" {
@@ -28,5 +50,5 @@ edit_lines() {
 
 @test "fgrep edit lines" {
   run edit_lines
-  [[ "${output}" =~ "fgrep_words" ]]
+  [[ "${output}" =~ "--nth 3.. --header=select matches to edit" ]]
 }

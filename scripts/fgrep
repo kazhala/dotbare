@@ -20,7 +20,7 @@ source "${mydir}"/../helper/set_variable.sh
 source "${mydir}"/../helper/git_query.sh
 
 function usage() {
-  echo -e "Usage: dotbare fgrep [-h] ...
+  echo -e "Usage: dotbare fgrep [-h] [-c] [-f] ...
 
 Grep words within tracked files and select to edit matches.
 

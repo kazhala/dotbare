@@ -60,9 +60,6 @@ elif [[ "$*" =~ '--header=select stash to delete' ]] && [[ "$*" =~ "show -p __ -
 elif [[ "$*" =~ '--header=select stash to apply' ]] && [[ "$*" =~ "show -p __ --color=always" ]]; then
   # dotbare fstash -- "./fstash.bats" @test "fstash apply stash"
   echo "fstash_apply"
-elif [[ "$*" =~ '--delimiter : --nth 3..' ]]; then
-  # dotbare fgrep -- "./fgrep.bats" @test "fgrep edit lines"
-  echo "fgrep_words"
 else
   echo "$@"
 fi
