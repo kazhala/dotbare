@@ -6,8 +6,11 @@
 # Globals
 #   mydir: path to this current script
 #   selected_lines: selected lines to edit
+#   fzf_search_delimiter: the col to start searching in fzf
 # Arguments
 #   -h|--help: show help message and exit
+#   -c COL| --col COL: use a different delimiter in fzf search
+#   -f|--full: include file name in fzf searching, as if using --col 1
 
 set -e
 set -f
@@ -21,8 +24,12 @@ function usage() {
 
 Grep words within tracked files and select to edit matches.
 
+Default: start searching from 3rd column (excluding the file name during search).
+
 Optional arguments:
-  -h, --help\t\tshow this help message and exit."
+  -h, --help\t\tshow this help message and exit.
+  -c COL, --col COL\tspecify the column number to start searching.
+  -f, --full\t\tinclude all column during search, as if using '--col 1'."
 }
 
 selected_lines=()
@@ -30,7 +37,7 @@ fzf_search_delimiter=3
 
 while [[ "$#" -gt 0 ]]; do
   case "$1" in
-    -d|--delimiter)
+    -c|--col)
       fzf_search_delimiter="$2"
       shift
       shift

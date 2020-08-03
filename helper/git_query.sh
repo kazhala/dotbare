@@ -195,7 +195,8 @@ function get_stash() {
 # all tracked files in the bare repo.
 # Arguments:
 #   $1: the help message to display in header
-#   $2: if exists, don't do multi select, only allow single selection
+#   $2: the fzf delimiter to start searching, default is 3
+#   $3: if exists, don't do multi select, only allow single selection
 # Outputs:
 #   the selected file name with it's line number and line, seperated by ":"
 #   e.g. .bash_profile:1:echo hello
