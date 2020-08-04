@@ -12,6 +12,12 @@ Noteble changes are documentated in this file.
 - `dotbare` can now be used as a generic fuzzy git tool, using `-g` or `--git flag`
   - Sort of like a replacement for `forgit`, bascially just dynamiclly switching
     `DOTBARE_DIR` and `DOTBARE_TREE` to the current git directory.
+  - Seems kind of wierd to make `dotbare` also a fuzzy git client, but since it's literally
+    like a few lines of changes, I figured why not ..
+- options for `fgrep` to configure search behavior in fzf
+  - `-c, --col`: pass in argument to specify which column to start searching in fzf (`dotbare fgrep --col 2`), by default `fgrep` starts the search from column 3, column 1 is the file name, column2 is the line number and starting from column 3 is the actual content.
+  - `-f, --full`: configure the fzf search to include all columns, same as using `dotbare fgrep --col 1` which includes the file name, line number and the actual content.
+- dedicated completion file to use for package installation
 
 ### CHANGED
 
