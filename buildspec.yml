@@ -32,7 +32,8 @@ phases:
       - echo Running bats unittest ...
       - docker container run -i --rm --name dotbare kazhala/dotbare:testbare
       - echo Building docker image ...
-      - DOTBARE_VERSION=$(./dotbare --version | awk -F ": v" '{print $2}')
+      - |-
+        DOTBARE_VERSION=$(./dotbare --version | awk -F ': v" '{print $2}')
       - docker image build -t kazhala/dotbare:latest -t kazhala/fzfaws:$DOTBARE_VERSION .
   post_build:
     commands:
