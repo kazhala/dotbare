@@ -7,27 +7,21 @@
 
 ## Introduction
 
-`dotbare` is a command line utility to help manage dotfiles. It wraps around git bare
-repository and heavily utilises [fzf](https://github.com/junegunn/fzf) for an interactive experience.
-It is inspired by [forgit](https://github.com/wfxr/forgit), a git wrapper using fzf.
-`dotbare` uses a different implementation approach and focuses on managing and interacting with system dotfiles.
-Don't worry about migration if you have a symlink/GNU stow setup, you can easily integrate `dotbare` with them.
+`dotbare` is a command line utility to help manage dotfiles and or as a generic fuzzy git client. As a dotfile management tool,
+it wraps around git bare repository, query git information from it and display them through [fzf](https://github.com/junegunn/fzf) for an
+interactive experience. It is originally inspired by [forgit](https://github.com/wfxr/forgit), a git wrapper using fzf.
+`dotbare` uses a different implementation approach and focuses on managing and interacting with system dotfiles. Because
+of the flexible implementation of `dotbare`, it can easily integrate with symlink/GNU stow setup or even as a generic
+fuzzy git client to use in any git repository.
 
-Pros:
-
-- No symlink
-- Simple setup/remove
-- Customizable
-- Easy migration
-- Flat learning curve
-- Manage dotfiles anywhere in your system
-- Integration with symlink/GNU stow setup
+As a generic fuzzy git client (usign `--git` flag), `dotbare` dynamically determine the top level `.git` folder and process git information
+and perform git operation in the current working tree.
 
 You could find out how git bare repository could be used for managing dotfiles [here](https://www.atlassian.com/git/tutorials/dotfiles).
 Or a [video](https://www.youtube.com/watch?v=tBoLDpTWVOM&t=288s) explanation that helped me to get started. If you are currently
 using a symlink/GNU stow setup, checkout how to integrate `dotbare` with them [here](#migrating-from-a-generic-symlink-setup-or-gnu-stow).
 
-Select and edit tracked dotfiles.
+Select and edit dotfiles.
 ![fedit](https://user-images.githubusercontent.com/43941510/87669391-37f28180-c7b1-11ea-907d-3b26f363a279.png)
 Stage and unstage dotfiles.
 ![fstat](https://user-images.githubusercontent.com/43941510/87669408-43de4380-c7b1-11ea-8a31-fc702eb69804.png)
@@ -51,7 +45,8 @@ to another system as you will have to manually resolve all the git checkout issu
 all the git information and display it through fzf. In addition, `dotbare` also comes with command line completion
 that you could choose to either to complete `git` commands or `dotbare` commands.
 `dotbare` also comes with the ability to integrate with GNU stow or any symlink set up as long as you are using git.
-It is easy to migrate to any system with minimal set up required.
+It is easy to migrate to any system with minimal set up required. In addition, with a simple flag `--git`, you can
+now also use `dotbare` as a generic fuzzy git client to manage any git repository.
 
 ## Install
 
@@ -405,7 +400,7 @@ All usage and commands are documented in **[wiki](https://github.com/kazhala/dot
 
 ## Changes
 
-Latest changes are documented in CHANGELOG.md. View the upcoming changes in the [CHANGELOG](https://github.com/kazhala/dotbare/blob/dev/CHANGELOG.md) of dev branch.
+Latest changes are documented in [CHANGELOG](https://github.com/kazhala/dotbare/blob/master/CHANGELOG.md).
 
 ## Testing
 

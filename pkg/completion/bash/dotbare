@@ -1,9 +1,6 @@
 # shellcheck disable=SC2207
 
-mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-[[ :$PATH: != *:"${mydir}":* ]] && export PATH="$PATH:${mydir}"
-
-__dotbare_completion()
+_dotbare_completion()
 {
   local IFS=$'\n' subcommands curr prev options verbose_options suggestions
   curr="${COMP_WORDS[$COMP_CWORD]}"
@@ -11,7 +8,7 @@ __dotbare_completion()
 
   if [[ "$COMP_CWORD" -eq "1" ]]; then
     subcommands=$(
-      "${mydir}"/dotbare -h \
+      dotbare -h \
         | awk '{
             if ($0 ~ /^  f.*/) {
               gsub(/^  /, "", $0)
@@ -21,7 +18,7 @@ __dotbare_completion()
           }'
     )
     options=$(
-      "${mydir}"/dotbare -h \
+      dotbare -h \
         | awk '{
             if ($0 ~ /^  -.*/) {
               gsub(/,/, " ", $0)
@@ -32,7 +29,7 @@ __dotbare_completion()
             }
           }'
     )
-    verbose_options=$("${mydir}"/dotbare -h | awk '$0 ~ /^  -.*/ {print $2}')
+    verbose_options=$(dotbare -h | awk '$0 ~ /^  -.*/ {print $2}')
     if [[ "${curr}" == --* ]]; then
       suggestions=($(compgen -W "${verbose_options}" -- "${curr}"))
     elif [[ "${curr}" == -* ]]; then
@@ -43,7 +40,7 @@ __dotbare_completion()
 
   elif [[ "${COMP_CWORD}" -eq 2 && "${prev}" == "-g" || "${prev}" == "--git" ]]; then
     subcommands=$(
-      "${mydir}"/dotbare -h \
+      dotbare -h \
         | awk '{
             if ($0 ~ /^  f.*/) {
               if ($0 ~ /^  f(backup|init|upgrade).*/) {
@@ -60,7 +57,7 @@ __dotbare_completion()
   elif [[ "${COMP_WORDS[1]}" == "-g" || "${COMP_WORDS[1]}" == "--git" ]] && [[ "${COMP_CWORD}" -gt 2 ]]; then
     if [[ "${curr}" == --* && "${prev}" != "-h" && "${prev}" != "--help" ]]; then
       verbose_options=$(
-        "${mydir}"/dotbare "${COMP_WORDS[2]}" -h 2> /dev/null \
+        dotbare "${COMP_WORDS[2]}" -h 2> /dev/null \
           | awk '{
               if ($0 ~ /^  -p PATH/) {
                 next
@@ -74,7 +71,7 @@ __dotbare_completion()
       suggestions=($(compgen -W "${verbose_options}" -- "${curr}"))
     elif [[ "${prev}" != "-h" && "${prev}" != "--help" ]]; then
       options=$(
-        "${mydir}"/dotbare "${COMP_WORDS[2]}" -h 2> /dev/null \
+        dotbare "${COMP_WORDS[2]}" -h 2> /dev/null \
           | awk '{
               gsub(/,/, " ", $0)
               if ($0 ~ /^  -p PATH/) {
@@ -101,7 +98,7 @@ __dotbare_completion()
     return
   elif [[ "${curr}" == --* && "${prev}" != "-h" && "${prev}" != "--help" ]]; then
     verbose_options=$(
-      "${mydir}"/dotbare "${COMP_WORDS[1]}" -h 2> /dev/null \
+      dotbare "${COMP_WORDS[1]}" -h 2> /dev/null \
         | awk '{
             if ($0 ~ /^  -p PATH/) {
               print "--path"
@@ -117,7 +114,7 @@ __dotbare_completion()
     suggestions=($(compgen -W "${verbose_options}" -- "${curr}"))
   elif [[ "${prev}" != "-h" && "${prev}" != "--help" ]]; then
     options=$(
-      "${mydir}"/dotbare "${COMP_WORDS[1]}" -h 2> /dev/null \
+      dotbare "${COMP_WORDS[1]}" -h 2> /dev/null \
         | awk '{
             gsub(/,/, " ", $0)
             if ($0 ~ /^  -p PATH/) {
@@ -153,12 +150,4 @@ __dotbare_completion()
   fi
 }
 
-_dotbare_completion_cmd() {
-  local complete_name="${1:-dotbare}"
-  complete -F __dotbare_completion "${complete_name}"
-}
-
-_dotbare_completion_git() {
-  local complete_name="${1:-dotbare}"
-  complete -F _git "${complete_name}"
-}
+complete -F _dotbare_completion dotbare

@@ -1,11 +1,6 @@
-0="${${ZERO:-${0:#$ZSH_ARGZERO}}:-${(%):-%N}}"
-_path="${0:h}"
+#compdef dotbare
 
-if [[ -z "${path[(r)$_path]}" ]]; then
-  path+=( "${_path}" )
-fi
-
-__dotbare_completion() {
+_dotbare() {
   local context state state_descr line ret curcontext
   local -A opt_args
   ret=1
@@ -139,12 +134,4 @@ __dotbare_completion() {
   return "${ret}";
 }
 
-_dotbare_completion_cmd() {
-  local compdef_name="${1:-dotbare}"
-  compdef __dotbare_completion "${compdef_name}"
-}
-
-_dotbare_completion_git() {
-  local compdef_name="${1:-dotbare}"
-  compdef "${compdef_name}"=git
-}
+_dotbare "$@"

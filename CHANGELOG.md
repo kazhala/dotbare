@@ -2,6 +2,31 @@
 
 Noteble changes are documentated in this file.
 
+## dev
+
+### Added
+
+- hide preview window on small window (when \$COLUMNS less than 80)
+  - If using default keybinds, use `alt-t` to re-open the preview
+- verbose flag completion for bash
+- `dotbare` can now be used as a generic fuzzy git tool, using `-g` or `--git flag`
+  - Sort of like a replacement for `forgit`, bascially just dynamiclly switching
+    `DOTBARE_DIR` and `DOTBARE_TREE` to the current git directory.
+  - Seems kind of wierd to make `dotbare` also a fuzzy git client, but since it's literally
+    like a few lines of changes, I figured why not ..
+- options for `fgrep` to configure search behavior in fzf
+  - `-c, --col`: pass in argument to specify which column to start searching in fzf (`dotbare fgrep --col 2`), by default `fgrep` starts the search from column 3, column 1 is the file name, column2 is the line number and starting from column 3 is the actual content.
+  - `-f, --full`: configure the fzf search to include all columns, same as using `dotbare fgrep --col 1` which includes the file name, line number and the actual content.
+- dedicated completion file to use for package installation
+
+### CHANGED
+
+- update the fzf header to make more sense, some wording issues
+
+### Fixed
+
+- bash completion raising unexpected git error
+
 ## 1.2.3 (17/07/2020)
 
 ### Added
@@ -10,11 +35,11 @@ Noteble changes are documentated in this file.
 - zsh completion for git commands
 - bash completion for git commands
 - fgrep: grep words within tracked dotfiles and edit them through EDITOR
-  More info is documented in wiki.
+  - More info is documented in wiki
 
 ### Changed
 
-- Changed how help messages are printed to reduce some calls
+- adjusted how help messages are printed to reduce some calls
 
 ### Fixed
 
@@ -24,20 +49,20 @@ Noteble changes are documentated in this file.
 
 ### Fixed
 
-- Fixed the dotbare crash when migrating a dotfile repo with over 100 files [#12](https://github.com/kazhala/dotbare/issues/12)
-- Fixed dotbare fbackup crash when using cp command on symlink
+- dotbare crash when migrating a dotfile repo with over 100 files [#12](https://github.com/kazhala/dotbare/issues/12)
+- dotbare fbackup crash when using cp command on symlink
 
 ## 1.2.1 (09/07/2020)
 
 ### Added
 
 - dynamic preview function, detect bats, hightlight etc to provide syntax hightlighting when previewing files.
-- Custom preview ENV variable (DOTBARE_PREVIEW)
-  Note: has to be this format `export DOTBARE_PREVIEW='cat -n {}'`, the `{}` is
-  used in preview functions to subsitute for the filepath.
-- Added support for fancy diff tools like "diff-so-fancy" or "delta"
-  This is optional, only takes effect if installed and set as `git config core.pager`
-  Also configurable through DOTBARE_DIFF_PAGER, these are documentated in the README.
+- custom preview ENV variable (DOTBARE_PREVIEW)
+  - Note: has to be this format `export DOTBARE_PREVIEW='cat -n {}'`, the `{}` is
+    used in preview functions to subsitute for the filepath.
+- support for fancy diff tools like "diff-so-fancy" or "delta"
+  - This is optional, only takes effect if installed and set as `git config core.pager`
+  - Also configurable through DOTBARE_DIFF_PAGER, these are documentated in the README.
 
 ## 1.2.0 (01/07/2020)
 
@@ -45,10 +70,10 @@ Noteble changes are documentated in this file.
 
 - `dotbare` now accept verbose type of argument e.g. `dotbare fadd --file` `dotbare fcheckout --branch`.
   More information please refer to each commands help manual
-- Added support for handling files with spaces
-- Improved unittest with mocking
-- A more reliable `dotbare fupgrade` behavior
-- Added version flag for `dotbare`, `dotbare --version` or `dotbare -v`
+- support for handling files with spaces
+- improved unittest with mocking
+- more reliable `dotbare fupgrade` behavior
+- version flag for `dotbare`, `dotbare --version` or `dotbare -v`
 
 ### Changed
 
@@ -60,7 +85,7 @@ Noteble changes are documentated in this file.
 
 ### Removed
 
-- Removed `-a` flag of `dotbare freset`. It's not working as intended because I misunderstand it, the intended
+- removed `-a` flag of `dotbare freset`. It's not working as intended because I misunderstand it, the intended
   behavior is actually achieved by `dotbare fcheckout -a`, use `dotbare fcheckout -a` instead.
   (Edit: `dotbare fcheckout -a` is now `dotbare fcheckout -s` or `dotbare fcheckout --select`)
 
@@ -68,20 +93,20 @@ Noteble changes are documentated in this file.
 
 ### Added
 
-- Added zsh plugin [#4](https://github.com/kazhala/dotbare/pull/4)
-- Added bash plugin
-- Added drop-in functionality [#6](https://github.com/kazhala/dotbare/pull/6)
+- zsh plugin [#4](https://github.com/kazhala/dotbare/pull/4)
+- bash plugin
+- drop-in functionality [#6](https://github.com/kazhala/dotbare/pull/6)
   - User can now place custom fzf scripts into scripts folder
-- Added bash completion capabilities [#7](https://github.com/kazhala/dotbare/pull/7)
-- Added option to clone submodule [#8](https://github.com/kazhala/dotbare/issues/8)
+- bash completion capabilities [#7](https://github.com/kazhala/dotbare/pull/7)
+- option to clone submodule [#8](https://github.com/kazhala/dotbare/issues/8)
 
 ### Fixed
 
-- Fixed ambiguous argument error [#3](https://github.com/kazhala/dotbare/pull/3)
+- ambiguous argument error [#3](https://github.com/kazhala/dotbare/pull/3)
 
 ### Removed
 
-- Removed global .gitignore manipulation during migration, not needed. Added .gitignore tips to README and
+- removed global .gitignore manipulation during migration, not needed. Added .gitignore tips to README and
   let user handle it
 
 ## 1.0.0 (20/05/2020)

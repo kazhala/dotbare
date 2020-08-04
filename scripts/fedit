@@ -60,7 +60,7 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 if [[ "${edit_type}" == "commit" ]]; then
-  selected_commit=$(get_commit "select a commit to rename")
+  selected_commit=$(get_commit "select a commit to edit")
   [[ -z "${selected_commit}" ]] && exit 1
   git --git-dir="${DOTBARE_DIR}" --work-tree="${DOTBARE_TREE}" rebase -i "${selected_commit}"~
 else
@@ -68,9 +68,9 @@ else
     selected_files+=("${line}")
   done < <(
     if [[ "${edit_type}" == "modified" ]]; then
-      get_modified_file "select modified files to edit"
+      get_modified_file "select files to edit"
     else
-      get_git_file "select tracked files to edit"
+      get_git_file "select files to edit"
     fi
   )
   [[ "${#selected_files[@]}" -eq 0 ]] && exit 1

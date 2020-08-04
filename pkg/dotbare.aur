@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+SCRIPT_DIR=/opt/dotbare
+${SCRIPT_DIR}/dotbare "$@"

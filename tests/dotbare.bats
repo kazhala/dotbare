@@ -34,6 +34,60 @@ no_argument() {
   "${BATS_TEST_DIRNAME}"/../dotbare
 }
 
+generic_git_operation_block_finit() {
+  "${BATS_TEST_DIRNAME}"/../dotbare --git finit
+}
+
+generic_git_operation_block_fbackup() {
+  "${BATS_TEST_DIRNAME}"/../dotbare --git fbackup
+}
+
+generic_git_operation_block_fupgrade() {
+  "${BATS_TEST_DIRNAME}"/../dotbare --git fupgrade
+}
+
+generic_git_operation_init() {
+  export PATH="${BATS_TEST_DIRNAME}:$PATH"
+  "${BATS_TEST_DIRNAME}"/../dotbare --git init
+}
+
+generic_git_operation_fadd() {
+  export PATH="${BATS_TEST_DIRNAME}:$PATH"
+  "${BATS_TEST_DIRNAME}"/../dotbare --git fadd
+}
+
+@test "main generic git fadd" {
+  run generic_git_operation_fadd
+  [ "${status}" -eq 0 ]
+  [[ "${output}" =~ "--git-dir=rev-parse --show-toplevel/.git --work-tree=rev-parse --show-toplevel" ]]
+  [[ "${output}" =~ "fadd_stage_modified" ]]
+}
+
+@test "main generic git commands" {
+  run generic_git_operation_init
+  [ "${status}" -eq 0 ]
+  [[ "${output}" =~ "--git-dir=rev-parse --show-toplevel/.git --work-tree=rev-parse --show-toplevel" ]]
+  [[ "${output}" =~ "init" ]]
+}
+
+@test "main generic git flag block finit" {
+  run generic_git_operation_block_finit
+  [ "${status}" -eq 1 ]
+  [ "${output}" = "dotbare finit is not supported when using dotbare as a generic fuzzy git tool" ]
+}
+
+@test "main generic git flag block fbackup" {
+  run generic_git_operation_block_fbackup
+  [ "${status}" -eq 1 ]
+  [ "${output}" = "dotbare fbackup is not supported when using dotbare as a generic fuzzy git tool" ]
+}
+
+@test "main generic git flag block fupgrade" {
+  run generic_git_operation_block_fupgrade
+  [ "${status}" -eq 1 ]
+  [ "${output}" = "dotbare fupgrade is not supported when using dotbare as a generic fuzzy git tool" ]
+}
+
 @test "main help" {
   run help
   [ "${status}" -eq 0 ]

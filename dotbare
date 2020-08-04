@@ -24,6 +24,7 @@ To see all dotbare specific COMMANDS, run dotbare without any arguments.
 Optional arguments:
   -h, --help\t\tshow this help message and exit.
   -v, --version\t\tshow dotbare current version.
+  -g, --git\t\tuse dotbare as a generic fuzzy git tool and operate in current git directory.
 
 Available commands:
   All git commands are available, treat dotbare as git.
@@ -41,12 +42,25 @@ Available commands:
   fupgrade  \t\tupdate dotbare to the latest master."
 }
 
-# if no argument, display all possible actions
-if [[ "$#" -eq 0 ]]; then
-  find "${mydir}"/scripts/* -type f -print0 \
-    | xargs -I __ -0 basename __ \
+function list_dotbare_commands() {
+  find "${mydir}"/scripts/* -type f -exec basename {} + \
     | fzf --no-multi --header='Available commands' --preview="${mydir}/dotbare {} -h" \
     | xargs -I __ "${mydir}"/dotbare __ -h
+}
+
+function execute_dotbare() {
+  [[ "$#" -eq 0 ]] \
+    && list_dotbare_commands \
+    && exit 0
+
+  if [[ -x "${mydir}/scripts/$1" ]]; then
+    exec "${mydir}/scripts/$1" "${@:2}"
+  fi
+}
+
+# if no argument, display all possible actions
+if [[ "$#" -eq 0 ]]; then
+  list_dotbare_commands
   exit 0
 fi
 
@@ -64,10 +78,27 @@ case "$1" in
     echo "Current dotbare version: ${DOTBARE_VERSION}"
     exit 0
     ;;
-  *)
-    if [[ -x "${mydir}/scripts/$1" ]]; then
-      exec "${mydir}/scripts/$1" "${@:2}"
+  -g|--git)
+    if git rev-parse --is-inside-work-tree &>/dev/null; then
+      DOTBARE_TREE=$(git rev-parse --show-toplevel)
+      DOTBARE_DIR="${DOTBARE_TREE}/.git"
+      shift
+      case "$1" in
+        fbackup|finit|fupgrade)
+          echo "dotbare $1 is not supported when using dotbare as a generic fuzzy git tool"
+          exit 1
+          ;;
+        *)
+          execute_dotbare "$@"
+          ;;
+      esac
+    else
+      echo "Not in a git directory"
+      exit 1
     fi
+    ;;
+  *)
+    execute_dotbare "$@"
     ;;
 esac
 
