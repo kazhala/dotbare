@@ -1,3 +1,5 @@
+# shellcheck disable=SC2207
+
 _dotbare_completion()
 {
   local IFS=$'\n' subcommands curr prev options verbose_options suggestions
