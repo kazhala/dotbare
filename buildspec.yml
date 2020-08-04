@@ -1,13 +1,9 @@
 version: 0.2
 
 env:
-  variables:
-    COLUMNS: 80
   parameter-store:
     LOGIN_PASSWORD: /dotbare/dockerpassword
     LOGIN_USERNAME: /dotbare/dockerusername
-  exported-variables:
-    - COLUMNS
 
 phases:
   install:
@@ -33,8 +29,9 @@ phases:
       - docker container run -i --rm --name dotbare kazhala/dotbare:testbare
       - echo Building docker image ...
       - |-
-        DOTBARE_VERSION=$(./dotbare --version | awk -F ': v" '{print $2}')
-      - docker image build -t kazhala/dotbare:latest -t kazhala/fzfaws:$DOTBARE_VERSION .
+        DOTBARE_VERSION=$(./dotbare --version | awk -F ": v" '{print $2}')
+      - docker image build -t kazhala/dotbare:$DOTBARE_VERSION .
+      - docker image tag kazhala/dotbare:$DOTBARE_VERSION kazhala/dotbare:latest
   post_build:
     commands:
       - echo Deploying docker image ...

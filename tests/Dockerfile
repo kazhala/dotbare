@@ -1,6 +1,7 @@
 FROM bats/bats:latest
 RUN apk add --no-cache git
 RUN apk add --no-cache fzf
+ENV COLUMNS=80
 ADD ./ /root/dotbare
 RUN echo "source /root/dotbare/dotbare.plugin.bash" >> "$HOME"/.bashrc
 WORKDIR /root/dotbare
