@@ -1,11 +1,13 @@
 version: 0.2
 
 env:
+  variables:
+    COLUMNS: 80
   parameter-store:
     LOGIN_PASSWORD: /dotbare/dockerpassword
     LOGIN_USERNAME: /dotbare/dockerusername
   exported-variables:
-    COLUMNS: 80
+    - COLUMNS
 
 phases:
   install:
