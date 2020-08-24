@@ -43,7 +43,8 @@ Available commands:
 }
 
 function list_dotbare_commands() {
-  find "${mydir}"/scripts/* -type f -exec basename {} + \
+  find "${mydir}"/scripts/* -type f \
+    | xargs -I __ basename __ \
     | fzf --no-multi --header='Available commands' --preview="${mydir}/dotbare {} -h" \
     | xargs -I __ "${mydir}"/dotbare __ -h
 }
@@ -85,7 +86,7 @@ case "$1" in
       shift
       case "$1" in
         fbackup|finit|fupgrade)
-          echo "dotbare $1 is not supported when using dotbare as a generic fuzzy git tool"
+          echo "dotbare $1 is not supported when using dotbare as a generic fuzzy git tool" >&2
           exit 1
           ;;
         *)
@@ -93,7 +94,7 @@ case "$1" in
           ;;
       esac
     else
-      echo "Not in a git directory"
+      echo "Not in a git directory" >&2
       exit 1
     fi
     ;;
