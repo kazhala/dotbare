@@ -44,7 +44,7 @@ Available commands:
 
 function list_dotbare_commands() {
   find "${mydir}"/scripts/* -type f -print0 \
-    | xargs -I __ basename __ \
+    | xargs -I __ -0 basename __ \
     | fzf --no-multi --header='Available commands' --preview="${mydir}/dotbare {} -h" \
     | xargs -I __ "${mydir}"/dotbare __ -h
 }
