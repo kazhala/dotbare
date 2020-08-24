@@ -2,6 +2,13 @@
 
 Noteble changes are documentated in this file.
 
+## 1.3.1 (25/08/2020)
+
+### Fixed
+
+- dotbare with no args fails [#23](https://github.com/kazhala/dotbare/issues/23)
+- some typos in help manual
+
 ## 1.3.0 (04/08/2020)
 
 ### Added
