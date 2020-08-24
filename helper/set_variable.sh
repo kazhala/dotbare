@@ -7,7 +7,7 @@
 #   ${DOTBARE_DIR}: location of the bare repo
 #   ${DOTBARE_TREE}: which folder is the bare repo tracking
 #   ${DOTBARE_BACKUP}: backup directory for all tracked files
-#   ${DOTBARE_KEY}: defualt key bindings
+#   ${DOTBARE_KEY}: default key bindings
 #   ${FZF_DEFAULT_OPTS}: update FZF_DEFAULT_OPTS to reflect dotbare changes
 #   ${DOTBARE_FZF_DEFAULT_OPTS}: user custom setting for dotbare
 #   ${EDITOR}: default editor to use

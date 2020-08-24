@@ -165,7 +165,7 @@ function get_modified_file() {
 #######################################
 # let user select a stash interactively
 # Arguments:
-#   $1: the helpe message to display in header
+#   $1: the help message to display in header
 #   $2: if exists, don't do multi select, only allow single selection
 # Outputs:
 #   the selected stash identifier
@@ -198,7 +198,7 @@ function get_stash() {
 #   $2: the fzf delimiter to start searching, default is 3
 #   $3: if exists, don't do multi select, only allow single selection
 # Outputs:
-#   the selected file name with it's line number and line, seperated by ":"
+#   the selected file name with it's line number and line, separated by ":"
 #   e.g. .bash_profile:1:echo hello
 #######################################
 function grep_words() {

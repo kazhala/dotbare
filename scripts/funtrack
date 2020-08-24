@@ -35,7 +35,7 @@ Make sure to run dotbare fbackup before pulling down the changes.
 
 Alternatively use the -t flag (using git update-index --assume-unchanged [path]) to temporarily
 untrack a file but keeping the files when other computers pull down the changes.
-More information please refere to dotbare's github.
+More information please refer to dotbare's github.
 
 Optional arguments:
   -h, --help\t\tshow this help message and exit.

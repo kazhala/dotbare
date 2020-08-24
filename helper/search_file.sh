@@ -5,7 +5,7 @@
 #######################################
 # search local file
 # Arguments:
-#   $1: stirng, f or d, search file or directory
+#   $1: string, f or d, search file or directory
 # Outputs:
 #   A user selected file path
 #######################################

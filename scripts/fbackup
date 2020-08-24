@@ -32,14 +32,14 @@ Default: backup all tracked files using cp command to ${DOTBARE_BACKUP} director
 optional arguments:
   -h, --help\t\tshow this help message and exit.
   -s, --select\t\tlist all tracked files and only backup the selected files.
-  -p PATH, --path PATH\tsepcify path of files to backup.
+  -p PATH, --path PATH\tspecify path of files to backup.
   -m, --move\t\tuse 'mv' instead of the default 'cp' command to backup."
 }
 
 #######################################
 # backup passed in files while preserving directory info
 # Arguments:
-#   $1: files to backup, seperate by \n
+#   $1: files to backup, separate by \n
 #   $2: action command (cp|mv)
 #######################################
 function dotbare_backup() {
