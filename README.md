@@ -14,7 +14,7 @@ interactive experience. It is originally inspired by [forgit](https://github.com
 of the flexible implementation of `dotbare`, it can easily integrate with symlink/GNU stow setup or even as a generic
 fuzzy git client to use in any git repository.
 
-As a generic fuzzy git client (usign `--git` flag), `dotbare` dynamically determine the top level `.git` folder and process git information
+As a generic fuzzy git client (using `--git` flag), `dotbare` dynamically determine the top level `.git` folder and process git information
 and perform git operation in the current working tree.
 
 You could find out how git bare repository could be used for managing dotfiles [here](https://www.atlassian.com/git/tutorials/dotfiles).
