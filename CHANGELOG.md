@@ -2,6 +2,12 @@
 
 Noteble changes are documentated in this file.
 
+## dev
+
+### Fixed
+
+- unnecessary argument for zsh completion [#26](https://github.com/kazhala/dotbare/issues/26)
+
 ## 1.3.1 (25/08/2020)
 
 ### Fixed
