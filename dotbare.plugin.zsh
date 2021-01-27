@@ -140,11 +140,11 @@ __dotbare_completion() {
 }
 
 _dotbare_completion_cmd() {
-  local compdef_name="${1:-dotbare}"
+  local compdef_name="dotbare"
   compdef __dotbare_completion "${compdef_name}"
 }
 
 _dotbare_completion_git() {
-  local compdef_name="${1:-dotbare}"
+  local compdef_name="dotbare"
   compdef "${compdef_name}"=git
 }
