@@ -148,3 +148,39 @@ _dotbare_completion_git() {
   local compdef_name="dotbare"
   compdef "${compdef_name}"=git
 }
+
+_widget_dotbare_fadd() {
+  dotbare fadd
+}
+
+_widget_dotbare_fedit() {
+  dotbare fedit
+}
+
+_widget_dotbare_fcheckout() {
+  dotbare fcheckout
+}
+
+_widget_dotbare_freset() {
+  dotbare freset
+}
+
+_widget_dotbare_flog() {
+  dotbare flog
+}
+
+_widget_dotbare_fgrep() {
+  dotbare fgrep
+}
+
+_widget_dotbare_fstat() {
+  dotbare fstat
+}
+
+zle -N dotbare-fadd _widget_dotbare_fadd
+zle -N dotbare-fedit _widget_dotbare_fedit
+zle -N dotbare-fcheckout _widget_dotbare_fcheckout
+zle -N dotbare-freset _widget_dotbare_reset
+zle -N dotbare-flog _widget_dotbare_flog
+zle -N dotbare-fgrep _widget_dotbare_fgrep
+zle -N dotbare-fstat _widget_dotbare_fstat
