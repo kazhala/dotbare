@@ -170,7 +170,7 @@ _widget_git_transform_dotbare() {
   dotbare_cmd=$(alias | grep dotbare | cut -d'=' -f1 | head -n 1)
   [[ -z "${dotbare_cmd}" ]] && dotbare_cmd="dotbare"
   dotbare_cmd="${dotbare_cmd} -g"
-  new_cmd=$(echo "$BUFFER" \
+  BUFFER=$(echo "$BUFFER" \
     | awk -v dotbare="${dotbare_cmd}" '{
         if ($1 == "git") {
           $1=dotbare
@@ -184,7 +184,6 @@ _widget_git_transform_dotbare() {
         print $0
       }'
   )
-  BUFFER="${new_cmd} "
   zle end-of-line
 }
 
