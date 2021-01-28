@@ -149,33 +149,13 @@ _dotbare_completion_git() {
   compdef "${compdef_name}"=git
 }
 
-_widget_dotbare_fadd() {
-  dotbare fadd
-}
-
-_widget_dotbare_fedit() {
-  dotbare fedit
-}
-
-_widget_dotbare_fcheckout() {
-  dotbare fcheckout
-}
-
-_widget_dotbare_freset() {
-  dotbare freset
-}
-
-_widget_dotbare_flog() {
-  dotbare flog
-}
-
-_widget_dotbare_fgrep() {
-  dotbare fgrep
-}
-
-_widget_dotbare_fstat() {
-  dotbare fstat
-}
+_widget_dotbare_fadd() { dotbare fadd; }
+_widget_dotbare_fedit() { dotbare fedit; }
+_widget_dotbare_fcheckout() { dotbare fcheckout; }
+_widget_dotbare_freset() { dotbare freset; }
+_widget_dotbare_flog() { dotbare flog; }
+_widget_dotbare_fgrep() { dotbare fgrep; }
+_widget_dotbare_fstat() { dotbare fstat; }
 
 zle -N dotbare-fadd _widget_dotbare_fadd
 zle -N dotbare-fedit _widget_dotbare_fedit
@@ -184,3 +164,28 @@ zle -N dotbare-freset _widget_dotbare_reset
 zle -N dotbare-flog _widget_dotbare_flog
 zle -N dotbare-fgrep _widget_dotbare_fgrep
 zle -N dotbare-fstat _widget_dotbare_fstat
+
+_widget_git_transform_dotbare() {
+  local dotbare_cmd new_cmd
+  dotbare_cmd=$(alias | grep dotbare | cut -d'=' -f1 | head -n 1)
+  [[ -z "${dotbare_cmd}" ]] && dotbare_cmd="dotbare"
+  dotbare_cmd="${dotbare_cmd} -g"
+  new_cmd=$(echo "$BUFFER" \
+    | awk -v dotbare="${dotbare_cmd}" '{
+        if ($1 == "git") {
+          $1=dotbare
+          if ($2 ~ /(log|add|reset|checkout|status|stash|grep|untrack|stat)/) {
+            if ($2 == "status"){
+              $2="stat"
+            }
+            $2="f"$2
+          }
+        }
+        print $0
+      }'
+  )
+  BUFFER="${new_cmd} "
+  zle end-of-line
+}
+
+zle -N dotbare-transform _widget_git_transform_dotbare
