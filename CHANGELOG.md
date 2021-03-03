@@ -8,6 +8,13 @@ Noteble changes are documentated in this file.
 
 - unnecessary argument for zsh completion [#26](https://github.com/kazhala/dotbare/issues/26)
 
+### Added
+
+- common basic zsh widgets such as `dotbare fedit` [#24](https://github.com/kazhala/dotbare/issues/24)
+- new zsh widget `dotbare-transform` (Not documented yet, will add to documendation in next release)
+  - transform a generic `git` command to a `dotbare` command; e.g. `git log` -> `dotbare -g flog`
+  - Bind this widget to keys of your choice (e.g. `ctrl-u`): `bindkey "^u" dotbare-transform`
+
 ## 1.3.1 (25/08/2020)
 
 ### Fixed
