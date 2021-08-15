@@ -20,7 +20,7 @@ done < <(
 		-print0
 )
 
-shellcheck -e SC1091 "${scripts[@]}"
+shellcheck -e SC1091,SC1090 "${scripts[@]}"
 shellcheck -e SC1091 --shell=bash "dotbare.plugin.bash"
 shellcheck --shell=bash "pkg/completion/bash/dotbare"
 # \shellcheck does not have zsh support yet, hence using bash for now
