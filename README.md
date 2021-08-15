@@ -178,7 +178,7 @@ it will require you to have bash in the system (You don't need to run bash, just
    ```sh
    dotbare fadd -f
    # or
-   dotbare add [FIELNAME]
+   dotbare add [FILENAME]
 
    # add entire repository like .config directory
    dotbare fadd -d
