@@ -1,7 +1,7 @@
 # dotbare
 
 ![CI Status](https://github.com/kazhala/dotbare/workflows/CI/badge.svg)
-![AWSCodeBuild](https://codebuild.ap-southeast-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiVVo4eUt6T0JGSFU1M1plVml0Y1dOWkJnaTV0eWZNNm5uY043Z3MwaUY2aUhaTHllQklhaVFiWmxIcTNVc0ZFRFhwbFdpZ3dsb3RMZFU0aDk3S1FUQUpRPSIsIml2UGFyYW1ldGVyU3BlYyI6ImVUdjloSlNTa3NyTUJVemIiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=main)
+![AWSCodeBuild](https://codebuild.ap-southeast-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiVVo4eUt6T0JGSFU1M1plVml0Y1dOWkJnaTV0eWZNNm5uY043Z3MwaUY2aUhaTHllQklhaVFiWmxIcTNVc0ZFRFhwbFdpZ3dsb3RMZFU0aDk3S1FUQUpRPSIsIml2UGFyYW1ldGVyU3BlYyI6ImVUdjloSlNTa3NyTUJVemIiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
 ![Platform](https://img.shields.io/badge/platform-macos%20%7C%20linux-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
