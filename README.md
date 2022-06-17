@@ -61,6 +61,15 @@ about how to enable completion for zsh.
 zinit light kazhala/dotbare
 ```
 
+#### Fig
+
+[Fig](https://fig.io) adds apps, shortcuts, and autocomplete to your existing terminal.
+
+Install `dotbare` in just one click.
+
+<a href="https://fig.io/plugins/other/dotbare_kazhala" target="_blank"><img src="https://fig.io/badges/install-with-fig.svg" /></a>
+
+
 #### oh-my-zsh
 
 - Clone the repository in to [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh) plugins directory.
