@@ -14,8 +14,7 @@ interactive experience. It is originally inspired by [forgit](https://github.com
 of the flexible implementation of `dotbare`, it can easily integrate with symlink/GNU stow setup or even as a generic
 fuzzy git client to use in any git repository.
 
-As a generic fuzzy git client (using `--git` flag), `dotbare` dynamically determine the top level `.git` folder and process git information
-and perform git operation in the current working tree.
+As a generic fuzzy git client (using `--git` flag), see [Use it with any git repo](#use-it-with-any-git-repo).
 
 You could find out how git bare repository could be used for managing dotfiles [here](https://www.atlassian.com/git/tutorials/dotfiles).
 Or a [video](https://www.youtube.com/watch?v=tBoLDpTWVOM&t=288s) explanation that helped me to get started. If you are currently
@@ -202,6 +201,36 @@ it will require you to have bash in the system (You don't need to run bash, just
    dotbare remote add origin [URL]
    dotbare push -u origin master
    ```
+
+### Use it with any git repo
+
+`dotbare` can dynamically determine the top level `.git` folder if you pass the
+`--git`/`-g` flag, allowing to perform git operations in the current working tree.
+
+```sh
+dotbare -g flog
+```
+
+for better ergonomics, add the following [git aliases](https://git-scm.com/book/en/v2/Git-Basics-Git-Aliases)
+
+```gitconfig
+#  ~/.config/git/config
+[alias]
+  # ...
+  fuzzy = !dotbare -g
+  fedit = fuzzy fedit
+  fgrep = fuzzy fgrep
+  flog = fuzzy flog
+  fstat = fuzzy fstat
+  # ...
+```
+
+now you can use it directly
+
+```sh
+git fuzzy # use <tab> to see all available commands
+git flog
+```
 
 ### Migration
 
